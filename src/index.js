@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { init as initAxios } from './utils/axios';
+
+initAxios();
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
