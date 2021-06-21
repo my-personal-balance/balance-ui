@@ -17,7 +17,9 @@ import {
 
 import Dashboard from './pages/dashboard';
 import Accounts from './pages/accounts';
+import Account from './pages/account';
 import Transactions from './pages/transactions';
+import Settings from './pages/settings';
 
 import './App.css';
 
@@ -63,7 +65,6 @@ class App extends React.Component {
             })}
           </Header>
           <Content
-            className="site-layout-background"
             style={{
               margin: '24px 16px',
               padding: 24,
@@ -76,10 +77,12 @@ class App extends React.Component {
                   render={(props) => <Dashboard {...props} />} />
                 <Route exact path="/accounts" 
                   render={(props) => <Accounts {...props} />} />
+                <Route exact path="/accounts/:accountId" 
+                  render={(props) => <Account {...props} />} />
                 <Route exact path="/transactions" 
                   render={(props) => <Transactions {...props} />} />
                 <Route exact path="/settings" 
-                  render={(props) => <Transactions {...props} />} />
+                  render={(props) => <Settings {...props} />} />
               </Switch>
             </Router>
           </Content>
