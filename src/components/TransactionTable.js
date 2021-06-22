@@ -1,4 +1,4 @@
-import { Col, Row, Table, Tag } from 'antd';
+import { Col, Row, Table, Tag, Typography } from 'antd';
 
 import Loader from './Loader';
 
@@ -33,11 +33,18 @@ const TransactionTable = ({items}) => {
     ];
 
     return (
-      <Row>
-        <Col span={24}>
-          <Table dataSource={items} columns={columns} size="small" pagination={{defaultPageSize:50}} />
-        </Col>
-      </Row>
+      <>
+        <Row>
+          <Col>
+            <Typography.Title level={4}>Transactions</Typography.Title>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Table dataSource={items} columns={columns} size="small" pagination={{defaultPageSize:50}} />
+          </Col>
+        </Row>
+      </>
     )
   } else {
     return (

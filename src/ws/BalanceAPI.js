@@ -21,6 +21,16 @@
 /**
  * Retrieve projects data
  */
+ export function createAccount(axios, data, callback) {
+  axios
+    .post(`/users/1/accounts`, data)
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
+/**
+ * Retrieve projects data
+ */
  export function fetchAccount(axios, account_id, callback) {
   axios
     .get(`/users/1/accounts/${account_id}`)

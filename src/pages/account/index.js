@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Layout, Col, Row, Typography } from 'antd';
-
-import Balance from '../../components/Balance';
-import TransactionTable from '../../components/TransactionTable';
+import {Typography } from 'antd';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccount, fetchTransactions } from '../../ws/BalanceAPI';
+import TransactionsInfo from '../../components/TransactionsInfo';
 
 class Account extends Component {
   
@@ -16,7 +14,6 @@ class Account extends Component {
       accountId: accountId,
       account: {
         alias: null,
-        balance: 0.0,
       },
       transactions: null,
     }
@@ -33,7 +30,13 @@ class Account extends Component {
         fetchTransactions(this.props.axios, filters, response => {
           if (response) {
             const { data } = response;
-            this.setState({ transactions: data.transactions });
+            const { balance, incomes, expenses, transactions } = data;
+            this.setState({
+              balance: balance,
+              incomes: incomes,
+              expenses: expenses,
+              transactions: transactions,
+            });
           }
         });
       }
@@ -44,19 +47,12 @@ class Account extends Component {
     return (
       <>
         <Typography.Title>{this.state.account.alias}</Typography.Title>
-        <Balance balance={this.state.account.balance} />
-        <Layout.Content
-          className="site-layout-background"
-          style={{
-            borderRadius: "25px",
-            margin: '24px 16px',
-            padding: 24,
-          }}
-        >
-          <Typography.Title level={4}>Transactions</Typography.Title>
-          <TransactionTable items={this.state.transactions} />
-        </Layout.Content>
-
+        <TransactionsInfo
+          balance={this.state.balance}
+          incomes={this.state.incomes}
+          expenses={this.state.expenses}
+          transactions={this.state.transactions}
+        />
       </>
     );
   }

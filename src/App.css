@@ -20,4 +20,29 @@
 
 .site-layout .site-layout-background {
   background: #fff;
+  font-size: 24px;
+}
+
+.balance-card {
+  border-radius: 25px;
+}
+
+.account-card {
+  border-radius: 25px;
+  margin-bottom: 24px;
+}
+
+.icon-wrap {
+  border-radius: 50%;
+  width: 3.25rem;
+  height: 3.25rem;
+  display: flex;
+  -moz-box-align: center;
+  align-items: center;
+  -moz-box-pack: center;
+  justify-content: center;
+}
+
+.transactions {
+  margin: 20px 0px 0px 0px;
 }

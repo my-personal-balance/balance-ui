@@ -1,32 +1,34 @@
-import { Layout, Col, Row, Typography } from 'antd';
+import { Card, Col, Row, Typography } from 'antd';
 
 import Loader from './Loader';
 
-const Balance = ({balance}) => (
-  <Layout.Content
-    className="site-layout-background"
-    style={{
-      borderRadius: "25px",
-      margin: '24px 16px',
-      padding: 24,
-    }}
-  >
+const Balance = ({title, value, children, color}) => (
+  <Card className="balance-card">
     <Row>
-      <Col>
-        <Typography.Title level={4}>Balance</Typography.Title>  
+      <Col span={20}>
+        <Row>
+          <Col>
+            <Typography.Title level={5}>{title}</Typography.Title>  
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Typography.Title level={2}><BalanceValue value={value} /></Typography.Title>
+          </Col>
+        </Row>
+      </Col>
+      <Col span={4}>
+        <div className="icon-wrap" style={{backgroundColor: color }}>
+          {children}  
+        </div>
       </Col>
     </Row>
-    <Row>
-      <Col>
-        <Typography.Title level={2}><BalanceValue value={balance} /></Typography.Title>
-      </Col>
-    </Row>
-  </Layout.Content>
+  </Card>
 )
 
 const BalanceValue = ({value}) => {
-  if (value) {
-    const sign = value >= 0.0 ? "+" : "-";
+  if (value !== undefined) {
+    const sign = value >= 0 ? "+" : "";
     const val = new Intl.NumberFormat('en-US').format(value);
     return (<>{sign} {val}</>);
   } else {

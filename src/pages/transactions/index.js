@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 
-import { Layout, Typography } from 'antd';
-
-import TransactionTable from '../../components/TransactionTable';
+import { Col, Layout, Row, Typography } from 'antd';
+import {
+  ArrowUpOutlined,
+  BankOutlined,
+} from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions } from '../../ws/BalanceAPI';
-import Balance from '../../components/Balance';
+import TransactionsInfo from '../../components/TransactionsInfo';
 
 class Transactions extends Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      balance: 0.0,
       transactions: null
     }
   }
@@ -22,28 +23,27 @@ class Transactions extends Component {
     fetchTransactions(this.props.axios, null, (response) => {
       if (response) {
         const { data } = response;
-        const { balance, transactions } = data;
-        this.setState({ transactions, balance });
+        const { balance, incomes, expenses, transactions } = data;
+        
+        this.setState({
+          balance: balance,
+          incomes: incomes,
+          expenses: expenses,
+          transactions: transactions,
+        });
+        
       }
     });
   }
 
   render() {
     return (
-      <>
-        <Typography.Title>Transactions</Typography.Title>
-        <Balance balance={this.state.balance} />
-        <Layout.Content
-          className="site-layout-background"
-          style={{
-            borderRadius: "25px",
-            margin: '24px 16px',
-            padding: 24,
-          }}
-        >
-          <TransactionTable items={this.state.transactions} />
-        </Layout.Content>
-      </>
+      <TransactionsInfo
+        balance={this.state.balance}
+        incomes={this.state.incomes}
+        expenses={this.state.expenses}
+        transactions={this.state.transactions}
+      />
     );
   }
 }
