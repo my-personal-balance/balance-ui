@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 
-import { Col, Layout, Row, Typography } from 'antd';
-import {
-  ArrowUpOutlined,
-  BankOutlined,
-} from '@ant-design/icons';
-
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions } from '../../ws/BalanceAPI';
 import TransactionsInfo from '../../components/TransactionsInfo';
@@ -15,12 +9,16 @@ class Transactions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      transactions: null
+      transactions: null,
+      filters: {
+        periodType: "current_month"
+
+      }
     }
   }
 
   componentDidMount() {
-    fetchTransactions(this.props.axios, null, (response) => {
+    fetchTransactions(this.props.axios, this.state.filters, (response) => {
       if (response) {
         const { data } = response;
         const { balance, incomes, expenses, transactions } = data;
