@@ -2,6 +2,7 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
   Route,
 } from "react-router-dom";
 
@@ -73,16 +74,12 @@ class App extends React.Component {
           >
             <Router>
               <Switch>
-                <Route exact path="/" 
-                  render={(props) => <Dashboard {...props} />} />
-                <Route exact path="/accounts" 
-                  render={(props) => <Accounts {...props} />} />
-                <Route exact path="/accounts/:accountId" 
-                  render={(props) => <Account {...props} />} />
-                <Route exact path="/transactions" 
-                  render={(props) => <Transactions {...props} />} />
-                <Route exact path="/settings" 
-                  render={(props) => <Settings {...props} />} />
+                <Route path="/accounts/:accountId" render={(props) => <Account {...props} />} />
+                <Route path="/accounts" render={(props) => <Accounts {...props} />} />
+                <Route path="/transactions" render={(props) => <Transactions {...props} />} />
+                <Route path="/settings" render={(props) => <Settings {...props} />} />
+                <Route path="/" render={(props) => <Dashboard {...props} />} />
+                <Redirect to={{ pathname: '/' }} />
               </Switch>
             </Router>
           </Content>

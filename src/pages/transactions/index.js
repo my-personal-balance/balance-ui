@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Typography } from 'antd';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions } from '../../ws/BalanceAPI';
@@ -36,12 +37,15 @@ class Transactions extends Component {
 
   render() {
     return (
-      <TransactionsInfo
-        balance={this.state.balance}
-        incomes={this.state.incomes}
-        expenses={this.state.expenses}
-        transactions={this.state.transactions}
-      />
+      <>
+        <Typography.Title>Transactions</Typography.Title>
+        <TransactionsInfo
+          balance={this.state.balance}
+          incomes={this.state.incomes}
+          expenses={this.state.expenses}
+          transactions={this.state.transactions}
+        />
+      </>
     );
   }
 }
