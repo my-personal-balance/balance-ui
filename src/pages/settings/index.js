@@ -57,10 +57,14 @@ export default withAxios(Settings);
 const UserInfo = ({ user }) => {
   if (user) {
     return (
-      <Row>
-        <Col span={12}>Name: </Col>
-        <Col span={24}>{user.name}</Col>
-      </Row>
+      <>
+        <Row>
+          <Col>{user.name}</Col>
+        </Row>
+        <Row>
+          <Col>{user.email}</Col>
+        </Row>
+      </>
     )
   } else {
     return (<Loader />)
