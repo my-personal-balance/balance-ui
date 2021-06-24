@@ -9,7 +9,7 @@ const TransactionsComponent = (props) => (
         <Typography.Title>{props.title}</Typography.Title>  
       </Col>
     </Row>
-    <TransactionsInfo />
+    <TransactionsInfo accountId ={props.accountId} />
   </>
 );
 
