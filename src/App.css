@@ -27,9 +27,12 @@
   border-radius: 25px;
 }
 
+.account-col {
+  margin: 0px 0px 10px 10px;
+}
+
 .account-card {
   border-radius: 25px;
-  margin-bottom: 24px;
 }
 
 .icon-wrap {

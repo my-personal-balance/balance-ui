@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Link } from "react-router-dom";
-import { Col, Card, Row, Typography } from 'antd';
+import { Button, Col, Card, Row, Space, Typography } from 'antd';
 import { Form, Input, Select, Modal } from 'antd';
 import {
   EuroCircleOutlined,
@@ -32,8 +32,7 @@ class Accounts extends Component {
     }
   }
 
-  componentDidMount() {
-
+  loadAccounts () {
     fetchAccounts(this.props.axios, (response) => {
       if (response) {
         const { data } = response;
@@ -48,6 +47,9 @@ class Accounts extends Component {
         this.setState({ balance });
       }
     });
+  }
+  componentDidMount() {
+    this.loadAccounts();
   }
 
   render() {
@@ -105,7 +107,7 @@ const AccountsView = ({ axios, accounts }) => {
   };
 
   const accs = accounts.map(account => (
-    <Col span={8}>
+    <Col key={account.id} span={6} className="account-col">
       <Account account={account} />
     </Col>
   ));
@@ -113,14 +115,18 @@ const AccountsView = ({ axios, accounts }) => {
   return (
     <>
       <Row>
-        <Col span={8}>
-          <Card className="balance-card">
+        <Col span={6} className="account-col">
+          <Card className="account-card" onClick={showModal}>
+            <Row>
+              <Col>
+                <Typography.Title level={2}>New account</Typography.Title>
+              </Col>
+            </Row>
             <Row justify="center">
               <Col>
-                <Link onClick={showModal}>
-                  <PlusCircleOutlined style={{fontSize: "40px"}} />
-                  <Typography.Title level={2}>New account</Typography.Title>
-                </Link>
+                <Button type="link" style={{fontSize: "20px"}}>
+                  <PlusCircleOutlined />
+                </Button>
               </Col>
             </Row>
           </Card>
@@ -158,7 +164,7 @@ const Account = ({ account }) => (
     <Card className="account-card">
       <Row>
         <Col>
-          <Typography.Title level={2}>{account.alias}</Typography.Title>
+          <Typography.Title level={3}>{account.alias}</Typography.Title>
         </Col>
       </Row>
       <Row>
