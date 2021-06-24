@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Col, Row, Typography } from 'antd';
 
-import TransactionsInfo from '../../components/TransactionsInfo';
+import TransactionsComponent from '../../components/Transactions';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccount } from '../../ws/BalanceAPI';
@@ -32,12 +31,7 @@ class Account extends Component {
   render() {
     return (
       <>
-        <Row>
-          <Col>
-            <Typography.Title>{this.state.account.alias}</Typography.Title>  
-          </Col>
-        </Row>
-        <TransactionsInfo accountId={this.state.account.id} />
+        <TransactionsComponent title={this.state.account.alias} accountId={this.state.account.id} />
       </>
     );
   }

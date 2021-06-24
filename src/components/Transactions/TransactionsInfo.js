@@ -5,11 +5,11 @@ import {
   BankOutlined,
 } from '@ant-design/icons';
 
-import Balance from './Balance';
+import Balance from '../Balance';
 import TransactionTable from './TransactionTable';
 
-import { withAxios } from '../container/Authenticated';
-import { fetchTransactions } from '../ws/BalanceAPI';
+import { withAxios } from '../../container/Authenticated';
+import { fetchTransactions } from '../../ws/BalanceAPI';
 
 const { RangePicker } = DatePicker;
 

@@ -154,23 +154,21 @@ const AccountsView = ({ axios, accounts }) => {
 }
 
 const Account = ({ account }) => (
-  <Card className="account-card">
-    <Row>
-      <Col>
-        <Link to={`/accounts/${account.id}`}>
+  <Link to={`/accounts/${account.id}/transactions`}>
+    <Card className="account-card">
+      <Row>
+        <Col>
           <Typography.Title level={2}>{account.alias}</Typography.Title>
-        </Link>
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        <Link to={`/accounts/${account.id}`}>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Typography.Title level={5}>
             <Balance.BalanceValue value={account.balance} />
           </Typography.Title>
-        </Link>
-      </Col>
-    </Row>
-  </Card>
+        </Col>
+      </Row>
+    </Card>
+  </Link>
 );
 

@@ -1,6 +1,6 @@
 import { Col, Row, Table, Tag, Typography } from 'antd';
 
-import Loader from './Loader';
+import Loader from '../Loader';
 
 const TransactionTable = ({items}) => {
 

@@ -74,7 +74,7 @@ class App extends React.Component {
           >
             <Router>
               <Switch>
-                <Route path="/accounts/:accountId" render={(props) => <Account {...props} />} />
+                <Route path="/accounts/:accountId/transactions" render={(props) => <Account {...props} />} />
                 <Route path="/accounts" render={(props) => <Accounts {...props} />} />
                 <Route path="/transactions" render={(props) => <Transactions {...props} />} />
                 <Route path="/settings" render={(props) => <Settings {...props} />} />
