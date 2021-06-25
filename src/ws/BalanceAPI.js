@@ -31,9 +31,9 @@
 /**
  * Retrieve projects data
  */
- export function fetchAccount(axios, account_id, callback) {
+ export function fetchAccount(axios, accountId, callback) {
   axios
-    .get(`/users/1/accounts/${account_id}`)
+    .get(`/users/1/accounts/${accountId}`)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -45,7 +45,7 @@
  export function fetchTransactions(axios, filters, callback) {
   axios
     .get(`/users/1/transactions`, {
-      params: parseParameters(filters)
+      params: paramsToSnakeCase(filters)
     })
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
@@ -56,12 +56,12 @@
  */
  export function createTransaction(axios, params, callback) {
   axios
-    .post(`/users/1/transactions`, parseParameters(params))
+    .post(`/users/1/transactions`, paramsToSnakeCase(params))
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
 
-const parseParameters = (params) => {
+const paramsToSnakeCase = (params) => {
   if (params) {
     const keyValues = Object.keys(params).map(key => {
       const newKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);

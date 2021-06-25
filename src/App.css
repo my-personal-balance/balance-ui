@@ -49,3 +49,11 @@
 .transactions {
   margin: 20px 0px 0px 0px;
 }
+
+.income-value {
+  color: #51b44f;
+}
+
+.expense-value {
+  color: #e64b30;
+}

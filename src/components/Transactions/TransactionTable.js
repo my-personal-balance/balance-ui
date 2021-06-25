@@ -26,7 +26,26 @@ const TransactionTable = (props) => {
         <Tag key={record.id}>{tag ? tag.value : ''}</Tag>
       ),
     },
-    { title: "Amount", dataIndex: "amount", key: "amount", },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (amount, record) => {
+        const { transaction_type } = record;
+
+        let className = "expense-value";
+        let signal = "-";
+
+        if (transaction_type === "INCOME") {
+          className = "income-value";
+          signal = "+";
+        }
+        
+        return (
+          <span className={className}>{signal} {amount}</span>
+        );
+      }
+    },
     {
       title: "Account",
       dataIndex: "account",

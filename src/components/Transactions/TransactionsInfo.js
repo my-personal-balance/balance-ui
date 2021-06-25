@@ -80,12 +80,12 @@ class TransactionsInfo extends Component {
           </Balance>
           </Col>
           <Col span={8}>
-          <Balance title="Income" value={this.state.incomes} color="#4baf4f">
+          <Balance title="Income" value={this.state.incomes} color="#51b44f">
             <ArrowUpOutlined />
           </Balance>
           </Col>
           <Col span={8}>
-          <Balance title="Expenses" value={this.state.expenses} color="#f44235">
+          <Balance title="Expenses" value={this.state.expenses} color="#e64b30">
             <ArrowUpOutlined />
           </Balance>
           </Col>
