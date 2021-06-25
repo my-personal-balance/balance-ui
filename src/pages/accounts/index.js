@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Link } from "react-router-dom";
-import { Button, Col, Card, Row, Space, Typography } from 'antd';
+import { Button, Col, Card, Row, Typography } from 'antd';
 import { Form, Input, Select, Modal } from 'antd';
 import {
   EuroCircleOutlined,
@@ -13,15 +13,6 @@ import { fetchAccounts, createAccount } from '../../ws/BalanceAPI';
 import Balance from '../../components/Balance';
 
 const { Option } = Select;
-
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 class Accounts extends Component {
   
@@ -90,7 +81,7 @@ const AccountsView = ({ axios, accounts }) => {
       alias: formRef.current.getFieldValue('alias'),
       type: formRef.current.getFieldValue('type'),
     }, result => {
-      const { data, error} = result;
+      const { data } = result;
       if (data) {
         formRef.resetFields();
       }
@@ -141,7 +132,7 @@ const AccountsView = ({ axios, accounts }) => {
         onCancel={handleCancel}
         width={1000}
       >
-        <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish}>
+        <Form ref={formRef} name="control-ref" onFinish={onFinish}>
           <Form.Item name="alias" label="Alias" rules={[{ required: true }]}>
             <Input />
           </Form.Item>

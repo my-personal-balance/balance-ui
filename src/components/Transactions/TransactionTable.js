@@ -1,56 +1,73 @@
-import { Col, Row, Table, Tag, Typography } from 'antd';
+import React, { Component } from 'react';
+import { Button, Col, Row, Space, Table, Tag, Typography } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 
-import Loader from '../Loader';
+import AddTransaction from './AddTransaction';
 
-const TransactionTable = ({items}) => {
+const TransactionTable = (props) => {
 
-  if (items) {
-  
-    const columns = [
-      {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-      },
-      { title: 'Description', dataIndex: 'description', key: 'description', },
-      { 
-        title: "Category",
-        dataIndex: "tag",
-        key: "tag", 
-        render: (tag, record) => (
-          <Tag key={record.id}>{tag.value}</Tag>
-        ),
-      },
-      { title: "Amount", dataIndex: "amount", key: "amount", },
-      {
-        title: "Account",
-        dataIndex: "account",
-        key: "account",
-        render: account => (
-          <>{account.alias}</>
-        ),
-      },
-    ];
+  const { items, accounts } = props;
+    
+  const columns = [
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    { title: 'Description', dataIndex: 'description', key: 'description', },
+    { 
+      title: "Category",
+      dataIndex: "tag",
+      key: "tag", 
+      render: (tag, record) => (
+        <Tag key={record.id}>{tag ? tag.value : ''}</Tag>
+      ),
+    },
+    { title: "Amount", dataIndex: "amount", key: "amount", },
+    {
+      title: "Account",
+      dataIndex: "account",
+      key: "account",
+      render: account => (
+        <>{account.alias}</>
+      ),
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: () => (
+        <Space>
+          <Button type="link"><EditOutlined /></Button>
+          <Button type="link"><DeleteOutlined /></Button>
+        </Space>
+      ),
+    },
+  ];
 
-    return (
-      <>
-        <Row>
-          <Col>
-            <Typography.Title level={4}>Transactions</Typography.Title>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <Table dataSource={items} columns={columns} size="small" pagination={{defaultPageSize:50}} />
-          </Col>
-        </Row>
-      </>
-    )
-  } else {
-    return (
-      <Loader />
-    )
-  }
+  return (
+    <>
+      <Row>
+        <Col>
+          <Typography.Title level={4}>Transactions</Typography.Title>
+        </Col>
+      </Row>
+      <Row>
+        <Col offset={21}>
+          <AddTransaction accounts={accounts} />
+        </Col>
+      </Row>
+      <Row className="transactions">
+        <Col span={24}>
+          <Table rowKey="id" dataSource={items} columns={columns} size="small" pagination={{ defaultPageSize:50 }} />
+        </Col>
+      </Row>
+      
+    </>
+  );
 
 }
 

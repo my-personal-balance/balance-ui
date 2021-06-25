@@ -7,9 +7,10 @@ import {
 
 import Balance from '../Balance';
 import TransactionTable from './TransactionTable';
+import Loader from '../Loader';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchTransactions } from '../../ws/BalanceAPI';
+import { fetchAccounts, fetchTransactions } from '../../ws/BalanceAPI';
 
 const { RangePicker } = DatePicker;
 
@@ -31,21 +32,22 @@ class TransactionsInfo extends Component {
 
   updateTransactionsRange() {
     fetchTransactions(this.props.axios, this.state.filters, response => {
-      if (response) {
-        const { data } = response;
+      const { data } = response;
+      if (data) {
         const { balance, incomes, expenses, transactions } = data;
-        this.setState({
-          balance: balance,
-          incomes: incomes,
-          expenses: expenses,
-          transactions: transactions,
-        });
+        this.setState({ balance, incomes, expenses, transactions,});
       }
     });
   }
 
   componentDidMount() {
-    this.updateTransactionsRange();
+    fetchAccounts(this.props.axios, response => {
+      const { data } = response;
+      if (data) {
+        this.setState({ accounts: data.accounts });
+        this.updateTransactionsRange();
+      }
+    });
   }
 
   handleRangePickerChange(values, stringDates) {
@@ -90,15 +92,17 @@ class TransactionsInfo extends Component {
         </Row>
         <Row className="transactions">
           <Col span={24}>
-          <Layout.Content
-            className="site-layout-background"
-            style={{
-            borderRadius: "25px",
-            padding: 24,
-            }}
-          >
-            <TransactionTable items={this.state.transactions} />
-          </Layout.Content>
+            <Layout.Content
+              className="site-layout-background"
+              style={{
+              borderRadius: "25px",
+              padding: 24,
+              }}
+            >
+              {this.state.transactions && this.state.accounts ?
+                <TransactionTable items={this.state.transactions} accounts={this.state.accounts} />
+              : <Loader /> }
+            </Layout.Content>
           </Col>
         </Row>
       </>

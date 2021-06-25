@@ -51,6 +51,16 @@
     .catch((err) => callback({ error: err }));
 }
 
+/**
+ * Retrieve user info
+ */
+ export function createTransaction(axios, params, callback) {
+  axios
+    .post(`/users/1/transactions`, parseParameters(params))
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
 const parseParameters = (params) => {
   if (params) {
     const keyValues = Object.keys(params).map(key => {
