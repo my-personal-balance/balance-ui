@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
-import { Col, DatePicker, Row, Typography } from 'antd';
-import { render } from '@testing-library/react';
+import { Col, DatePicker, Layout, Row, Typography } from 'antd';
+
+import TransactionTable from '../../components/Transactions/TransactionTable';
+import Loader from '../../components/Loader';
+import Balance from '../../components/Balance';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccounts, fetchTransactions } from '../../ws/BalanceAPI';
@@ -15,7 +18,7 @@ class Insights extends Component {
       accounts: [],
       filters: {
         accountId: null,
-        periodType: "current_month",
+        periodType: null,
         startDate: null,
         endDate: null,
       }
@@ -23,7 +26,13 @@ class Insights extends Component {
   }
 
   updateTransactionsRange() {
-
+    fetchTransactions(this.props.axios, this.state.filters, response => {
+      const { data } = response;
+      if (data) {
+        const { balance, incomes, expenses, transactions } = data;
+        this.setState({ balance, incomes, expenses, transactions });
+      }
+    });
   }
   
   componentDidMount() {
@@ -61,6 +70,26 @@ class Insights extends Component {
         <Row>
           <Col offset={20}>
             <RangePicker bordered={false} onChange={(x, y) => this.handleRangePickerChange(x, y)} onOpenChange={(x) => this.onOpenChange(x)} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Balance balance={this.state.balance} incomes={this.state.incomes} expenses={this.state.expenses} />
+          </Col>
+        </Row>
+        <Row className="transactions">
+          <Col span={24}>
+            <Layout.Content
+              className="site-layout-background"
+              style={{
+              borderRadius: "25px",
+              padding: 24,
+              }}
+            >
+              {this.state.transactions && this.state.accounts ?
+                <TransactionTable items={this.state.transactions} accounts={this.state.accounts} />
+              : <Loader /> }
+            </Layout.Content>
           </Col>
         </Row>
       </>

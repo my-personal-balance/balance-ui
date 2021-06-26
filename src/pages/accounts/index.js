@@ -98,32 +98,14 @@ const AccountsView = ({ axios, accounts }) => {
     console.log(values);
   };
 
-  const accs = accounts.map(account => (
-    <Col key={account.id} span={6} className="account-col">
-      <Account account={account} />
-    </Col>
-  ));
-
   return (
     <>
       <Row>
-        <Col span={6} className="account-col">
-          <Card className="account-card" onClick={showModal}>
-            <Row>
-              <Col>
-                <Typography.Title level={2}>New account</Typography.Title>
-              </Col>
-            </Row>
-            <Row justify="center">
-              <Col>
-                <Button type="link" style={{fontSize: "20px"}}>
-                  <PlusCircleOutlined />
-                </Button>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        {accs}
+        {accounts.map(account => (
+          <Col key={account.id} span={16} className="account-col">
+            <Account account={account} />
+          </Col>
+        ))}
       </Row>
       
       <Modal
@@ -155,12 +137,10 @@ const Account = ({ account }) => (
   <Link to={`/accounts/${account.id}/transactions`}>
     <Card className="account-card">
       <Row>
-        <Col>
+        <Col span={12}>
           <Typography.Title level={3}>{account.alias}</Typography.Title>
         </Col>
-      </Row>
-      <Row>
-        <Col>
+        <Col offset={6}>
           <Typography.Title level={5}>
             <BalanceCard.BalanceValue value={account.balance} />
           </Typography.Title>

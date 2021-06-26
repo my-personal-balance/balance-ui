@@ -16,6 +16,7 @@ const TransactionTable = (props) => {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      render: d => new Date(d).toLocaleDateString()
     },
     { title: 'Description', dataIndex: 'description', key: 'description', },
     { 
