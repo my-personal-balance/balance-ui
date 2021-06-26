@@ -47,7 +47,6 @@ class TransactionsInfo extends Component {
   }
 
   handleRangePickerChange(values, stringDates) {
-    console.log(stringDates);
     const filters = this.state.filters;
     filters.periodType = "custom";
     filters.startDate = stringDates[0];
