@@ -1,8 +1,8 @@
 import { Card, Col, Row, Typography } from 'antd';
 
-import Loader from './Loader';
+import Loader from '../Loader';
 
-const Balance = ({title, value, children, color}) => (
+const BalanceCard = ({title, value, children, color}) => (
   <Card className="balance-card">
     <Row>
       <Col span={20}>
@@ -36,5 +36,5 @@ const BalanceValue = ({value}) => {
   }
 }
 
-Balance.BalanceValue = BalanceValue;
-export default Balance;
+BalanceCard.BalanceValue = BalanceValue;
+export default BalanceCard;
