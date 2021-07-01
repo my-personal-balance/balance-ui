@@ -11,8 +11,10 @@ import { withAxios } from '../../container/Authenticated';
 
 const { Option } = Select;
 
-const UploadTransactions = ({ axios, accounts, refresh }) => {
+const UploadTransactions = (props) => {
   
+  const { axios, accountId, accounts, refresh } = props;
+
   let fileToBeUploaded = null;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -63,7 +65,7 @@ const UploadTransactions = ({ axios, accounts, refresh }) => {
     });
   };
 
-  const props = {
+  const uploadProps = {
     name: 'file',
     multiple: false,
     action: 'https://lalalala',
@@ -97,13 +99,13 @@ const UploadTransactions = ({ axios, accounts, refresh }) => {
         <Form ref={formRef} name="control-ref">
           
           <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
-            <Select placeholder="" allowClear>
+            <Select defaultValue={accountId}>
               {accounts.map(account => (
                 <Option key={account.id}>{account.alias}</Option>
               ))}
             </Select>
           </Form.Item>
-          <Upload {...props}>
+          <Upload {...uploadProps}>
             <Button icon={<UploadOutlined />}>Select File</Button>
           </Upload>
         </Form>

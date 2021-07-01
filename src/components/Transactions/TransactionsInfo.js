@@ -86,6 +86,7 @@ class TransactionsInfo extends Component {
                 <TransactionTable
                   axios={this.props.axios}
                   items={this.state.transactions}
+                  accountId={this.props.accountId}
                   accounts={this.state.accounts}
                   refresh={() => this.updateTransactionsRange()}
                 />

@@ -12,7 +12,7 @@ import { deleteTransaction } from '../../ws/BalanceAPI';
 
 const TransactionTable = (props) => {
 
-  const { axios, items, accounts, refresh } = props;
+  const { axios, items, accountId, accounts, refresh } = props;
 
   const delTransactionItem = (transactionId) => {
     
@@ -117,7 +117,7 @@ const TransactionTable = (props) => {
         <Col offset={20}>
           <Space>
             <AddTransaction accounts={accounts} refresh={refresh} />
-            <UploadTransactions axios={props.axios} accounts={accounts} refresh={refresh} />
+            <UploadTransactions axios={props.axios} accountId={accountId} accounts={accounts} refresh={refresh} />
           </Space>
         </Col>
       </Row>
