@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, notification, Popconfirm, Row, Space, Table, Tag, Typography } from 'antd';
+import { Button, Col, Popconfirm, Row, Space, Table, Tag, Typography } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -9,14 +9,16 @@ import AddTransaction from './AddTransaction';
 import UploadTransactions from './UploadTransactions';
 
 import { deleteTransaction } from '../../ws/BalanceAPI';
+import { withAxios } from '../../container/Authenticated';
+import { openNotificationWithIcon } from '../../utils/constants';
 
 const TransactionTable = (props) => {
 
-  const { axios, items, accountId, accounts, refresh } = props;
+  const { items, accountId, accounts, refresh } = props;
 
   const delTransactionItem = (transactionId) => {
     
-    deleteTransaction(axios, transactionId, result => {
+    deleteTransaction(props.axios, transactionId, result => {
       const { error, data } = result;
       
       if (error) {
@@ -28,7 +30,6 @@ const TransactionTable = (props) => {
       }
 
       if (data) {
-        // setIsModalVisible(false);
         openNotificationWithIcon(
           'success',
           "Transaction deleted",
@@ -38,13 +39,6 @@ const TransactionTable = (props) => {
       }
     })
     
-  };
-
-  const openNotificationWithIcon = (type, message, description) => {
-    notification[type]({
-      message: message,
-      description: description,
-    });
   };
 
   const columns = [
@@ -116,8 +110,16 @@ const TransactionTable = (props) => {
       <Row>
         <Col offset={20}>
           <Space>
-            <AddTransaction accounts={accounts} refresh={refresh} />
-            <UploadTransactions axios={props.axios} accountId={accountId} accounts={accounts} refresh={refresh} />
+            <AddTransaction
+              accountId={accountId}
+              accounts={accounts}
+              refresh={refresh}
+            />
+            <UploadTransactions
+              accountId={accountId}
+              accounts={accounts}
+              refresh={refresh}
+            />
           </Space>
         </Col>
       </Row>
@@ -132,4 +134,4 @@ const TransactionTable = (props) => {
 
 }
 
-export default TransactionTable;
+export default withAxios(TransactionTable);

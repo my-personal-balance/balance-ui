@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Button, Col, notification, Row, Tooltip, Upload } from 'antd';
+import { Button, Col, Row, Tooltip, Upload } from 'antd';
 import { Form, Select, Modal } from 'antd';
 import {
   UploadOutlined,
@@ -8,12 +8,13 @@ import {
 
 import { uploadTransactions } from '../../ws/BalanceAPI';
 import { withAxios } from '../../container/Authenticated';
+import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;
 
 const UploadTransactions = (props) => {
   
-  const { axios, accountId, accounts, refresh } = props;
+  const { accountId, accounts, refresh } = props;
 
   let fileToBeUploaded = null;
 
@@ -30,7 +31,7 @@ const UploadTransactions = (props) => {
     formData.append("file", fileToBeUploaded);
     formData.append("account_id", formRef.current.getFieldValue('accountId'));
 
-    uploadTransactions(axios, formData, result => {
+    uploadTransactions(props.axios, formData, result => {
       const { error, data } = result;
       
       if (error) {
@@ -58,13 +59,6 @@ const UploadTransactions = (props) => {
     setIsModalVisible(false);
   };
 
-  const openNotificationWithIcon = (type, message, description) => {
-    notification[type]({
-      message: message,
-      description: description,
-    });
-  };
-
   const uploadProps = {
     name: 'file',
     multiple: false,
@@ -74,7 +68,6 @@ const UploadTransactions = (props) => {
       return false;
     },
   };
-
 
   return (
     <>
@@ -96,7 +89,7 @@ const UploadTransactions = (props) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form ref={formRef} name="control-ref">
+        <Form {...formItemLayout} ref={formRef} initialValues={{accountId: accountId}} name="control-ref">
           
           <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
             <Select defaultValue={accountId}>

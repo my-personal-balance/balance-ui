@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, InputNumber, notification, Select, Modal } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
 import { createTransaction } from '../../ws/BalanceAPI';
+import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;
 
 const AddTransaction = props => {
 
-  const { accounts, refresh } = props;
+  const { accountId, accounts, refresh } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const formRef = React.createRef();
+  const [formRef] = Form.useForm();
   
   const showModal = () => {
     setIsModalVisible(true);
@@ -40,6 +41,7 @@ const AddTransaction = props => {
 
       if (data) {
         setIsModalVisible(false);
+        formRef.resetFields();
         openNotificationWithIcon(
           'success',
           "Transaction added",
@@ -53,24 +55,7 @@ const AddTransaction = props => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  };
-
-  const openNotificationWithIcon = (type, message, description) => {
-    notification[type]({
-      message: message,
-      description: description,
-    });
-  };
-
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
+    formRef.resetFields();
   };
 
   return (
@@ -82,7 +67,7 @@ const AddTransaction = props => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form {...formItemLayout} ref={formRef} name="control-ref">
+        <Form {...formItemLayout} ref={formRef} initialValues={{accountId: accountId}} name="control-ref">
           <Form.Item name="type" label="Type" rules={[{ required: true }]}>
             <Select placeholder="" allowClear>
               <Option value="EXPENSE">Expense</Option>
@@ -105,7 +90,7 @@ const AddTransaction = props => {
             <DatePicker />
           </Form.Item>
           <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
-            <Select placeholder="" allowClear>
+            <Select>
               {accounts.map(account => (
                 <Option key={account.id}>{account.alias}</Option>
               ))}

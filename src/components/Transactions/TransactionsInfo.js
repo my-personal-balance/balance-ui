@@ -84,7 +84,6 @@ class TransactionsInfo extends Component {
             >
               {this.state.transactions && this.state.accounts ?
                 <TransactionTable
-                  axios={this.props.axios}
                   items={this.state.transactions}
                   accountId={this.props.accountId}
                   accounts={this.state.accounts}

@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 
 import { createAccount } from '../../ws/BalanceAPI';
+import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;
 
@@ -23,13 +24,26 @@ const AddAccountButton = ({axios, refresh}) => {
       alias: formRef.current.getFieldValue('alias'),
       type: formRef.current.getFieldValue('type'),
     }, result => {
-      const { data } = result;
+      const { error, data } = result;
+      
+      if (error) {
+        openNotificationWithIcon(
+          'error',
+          "Failed to add account",
+          "There was an error while adding a new account."
+        );
+      }
+
       if (data) {
-        formRef.resetFields();
+        setIsModalVisible(false);
+        openNotificationWithIcon(
+          'success',
+          "Account added",
+          "Your account was added successfuly."
+        );
         refresh();
       }
-    })
-    setIsModalVisible(false);
+    });
   };
 
   const handleCancel = () => {
@@ -53,9 +67,8 @@ const AddAccountButton = ({axios, refresh}) => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={1000}
       >
-        <Form ref={formRef} name="control-ref" onFinish={onFinish}>
+        <Form {...formItemLayout} ref={formRef} name="control-ref" onFinish={onFinish}>
           <Form.Item name="alias" label="Alias" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
