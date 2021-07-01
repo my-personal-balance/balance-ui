@@ -1,7 +1,7 @@
 /**
  * Retrieve user info
  */
- export function fetchUser(axios, callback) {
+export function fetchUser(axios, callback) {
   axios
     .get(`/users`)
     .then((res) => callback({ data: res.data }))
@@ -11,7 +11,7 @@
 /**
  * Retrieve projects data
  */
- export function fetchAccounts(axios, callback) {
+export function fetchAccounts(axios, callback) {
   axios
     .get(`/users/1/accounts`)
     .then((res) => callback({ data: res.data }))
@@ -21,7 +21,7 @@
 /**
  * Retrieve projects data
  */
- export function createAccount(axios, data, callback) {
+export function createAccount(axios, data, callback) {
   axios
     .post(`/users/1/accounts`, data)
     .then((res) => callback({ data: res.data }))
@@ -31,7 +31,7 @@
 /**
  * Retrieve projects data
  */
- export function fetchAccount(axios, accountId, callback) {
+export function fetchAccount(axios, accountId, callback) {
   axios
     .get(`/users/1/accounts/${accountId}`)
     .then((res) => callback({ data: res.data }))
@@ -40,9 +40,16 @@
 
 
 /**
- * Retrieve projects data
+ * Transactions
  */
- export function fetchTransactions(axios, filters, callback) {
+export function createTransaction(axios, params, callback) {
+  axios
+    .post(`/users/1/transactions`, paramsToSnakeCase(params))
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
+export function fetchTransactions(axios, filters, callback) {
   axios
     .get(`/users/1/transactions`, {
       params: paramsToSnakeCase(filters)
@@ -51,12 +58,16 @@
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve user info
- */
- export function createTransaction(axios, params, callback) {
+export function deleteTransaction(axios, transactionId, callback) {
   axios
-    .post(`/users/1/transactions`, paramsToSnakeCase(params))
+    .delete(`/users/1/transactions/${transactionId}`)
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
+export function uploadTransactions(axios, formData, callback) {
+  axios
+    .post(`/users/1/upload`, formData)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }

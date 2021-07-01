@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, InputNumber, Select, Modal } from 'antd';
+import { Button, DatePicker, Form, Input, InputNumber, notification, Select, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchAccounts, createTransaction } from '../../ws/BalanceAPI';
+import { createTransaction } from '../../ws/BalanceAPI';
 
 const { Option } = Select;
 
 const AddTransaction = props => {
 
-  const { accounts } = props;
+  const { accounts, refresh } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const formRef = React.createRef();
@@ -28,20 +28,38 @@ const AddTransaction = props => {
         id: formRef.current.getFieldValue('accountId'),
       }
     }, result => {
-      const { data } = result;
-      if (data) {
-        formRef.resetFields();
+      const { error, data } = result;
+      
+      if (error) {
+        openNotificationWithIcon(
+          'error',
+          "Failed to add transaction",
+          "There was an error while adding your transaction."
+        );
       }
+
+      if (data) {
+        setIsModalVisible(false);
+        openNotificationWithIcon(
+          'success',
+          "Transaction added",
+          "Your transaction was added successfuly."
+        );
+        refresh();
+      }
+      
     })
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  const onFinish = (values) => {
-    console.log(values);
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
+    });
   };
 
   const formItemLayout = {
@@ -64,7 +82,7 @@ const AddTransaction = props => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form {...formItemLayout} ref={formRef} name="control-ref" onFinish={onFinish}>
+        <Form {...formItemLayout} ref={formRef} name="control-ref">
           <Form.Item name="type" label="Type" rules={[{ required: true }]}>
             <Select placeholder="" allowClear>
               <Option value="EXPENSE">Expense</Option>

@@ -83,7 +83,12 @@ class TransactionsInfo extends Component {
               }}
             >
               {this.state.transactions && this.state.accounts ?
-                <TransactionTable items={this.state.transactions} accounts={this.state.accounts} />
+                <TransactionTable
+                  axios={this.props.axios}
+                  items={this.state.transactions}
+                  accounts={this.state.accounts}
+                  refresh={() => this.updateTransactionsRange()}
+                />
               : <Loader /> }
             </Layout.Content>
           </Col>

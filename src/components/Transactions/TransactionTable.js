@@ -1,16 +1,52 @@
-import React, { Component } from 'react';
-import { Button, Col, Row, Space, Table, Tag, Typography } from 'antd';
+import React from 'react';
+import { Button, Col, notification, Popconfirm, Row, Space, Table, Tag, Typography } from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 
 import AddTransaction from './AddTransaction';
+import UploadTransactions from './UploadTransactions';
+
+import { deleteTransaction } from '../../ws/BalanceAPI';
 
 const TransactionTable = (props) => {
 
-  const { items, accounts } = props;
+  const { axios, items, accounts, refresh } = props;
+
+  const delTransactionItem = (transactionId) => {
     
+    deleteTransaction(axios, transactionId, result => {
+      const { error, data } = result;
+      
+      if (error) {
+        openNotificationWithIcon(
+          'error',
+          "Failed to delete transaction",
+          "There was an error while removing this transaction."
+        );
+      }
+
+      if (data) {
+        // setIsModalVisible(false);
+        openNotificationWithIcon(
+          'success',
+          "Transaction deleted",
+          "Your transaction wwas deleted successfuly"
+        );
+        refresh();
+      }
+    })
+    
+  };
+
+  const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+      message: message,
+      description: description,
+    });
+  };
+
   const columns = [
     {
       title: 'Date',
@@ -59,10 +95,12 @@ const TransactionTable = (props) => {
       title: 'Action',
       dataIndex: '',
       key: 'x',
-      render: () => (
+      render: (x, record) => (
         <Space>
           <Button type="link"><EditOutlined /></Button>
-          <Button type="link"><DeleteOutlined /></Button>
+          <Popconfirm title="Delete this transaction?" okText="Yes" cancelText="No" onConfirm={() => delTransactionItem(record.id)}>
+            <Button type="link"><DeleteOutlined /></Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -76,8 +114,11 @@ const TransactionTable = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col offset={21}>
-          <AddTransaction accounts={accounts} />
+        <Col offset={20}>
+          <Space>
+            <AddTransaction accounts={accounts} refresh={refresh} />
+            <UploadTransactions axios={props.axios} accounts={accounts} refresh={refresh} />
+          </Space>
         </Col>
       </Row>
       <Row className="transactions">
