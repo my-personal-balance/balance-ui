@@ -19,14 +19,20 @@ const UploadTransactions = (props) => {
   let fileToBeUploaded = null;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [modalText, setModalText] = useState('');
   const formRef = React.createRef();
 
   const showModal = () => {
+    setModalText('');
+    setConfirmLoading(false);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
     
+    setModalText('Uploading file... Please wait.');
+    setConfirmLoading(true);
     const formData = new FormData();
     formData.append("file", fileToBeUploaded);
     formData.append("account_id", formRef.current.getFieldValue('accountId'));
@@ -72,7 +78,7 @@ const UploadTransactions = (props) => {
   return (
     <>
       <Row>
-        <Col offset={23}>
+        <Col>
           <Tooltip placement="topLeft" title="Upload transactions">
             <Button
               shape="circle"
@@ -88,6 +94,7 @@ const UploadTransactions = (props) => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        confirmLoading={confirmLoading}
       >
         <Form {...formItemLayout} ref={formRef} initialValues={{accountId: accountId}} name="control-ref">
           
@@ -101,6 +108,7 @@ const UploadTransactions = (props) => {
           <Upload {...uploadProps}>
             <Button icon={<UploadOutlined />}>Select File</Button>
           </Upload>
+          <Row><Col>{modalText}</Col></Row>
         </Form>
       </Modal>
     </>

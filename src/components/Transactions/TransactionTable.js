@@ -108,7 +108,7 @@ const TransactionTable = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col offset={20}>
+        <Col offset={22}>
           <Space>
             <AddTransaction
               accountId={accountId}

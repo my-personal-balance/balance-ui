@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, InputNumber, Select, Modal } from 'antd';
+import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
@@ -8,12 +8,12 @@ import { formItemLayout, openNotificationWithIcon } from '../../utils/constants'
 
 const { Option } = Select;
 
-const AddTransaction = props => {
+const AddTransaction = (props) => {
 
   const { accountId, accounts, refresh } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [formRef] = Form.useForm();
+  const formRef = React.createRef();
   
   const showModal = () => {
     setIsModalVisible(true);
@@ -41,7 +41,6 @@ const AddTransaction = props => {
 
       if (data) {
         setIsModalVisible(false);
-        formRef.resetFields();
         openNotificationWithIcon(
           'success',
           "Transaction added",
@@ -55,12 +54,22 @@ const AddTransaction = props => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    formRef.resetFields();
   };
 
   return (
     <>
-      <Button type="primary" shape="round" icon={<PlusOutlined />} onClick={showModal} >Add Transaction</Button>
+      <Row>
+        <Col>
+          <Tooltip placement="topLeft" title="Add single transaction">
+            <Button
+              shape="circle"
+              size="large"
+              icon={<PlusOutlined />}
+              onClick={() => showModal()}
+            />
+          </Tooltip>
+        </Col>
+      </Row>
       <Modal
         title="New transaction"
         visible={isModalVisible}

@@ -51,13 +51,13 @@ class Accounts extends Component {
         </Row>
         <Row>
           <Col>
-            <AddAccountButton axios={this.props.axios} refresh={() => this.loadAccounts()}/>
+            <AddAccountButton refresh={() => this.loadAccounts()}/>
           </Col>
         </Row>
         <Row>
           <Col span={16}>
             <Row>
-              <AccountsView axios={this.props.axios} accounts={this.state.accounts} />
+              <AccountsView accounts={this.state.accounts} />
             </Row>
           </Col>
           <Col span={6} offset={2}>
@@ -73,19 +73,17 @@ class Accounts extends Component {
 
 export default withAxios(Accounts);
 
-const AccountsView = ({ axios, accounts }) => {
-  return (
-    <>
-      <Row>
-        {accounts.map(account => (
-          <Col key={account.id} span={16} className="account-col">
-            <Account account={account} />
-          </Col>
-        ))}
-      </Row>
-    </>
-  );
-}
+const AccountsView = ({ accounts }) => (
+  <>
+    <Row>
+      {accounts.map(account => (
+        <Col key={account.id} span={16} className="account-col">
+          <Account account={account} />
+        </Col>
+      ))}
+    </Row>
+  </>
+);
 
 const Account = ({ account }) => (
   <Link to={`/accounts/${account.id}/transactions`}>

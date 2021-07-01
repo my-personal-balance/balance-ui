@@ -7,10 +7,13 @@ import {
 
 import { createAccount } from '../../ws/BalanceAPI';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
+import { withAxios } from '../../container/Authenticated';
 
 const { Option } = Select;
 
-const AddAccountButton = ({axios, refresh}) => {
+const AddAccountButton = (props) => {
+
+  const { refresh } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const formRef = React.createRef();
@@ -20,7 +23,7 @@ const AddAccountButton = ({axios, refresh}) => {
   };
 
   const handleOk = () => {
-    createAccount(axios, {
+    createAccount(props.axios, {
       alias: formRef.current.getFieldValue('alias'),
       type: formRef.current.getFieldValue('type'),
     }, result => {
@@ -86,4 +89,4 @@ const AddAccountButton = ({axios, refresh}) => {
   );
 }
 
-export default AddAccountButton;
+export default withAxios(AddAccountButton);
