@@ -20,7 +20,7 @@ const Balance = ({ balance, incomes, expenses }) => {
         </BalanceCard>
       </Col>
       <Col span={8}>
-        <BalanceCard title="Expenses" value={expenses} color="#e64b30">
+        <BalanceCard title="Expense" value={expenses} color="#e64b30">
           <ArrowUpOutlined />
         </BalanceCard>
       </Col>

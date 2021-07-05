@@ -54,7 +54,7 @@ class Accounts extends Component {
             <AddAccountButton refresh={() => this.loadAccounts()}/>
           </Col>
         </Row>
-        <Row>
+        <Row className="transactions">
           <Col span={16}>
             <Row>
               <AccountsView accounts={this.state.accounts} />

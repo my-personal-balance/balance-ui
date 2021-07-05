@@ -41,21 +41,27 @@ const UploadTransactions = (props) => {
       const { error, data } = result;
       
       if (error) {
+        setConfirmLoading(false);
+        setModalText('');
         openNotificationWithIcon(
           'error',
           "Failed to upload transactions",
           "There was an error while uploading you file. Please check your file and try again."
         );
+        
       }
 
       if (data) {
         setIsModalVisible(false);
+        setConfirmLoading(false);
+        setModalText('');
         openNotificationWithIcon(
           'success',
           "Upload completed",
           "Your transactions were uploaded successfuly"
         );
         refresh();
+        
       }
     })
     

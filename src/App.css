@@ -50,6 +50,10 @@
   margin: 20px 0px 0px 0px;
 }
 
+.balance-value {
+  color: #2194f2;
+}
+
 .income-value {
   color: #51b44f;
 }

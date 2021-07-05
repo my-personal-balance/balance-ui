@@ -3,7 +3,7 @@ import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, 
 import { PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
-import { createTransaction } from '../../ws/BalanceAPI';
+import { createTransaction, searchAssets } from '../../ws/BalanceAPI';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;
@@ -20,6 +20,7 @@ const AddTransaction = (props) => {
   };
 
   const handleOk = () => {
+    debugger;
     createTransaction(props.axios, {
       transactionType: formRef.current.getFieldValue('type'),
       description: formRef.current.getFieldValue('description'),
@@ -27,6 +28,9 @@ const AddTransaction = (props) => {
       date: formRef.current.getFieldValue('date'),
       account: {
         id: formRef.current.getFieldValue('accountId'),
+      },
+      asset: {
+        isin: formRef.current.getFieldInstance('isin').state.value,
       }
     }, result => {
       const { error, data } = result;
@@ -78,12 +82,12 @@ const AddTransaction = (props) => {
       >
         <Form {...formItemLayout} ref={formRef} initialValues={{accountId: accountId}} name="control-ref">
           <Form.Item name="type" label="Type" rules={[{ required: true }]}>
-            <Select placeholder="" allowClear>
+            <Select>
               <Option value="EXPENSE">Expense</Option>
               <Option value="INCOME">Income</Option>
-              {/* <Option value="TRANSFER">Transfer</Option>
+              <Option value="TRANSFER">Transfer</Option>
               <Option value="REFUND">Refund</Option>
-              <Option value="INVESTMENT">Investment</Option> */}
+              <Option value="INVESTMENT">Investment</Option>
             </Select>
           </Form.Item>
           <Form.Item name="description" label="Description" rules={[{ required: true }]}>
@@ -105,7 +109,9 @@ const AddTransaction = (props) => {
               ))}
             </Select>
           </Form.Item>
-          
+          <Form.Item name="isin" label="Asset">
+            <AssetInformation axios={props.axios} />
+          </Form.Item>
         </Form>
       </Modal>
     </>
@@ -113,3 +119,46 @@ const AddTransaction = (props) => {
 }
 
 export default withAxios(AddTransaction);
+
+class AssetInformation extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      assets: []
+    }
+  }
+
+  handleSearch = (keywords) => {
+    if (keywords) {
+      searchAssets(this.props.axios, {keywords: keywords}, result => {
+        const { error, data } = result;
+        if (data) {
+          this.setState({assets: data.assets});
+        }
+      });
+    }
+  }
+
+  handleChange = value => {
+    this.setState({ value });
+  };
+
+  render() {
+    const options = this.state.assets.map(asset => <Option key={asset.isin}>{asset.description}</Option>);
+    return (
+      <Select
+        showSearch
+        placeholder="Type to find an asset"
+        defaultActiveFirstOption={false}
+        showArrow={false}
+        filterOption={false}
+        onSearch={this.handleSearch}
+        onChange={this.handleChange}
+        notFoundContent={null}
+      >
+        {options}
+      </Select>
+    )
+  }
+}
