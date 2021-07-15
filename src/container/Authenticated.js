@@ -8,14 +8,13 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import Login from '../pages/login';
 import { LoginRedirect } from '../pages/auth/complete/';
 
-const API_HOST = "http://localhost:5000";
-const AUTHORIZATION_ENDPOINT = `${API_HOST}/oauth2/token`;
+const AUTHORIZATION_ENDPOINT = `${window.env.REACT_APP_API_BASE_URL}/oauth2/token`;
 
 const ACCESS_TOKEN_KEY = 'access-token';
 const STATE_KEY = 'oauth2-state';
 
 const AUTHORIZATION_QUERY_PARAMETERS = {
-  redirect_uri: "http://localhost:3000/auth/complete/",
+  redirect_uri: window.env.REACT_APP_REDIRECT_URI,
 };
 
 const AuthenticatedContext = React.createContext(null);
@@ -67,7 +66,7 @@ class AuthenticatedComponent extends Component {
 
   createAxiosClient = () => {
     const instance = axios.create({
-      baseURL: API_HOST,
+      baseURL: window.env.REACT_APP_API_BASE_URL,
       paramsSerializer: (params) =>
         qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true }),
     });
