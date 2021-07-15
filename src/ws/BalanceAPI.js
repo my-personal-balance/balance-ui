@@ -1,3 +1,10 @@
+export function signin(axios, uri, params, callback) {
+  axios
+    .post(uri, paramsToSnakeCase(params))
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
 /**
  * Retrieve user info
  */
@@ -13,7 +20,7 @@ export function fetchUser(axios, callback) {
  */
 export function fetchAccounts(axios, callback) {
   axios
-    .get(`/users/1/accounts`)
+    .get(`/accounts`)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -23,7 +30,7 @@ export function fetchAccounts(axios, callback) {
  */
 export function createAccount(axios, data, callback) {
   axios
-    .post(`/users/1/accounts`, data)
+    .post(`/accounts`, data)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -33,7 +40,7 @@ export function createAccount(axios, data, callback) {
  */
 export function fetchAccount(axios, accountId, callback) {
   axios
-    .get(`/users/1/accounts/${accountId}`)
+    .get(`/accounts/${accountId}`)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -44,14 +51,14 @@ export function fetchAccount(axios, accountId, callback) {
  */
 export function createTransaction(axios, params, callback) {
   axios
-    .post(`/users/1/transactions`, paramsToSnakeCase(params))
+    .post(`/transactions`, paramsToSnakeCase(params))
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
 
 export function fetchTransactions(axios, filters, callback) {
   axios
-    .get(`/users/1/transactions`, {
+    .get(`/transactions`, {
       params: paramsToSnakeCase(filters)
     })
     .then((res) => callback({ data: res.data }))
@@ -60,14 +67,14 @@ export function fetchTransactions(axios, filters, callback) {
 
 export function deleteTransaction(axios, transactionId, callback) {
   axios
-    .delete(`/users/1/transactions/${transactionId}`)
+    .delete(`/transactions/${transactionId}`)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
 
 export function uploadTransactions(axios, formData, callback) {
   axios
-    .post(`/users/1/upload`, formData)
+    .post(`/upload`, formData)
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }

@@ -87,7 +87,7 @@ const AccountsView = ({ accounts }) => (
 
 const Account = ({ account }) => (
   <Link to={`/accounts/${account.id}/transactions`}>
-    <Card className="account-card">
+    <Card className="balance-card">
       <Row>
         <Col span={12}>
           <Typography.Title level={3}>{account.alias}</Typography.Title>

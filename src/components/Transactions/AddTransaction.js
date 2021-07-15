@@ -20,7 +20,6 @@ const AddTransaction = (props) => {
   };
 
   const handleOk = () => {
-    debugger;
     createTransaction(props.axios, {
       transactionType: formRef.current.getFieldValue('type'),
       description: formRef.current.getFieldValue('description'),
