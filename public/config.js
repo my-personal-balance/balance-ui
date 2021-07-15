@@ -11,10 +11,10 @@
 // this means we'll end up importing it twice during production. the second time
 // we'd overwrite it, if we didn't check whether window.env is already defined.
 if (typeof window.env === 'undefined') {
-    window.env = {
-      // This option can be retrieved in "src/index.js" with "window.env.API_URL".
-      REACT_APP_REDIRECT_URI: 'http://localhost:3000/auth/complete/',
-      REACT_APP_API_BASE_URL: 'https://localhost:5000',
-      REACT_APP_ENVIRONMENT: 'local',
-    };
-  }
+  window.env = {
+    // This option can be retrieved in "src/index.js" with "window.env.API_URL".
+    REACT_APP_REDIRECT_URI: 'http://localhost:3000/auth/complete/',
+    REACT_APP_API_BASE_URL: 'http://localhost:5000',
+    REACT_APP_ENVIRONMENT: 'local',
+  };
+}
