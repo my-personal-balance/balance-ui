@@ -14,15 +14,10 @@ class TransactionsInfo extends Component {
 
   constructor(props) {
     super(props);
-    const { accountId } = this.props;
+    const { filters } = this.props;
     this.state = {
       transactions: null,
-      filters: {
-        accountId: accountId,
-        periodType: "current_month",
-        startDate: null,
-        endDate: null,
-      },
+      filters: filters,
     }
   }
 
@@ -75,17 +70,11 @@ class TransactionsInfo extends Component {
         </Row>
         <Row className="transactions">
           <Col span={24}>
-            <Layout.Content
-              className="site-layout-background"
-              style={{
-              borderRadius: "25px",
-              padding: 24,
-              }}
-            >
+            <Layout.Content className="site-layout-background">
               {this.state.transactions && this.state.accounts ?
                 <TransactionTable
                   items={this.state.transactions}
-                  accountId={this.props.accountId}
+                  accountId={this.state.filters.accountId}
                   accounts={this.state.accounts}
                   refresh={() => this.updateTransactionsRange()}
                 />

@@ -46,21 +46,12 @@ const TransactionTable = (props) => {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
-      render: d => new Date(d).toLocaleDateString()
-    },
-    { title: 'Description', dataIndex: 'description', key: 'description', },
-    { 
-      title: "Category",
-      dataIndex: "tag",
-      key: "tag", 
-      render: (tag, record) => (
-        <Tag key={record.id}>{tag ? tag.value : ''}</Tag>
-      ),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      align: "right",
       render: (amount, record) => {
         const { transaction_type } = record;
 
@@ -73,10 +64,33 @@ const TransactionTable = (props) => {
         }
         
         return (
-          <span className={className}>{signal} {amount}</span>
+          <span className={className}>{signal} {amount.toFixed(2)}</span>
         );
       }
     },
+    {
+      title: "Balance",
+      dataIndex: "balance",
+      key: "balance",
+      align: "right",
+      render: (balance) => {
+        let className = balance >= 0 ? "income-value" : "expense-value";
+        let signal = balance >= 0 ? "+" : "-";
+        return (
+          <span className={className}>{signal} {balance.toFixed(2)}</span>
+        );
+      }
+    },
+    { title: 'Description', dataIndex: 'description', key: 'description', },
+    { 
+      title: "Category",
+      dataIndex: "tag",
+      key: "tag", 
+      render: (tag, record) => (
+        <Tag key={record.id}>{tag ? tag.value : ''}</Tag>
+      ),
+    },
+    
     {
       title: "Account",
       dataIndex: "account",

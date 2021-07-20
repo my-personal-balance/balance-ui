@@ -105,7 +105,7 @@ const UploadTransactions = (props) => {
         <Form {...formItemLayout} ref={formRef} initialValues={{accountId: accountId}} name="control-ref">
           
           <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
-            <Select defaultValue={accountId}>
+            <Select>
               {accounts.map(account => (
                 <Option key={account.id}>{account.alias}</Option>
               ))}

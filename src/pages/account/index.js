@@ -12,9 +12,15 @@ class Account extends Component {
     const { accountId } = this.props.match.params;
     this.state = {
       account: {
-        id: accountId,
-        alias: null,
+        id: accountId
       },
+      title: null,
+      filters: {
+        accountId: accountId,
+        periodType: "current_month",
+        startDate: null,
+        endDate: null,
+      }
     }
   }
 
@@ -22,7 +28,10 @@ class Account extends Component {
     fetchAccount(this.props.axios, this.state.account.id, resp => {
       if (resp) {
         const account = resp.data;
-        this.setState({ account: account });
+        this.setState({
+          account: account,
+          title: account.alias,
+        });
       }
     });
   }
@@ -31,7 +40,9 @@ class Account extends Component {
   render() {
     return (
       <>
-        <TransactionsComponent title={this.state.account.alias} accountId={this.state.account.id} />
+        <TransactionsComponent
+          title={this.state.title}
+          filters={this.state.filters} />
       </>
     );
   }

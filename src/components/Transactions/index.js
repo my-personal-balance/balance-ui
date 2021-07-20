@@ -11,7 +11,7 @@ const TransactionsComponent = (props) => (
     </Row>
     <Row>
       <Col span={24}>
-        <TransactionsInfo accountId={props.accountId} />
+        <TransactionsInfo filters={props.filters} />
       </Col>
     </Row>
   </>
