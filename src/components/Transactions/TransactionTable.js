@@ -68,19 +68,6 @@ const TransactionTable = (props) => {
         );
       }
     },
-    {
-      title: "Balance",
-      dataIndex: "balance",
-      key: "balance",
-      align: "right",
-      render: (balance) => {
-        let className = balance >= 0 ? "income-value" : "expense-value";
-        let signal = balance >= 0 ? "+" : "-";
-        return (
-          <span className={className}>{signal} {balance.toFixed(2)}</span>
-        );
-      }
-    },
     { title: 'Description', dataIndex: 'description', key: 'description', },
     { 
       title: "Category",

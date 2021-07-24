@@ -4,9 +4,13 @@ import { Col, DatePicker, Layout, Row, } from 'antd';
 import TransactionTable from './TransactionTable';
 import Loader from '../Loader';
 import Balance from '../Balance';
+import BalanceChart from '../BalanceChart';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchAccounts, fetchTransactions } from '../../ws/BalanceAPI';
+import {
+  fetchAccounts,
+  fetchTransactions,
+} from '../../ws/BalanceAPI';
 
 const { RangePicker } = DatePicker;
 
@@ -21,7 +25,7 @@ class TransactionsInfo extends Component {
     }
   }
 
-  updateTransactionsRange() {
+  updateInfoData() {
     fetchTransactions(this.props.axios, this.state.filters, response => {
       const { data } = response;
       if (data) {
@@ -36,7 +40,7 @@ class TransactionsInfo extends Component {
       const { data } = response;
       if (data) {
         this.setState({ accounts: data.accounts });
-        this.updateTransactionsRange();
+        this.updateInfoData();
       }
     });
   }
@@ -46,12 +50,12 @@ class TransactionsInfo extends Component {
     filters.periodType = "custom";
     filters.startDate = stringDates[0];
     filters.endDate = stringDates[1];
-    this.setState(filters);
+    this.setState({ filters });
   }
 
   onOpenChange(isOpen) {
     if (!isOpen) {
-      this.updateTransactionsRange();
+      this.updateInfoData();
     }
   }
 
@@ -68,6 +72,11 @@ class TransactionsInfo extends Component {
             <Balance balance={this.state.balance} incomes={this.state.incomes} expenses={this.state.expenses} />
           </Col>
         </Row>
+        <Row>
+          <Col span={24}>
+            <BalanceChart filters={this.state.filters} />
+          </Col>
+        </Row>
         <Row className="transactions">
           <Col span={24}>
             <Layout.Content className="site-layout-background">
@@ -76,7 +85,7 @@ class TransactionsInfo extends Component {
                   items={this.state.transactions}
                   accountId={this.state.filters.accountId}
                   accounts={this.state.accounts}
-                  refresh={() => this.updateTransactionsRange()}
+                  refresh={() => this.updateInfoData()}
                 />
               : <Loader /> }
             </Layout.Content>

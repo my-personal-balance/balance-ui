@@ -99,3 +99,14 @@ export function searchAssets(axios, keywords, callback) {
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
+
+
+export function fetchBalance(axios, filters, callback) {
+  axios
+    .get(`/reports/balance`, {
+      params: paramsToSnakeCase(filters)
+    })
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+

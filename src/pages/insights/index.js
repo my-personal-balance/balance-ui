@@ -7,7 +7,7 @@ const Insights = () => (
     filters={
       {
         accountId: null,
-        periodType: null,
+        periodType: "current_month",
         startDate: null,
         endDate: null,
       }
