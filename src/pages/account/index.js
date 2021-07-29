@@ -17,7 +17,7 @@ class Account extends Component {
       title: null,
       filters: {
         accountId: accountId,
-        periodType: null,
+        periodType: "current_month",
         startDate: null,
         endDate: null,
       }

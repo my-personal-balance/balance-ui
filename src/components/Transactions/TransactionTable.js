@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Col,
@@ -16,43 +17,47 @@ import {
 import AddTransaction from './AddTransaction';
 import UploadTransactions from './UploadTransactions';
 
-import { deleteTransaction } from '../../ws/BalanceAPI';
+import { fetchAccounts, deleteTransaction } from '../../ws/BalanceAPI';
 import { withAxios } from '../../container/Authenticated';
 import { openNotificationWithIcon } from '../../utils/constants';
 
 const TransactionTable = (props) => {
 
-  const { items, accountId, accounts, refresh } = props;
+  const { items, accountId, refresh } = props;
 
-  const delTransactionItem = (transactionId) => {
-    
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    asyncFetchAccounts();
+  },[]);
+
+  const asyncFetchAccounts = () => {
+    fetchAccounts(props.axios, response => {
+      const { error, data } = response;
+      if (error) {
+        openNotificationWithIcon('error', "Failed to fetch accounts", "There was an error while fetching accounts. Please reload the page.");
+      } else if (data) {
+        setAccounts(data.accounts);
+      }
+    });
+  }
+
+  const deleteTransactionItem = (transactionId) => {
     deleteTransaction(props.axios, transactionId, result => {
       const { error, data } = result;
-      
       if (error) {
-        openNotificationWithIcon(
-          'error',
-          "Failed to delete transaction",
-          "There was an error while removing this transaction."
-        );
-      }
-
-      if (data) {
-        openNotificationWithIcon(
-          'success',
-          "Transaction deleted",
-          "Your transaction wwas deleted successfuly"
-        );
+        openNotificationWithIcon('error', "Failed to delete transaction", "There was an error while removing this transaction.");
+      } else if (data) {
+        openNotificationWithIcon('success', "Transaction deleted", "Your transaction wwas deleted successfuly");
         refresh();
       }
-    })
-    
+    });
   };
 
   const editTransactionItem = (transactionId) => {
 
   }
-
+  
   const columns = [
     {
       title: 'Date',
@@ -106,8 +111,18 @@ const TransactionTable = (props) => {
       key: 'x',
       render: (x, record) => (
         <Space>
-          <Button type="link" onClick={() => editTransactionItem(record.id)}><EditOutlined /></Button>
-          <Popconfirm title="Delete this transaction?" okText="Yes" cancelText="No" onConfirm={() => delTransactionItem(record.id)}>
+          <Button
+            type="link"
+            onClick={() => editTransactionItem(record.id)}
+          >
+            <EditOutlined />
+          </Button>
+          <Popconfirm
+            title="Delete this transaction?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => deleteTransactionItem(record.id)}
+          >
             <Button type="link"><DeleteOutlined /></Button>
           </Popconfirm>
         </Space>

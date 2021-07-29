@@ -4,13 +4,9 @@ import { Col, DatePicker, Layout, Row, } from 'antd';
 import TransactionTable from './TransactionTable';
 import Loader from '../Loader';
 import Balance from '../Balance';
-import BalanceChart from '../BalanceChart';
 
 import { withAxios } from '../../container/Authenticated';
-import {
-  fetchAccounts,
-  fetchTransactions,
-} from '../../ws/BalanceAPI';
+import { fetchTransactions, } from '../../ws/BalanceAPI';
 
 const { RangePicker } = DatePicker;
 
@@ -36,13 +32,7 @@ class TransactionsInfo extends Component {
   }
 
   componentDidMount() {
-    fetchAccounts(this.props.axios, response => {
-      const { data } = response;
-      if (data) {
-        this.setState({ accounts: data.accounts });
-        this.updateInfoData();
-      }
-    });
+    this.updateInfoData();
   }
 
   handleRangePickerChange(values, stringDates) {
@@ -75,11 +65,10 @@ class TransactionsInfo extends Component {
         <Row className="transactions">
           <Col span={24}>
             <Layout.Content className="site-layout-background">
-              {this.state.transactions && this.state.accounts ?
+              {this.state.transactions ?
                 <TransactionTable
                   items={this.state.transactions}
                   accountId={this.state.filters.accountId}
-                  accounts={this.state.accounts}
                   refresh={() => this.updateInfoData()}
                 />
               : <Loader /> }

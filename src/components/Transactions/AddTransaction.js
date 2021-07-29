@@ -17,13 +17,19 @@ const AddTransaction = (props) => {
   const formRef = React.createRef();
   
   useEffect(() => {
-    asyncFetch();
+    asyncFetchTags();
   },[]);
 
-  const asyncFetch = () => {
+  const asyncFetchTags = () => {
     fetchTags(props.axios, result => {
       const { error, data } = result;
-      if (data) {
+      if (error) {
+        openNotificationWithIcon(
+          'error',
+          "Failed to fetch existing tags.",
+          "There was an error while fetching the existing tags. Please reload the page."
+        );
+      } else if (data) {
         const tags = data.tags.map(d => <Option value={d.id}>{d.value}</Option>);
         setTags(tags);
       }
