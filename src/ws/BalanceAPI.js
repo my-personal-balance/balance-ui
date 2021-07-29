@@ -100,6 +100,13 @@ export function searchAssets(axios, keywords, callback) {
     .catch((err) => callback({ error: err }));
 }
 
+export function fetchTags(axios, callback) {
+  axios
+    .get(`/tags`)
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
 
 export function fetchBalance(axios, filters, callback) {
   axios

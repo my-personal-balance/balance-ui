@@ -1,5 +1,13 @@
-import React from 'react';
-import { Button, Col, Popconfirm, Row, Space, Table, Tag, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  Popconfirm,
+  Row,
+  Space,
+  Table,
+  Tag,
+  Typography
+} from 'antd';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -41,6 +49,10 @@ const TransactionTable = (props) => {
     
   };
 
+  const editTransactionItem = (transactionId) => {
+
+  }
+
   const columns = [
     {
       title: 'Date',
@@ -74,8 +86,10 @@ const TransactionTable = (props) => {
       dataIndex: "tag",
       key: "tag", 
       render: (tag, record) => (
-        <Tag key={record.id}>{tag ? tag.value : ''}</Tag>
+        <Tag key={record.id}>{tag ? tag.value : '' }</Tag>
       ),
+      editable: true,
+      handleSave: () => {console.log("Here");},
     },
     
     {
@@ -92,7 +106,7 @@ const TransactionTable = (props) => {
       key: 'x',
       render: (x, record) => (
         <Space>
-          <Button type="link"><EditOutlined /></Button>
+          <Button type="link" onClick={() => editTransactionItem(record.id)}><EditOutlined /></Button>
           <Popconfirm title="Delete this transaction?" okText="Yes" cancelText="No" onConfirm={() => delTransactionItem(record.id)}>
             <Button type="link"><DeleteOutlined /></Button>
           </Popconfirm>
@@ -100,6 +114,12 @@ const TransactionTable = (props) => {
       ),
     },
   ];
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+  };
 
   return (
     <>
@@ -126,7 +146,17 @@ const TransactionTable = (props) => {
       </Row>
       <Row className="transactions">
         <Col span={24}>
-          <Table rowKey="id" dataSource={items} columns={columns} size="small" pagination={{ defaultPageSize:50 }} />
+          <Table
+            rowKey="id"
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            dataSource={items}
+            columns={columns}
+            size="small"
+            pagination={{ defaultPageSize:50 }} 
+          />
         </Col>
       </Row>
       

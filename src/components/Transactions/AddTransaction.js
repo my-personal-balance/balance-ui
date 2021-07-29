@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Col, DatePicker, Form, Input, InputNumber, Modal, Row, Select, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
-import { createTransaction, searchAssets } from '../../ws/BalanceAPI';
+import { createTransaction, fetchTags } from '../../ws/BalanceAPI';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;
@@ -13,8 +13,23 @@ const AddTransaction = (props) => {
   const { accountId, accounts, refresh } = props;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [tags, setTags] = useState(null);
   const formRef = React.createRef();
   
+  useEffect(() => {
+    asyncFetch();
+  },[]);
+
+  const asyncFetch = () => {
+    fetchTags(props.axios, result => {
+      const { error, data } = result;
+      if (data) {
+        const tags = data.tags.map(d => <Option value={d.id}>{d.value}</Option>);
+        setTags(tags);
+      }
+    });
+  }
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -25,12 +40,8 @@ const AddTransaction = (props) => {
       description: formRef.current.getFieldValue('description'),
       amount: formRef.current.getFieldValue('amount'),
       date: formRef.current.getFieldValue('date'),
-      account: {
-        id: formRef.current.getFieldValue('accountId'),
-      },
-      asset: {
-        isin: formRef.current.getFieldInstance('isin').state.value,
-      }
+      tagId: formRef.current.getFieldValue('tagId'),
+      accountId: formRef.current.getFieldValue('accountId'),
     }, result => {
       const { error, data } = result;
       
@@ -92,8 +103,10 @@ const AddTransaction = (props) => {
           <Form.Item name="description" label="Description" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="tag" label="Category" >
-            <Input />
+          <Form.Item name="tagId" label="Tag" >
+            <Select showArrow>
+              {tags}
+            </Select>
           </Form.Item>
           <Form.Item name="amount" label="Amount" rules={[{ required: true }]}>
             <InputNumber />
@@ -108,9 +121,6 @@ const AddTransaction = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="isin" label="Asset">
-            <AssetInformation axios={props.axios} />
-          </Form.Item>
         </Form>
       </Modal>
     </>
@@ -118,46 +128,3 @@ const AddTransaction = (props) => {
 }
 
 export default withAxios(AddTransaction);
-
-class AssetInformation extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      assets: []
-    }
-  }
-
-  handleSearch = (keywords) => {
-    if (keywords) {
-      searchAssets(this.props.axios, {keywords: keywords}, result => {
-        const { error, data } = result;
-        if (data) {
-          this.setState({assets: data.assets});
-        }
-      });
-    }
-  }
-
-  handleChange = value => {
-    this.setState({ value });
-  };
-
-  render() {
-    const options = this.state.assets.map(asset => <Option key={asset.isin}>{asset.description}</Option>);
-    return (
-      <Select
-        showSearch
-        placeholder="Type to find an asset"
-        defaultActiveFirstOption={false}
-        showArrow={false}
-        filterOption={false}
-        onSearch={this.handleSearch}
-        onChange={this.handleChange}
-        notFoundContent={null}
-      >
-        {options}
-      </Select>
-    )
-  }
-}

@@ -72,11 +72,6 @@ class TransactionsInfo extends Component {
             <Balance balance={this.state.balance} incomes={this.state.incomes} expenses={this.state.expenses} />
           </Col>
         </Row>
-        <Row>
-          <Col span={24}>
-            <BalanceChart filters={this.state.filters} />
-          </Col>
-        </Row>
         <Row className="transactions">
           <Col span={24}>
             <Layout.Content className="site-layout-background">
