@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { Col, Row, Typography } from 'antd';
+import { Button, Col, Row, Typography, Popconfirm } from 'antd';
+import {
+  DeleteOutlined,
+} from '@ant-design/icons';
 
 import TransactionsComponent from '../../components/Transactions';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchAccount } from '../../ws/BalanceAPI';
+import { fetchAccount, deleteAccount } from '../../ws/BalanceAPI';
+import { openNotificationWithIcon } from '../../utils/constants';
 
 class Account extends Component {
   
@@ -37,13 +41,37 @@ class Account extends Component {
     });
   }
 
-  
+  deleteCurrentAccount() {
+    deleteAccount(this.props.axios, this.state.account.id, response => {
+      const { error } = response;
+      if (error) {
+        openNotificationWithIcon('error', "Failed to delete account", "There was an error while deleting your account. Please reload the page.");
+      } else {
+        openNotificationWithIcon('success', "Account deleted", "Your account was deleted successfuly.");
+        this.props.history.push('/accounts')
+      }
+    });
+  }
+
   render() {
+    
     return (
       <>
         <Row>
           <Col>
-            <Typography.Title>{this.state.title}</Typography.Title>  
+            <Typography.Title>{this.state.title}</Typography.Title>
+          </Col>
+          <Col>
+            <Popconfirm
+              title={`Delete the ${this.state.title} account?`}
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => this.deleteCurrentAccount()}
+            >
+              <Button type="link" danger>
+                <DeleteOutlined />
+              </Button>
+            </Popconfirm>
           </Col>
         </Row>
         <Row>

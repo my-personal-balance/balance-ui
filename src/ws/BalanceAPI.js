@@ -46,6 +46,16 @@ export function fetchAccount(axios, accountId, callback) {
 }
 
 /**
+ * Retrieve projects data
+ */
+ export function deleteAccount(axios, accountId, callback) {
+  axios
+    .delete(`/accounts/${accountId}`)
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
+/**
  * Create Transactions
  */
 export function createTransaction(axios, params, callback) {
