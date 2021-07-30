@@ -45,13 +45,22 @@ export function fetchAccount(axios, accountId, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-
 /**
- * Transactions
+ * Create Transactions
  */
 export function createTransaction(axios, params, callback) {
   axios
     .post(`/transactions`, paramsToSnakeCase(params))
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
+/**
+ * Create Transactions
+ */
+ export function updateTransaction(axios, transactionId, params, callback) {
+  axios
+    .put(`/transactions/${transactionId}`, paramsToSnakeCase(params))
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }

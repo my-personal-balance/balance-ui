@@ -15,9 +15,10 @@ import {
 } from '@ant-design/icons';
 
 import AddTransaction from './AddTransaction';
+import TransactionBuilder from './TransactionBuilder';
 import UploadTransactions from './UploadTransactions';
 
-import { fetchAccounts, deleteTransaction } from '../../ws/BalanceAPI';
+import { fetchAccounts, deleteTransaction, updateTransaction } from '../../ws/BalanceAPI';
 import { withAxios } from '../../container/Authenticated';
 import { openNotificationWithIcon } from '../../utils/constants';
 
@@ -54,16 +55,37 @@ const TransactionTable = (props) => {
     });
   };
 
-  const editTransactionItem = (transactionId) => {
+  const updateTransactionItem = (transactionId, formRef) => {
+    updateTransaction(props.axios, transactionId, {
+      transactionType: formRef.current.getFieldValue('type'),
+      description: formRef.current.getFieldValue('description'),
+      amount: formRef.current.getFieldValue('amount'),
+      date: formRef.current.getFieldValue('date').format("YYYY-MM-DD"),
+      tagId: formRef.current.getFieldValue('tagId'),
+      accountId: formRef.current.getFieldValue('accountId'),
+    }, result => {
+      const { error, data } = result;
+      if (error) {
+        openNotificationWithIcon('error', "Failed to update transaction", "There was an error while updating your transaction.");
+      } else if (data) {
+        setViewTrasactionBuilder(false);
+        openNotificationWithIcon('success', "Transaction updated", "Your transaction was updated successfuly.");
+        refresh();
+      }
+      
+    })
+  };
 
+  const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
+  const [transaction, setTransaction] = useState(null);
+
+  const editTransactionItem = (transaction) => {
+    setTransaction(transaction);
+    setViewTrasactionBuilder(true);
   }
   
   const columns = [
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-    },
+    { title: 'Date', dataIndex: 'date', key: 'date', },
     {
       title: "Amount",
       dataIndex: "amount",
@@ -74,7 +96,6 @@ const TransactionTable = (props) => {
 
         let className = "expense-value";
         let signal = "-";
-
         if (transaction_type === "INCOME") {
           className = "income-value";
           signal = "+";
@@ -92,11 +113,8 @@ const TransactionTable = (props) => {
       key: "tag", 
       render: (tag, record) => (
         <Tag key={record.id}>{tag ? tag.value : '' }</Tag>
-      ),
-      editable: true,
-      handleSave: () => {console.log("Here");},
+      )
     },
-    
     {
       title: "Account",
       dataIndex: "account",
@@ -113,7 +131,7 @@ const TransactionTable = (props) => {
         <Space>
           <Button
             type="link"
-            onClick={() => editTransactionItem(record.id)}
+            onClick={() => editTransactionItem(record)}
           >
             <EditOutlined />
           </Button>
@@ -174,7 +192,15 @@ const TransactionTable = (props) => {
           />
         </Col>
       </Row>
-      
+      <TransactionBuilder
+        title="Edit Transaction"
+        visible={viewTrasactionBuilder}
+        onOk={updateTransactionItem}
+        onCancel={()=> setViewTrasactionBuilder(false)}
+        accountId={accountId}
+        accounts={accounts}
+        transaction={transaction}
+      />
     </>
   );
 
