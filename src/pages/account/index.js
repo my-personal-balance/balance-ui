@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Col, Row, Typography } from 'antd';
 
 import TransactionsComponent from '../../components/Transactions';
 
@@ -40,9 +41,16 @@ class Account extends Component {
   render() {
     return (
       <>
-        <TransactionsComponent
-          title={this.state.title}
-          filters={this.state.filters} />
+        <Row>
+          <Col>
+            <Typography.Title>{this.state.title}</Typography.Title>  
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <TransactionsComponent filters={this.state.filters} />
+          </Col>
+        </Row>
       </>
     );
   }
