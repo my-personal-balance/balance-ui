@@ -75,11 +75,19 @@ export function createTransaction(axios, params, callback) {
     .catch((err) => callback({ error: err }));
 }
 
+/**
+ * Create Transactions
+ */
+ export function updateTransactions(axios, params, callback) {
+  axios
+    .patch(`/transactions`, paramsToSnakeCase(params))
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
 export function fetchTransactions(axios, filters, callback) {
   axios
-    .get(`/transactions`, {
-      params: paramsToSnakeCase(filters)
-    })
+    .get(`/transactions`, {params: paramsToSnakeCase(filters)})
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -100,11 +108,27 @@ export function uploadTransactions(axios, formData, callback) {
 
 const paramsToSnakeCase = (params) => {
   if (params) {
-    const keyValues = Object.keys(params).map(key => {
-      const newKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
-      return { [newKey]: params[key] };
-    });
-    return Object.assign({}, ...keyValues);
+
+    if (params instanceof Array) {
+      return params.map(p => paramsToSnakeCase(p));
+    } else {
+
+      const keyValues = Object.keys(params).map(key => {
+        const newKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+        
+        let value = params[key];
+        if (value && value instanceof Object && !value._isAMomentObject) {
+          value = paramsToSnakeCase(params[key]);
+        }
+  
+        return { [newKey]: value };
+      });
+  
+      return Object.assign({}, ...keyValues);
+      
+    }
+
+    
   } else {
     return null;
   }

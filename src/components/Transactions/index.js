@@ -22,7 +22,7 @@ const TransactionsComponent = (props) => {
     asyncFetchTransactions();
   },[]);
 
-  const handleRangePickerChange = (values, stringDates) => {
+  const handleRangePickerChange = (_, stringDates) => {
     const updatedFilters = filters;
     updatedFilters.periodType = "custom";
     updatedFilters.startDate = stringDates[0];
@@ -65,7 +65,7 @@ const TransactionsComponent = (props) => {
         <Col span={24}>
           <Layout.Content className="site-layout-background">
             {transactions ?
-              <TransactionTable items={transactions} accountId={filters.accountId} refresh={() => asyncFetchTransactions} />
+              <TransactionTable items={transactions} accountId={filters.accountId} refresh={() => asyncFetchTransactions()} />
             : <Loader /> }
           </Layout.Content>
         </Col>

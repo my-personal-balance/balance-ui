@@ -17,6 +17,7 @@ import {
 import AddTransaction from './AddTransaction';
 import TransactionBuilder from './TransactionBuilder';
 import UploadTransactions from './UploadTransactions';
+import EditMultipleTransactions from './EditMultipleTransactions';
 
 import { fetchAccounts, deleteTransaction, updateTransaction } from '../../ws/BalanceAPI';
 import { withAxios } from '../../container/Authenticated';
@@ -55,34 +56,29 @@ const TransactionTable = (props) => {
     });
   };
 
-  const updateTransactionItem = (transactionId, formRef) => {
-    updateTransaction(props.axios, transactionId, {
+  const updateTransactionItem = (transaction, formRef) => {
+    const transactionData = {
+      id: transaction.id,
       transactionType: formRef.current.getFieldValue('type'),
       description: formRef.current.getFieldValue('description'),
       amount: formRef.current.getFieldValue('amount'),
-      date: formRef.current.getFieldValue('date').format("YYYY-MM-DD"),
+      date: formRef.current.getFieldValue('date'),
       tagId: formRef.current.getFieldValue('tagId'),
       accountId: formRef.current.getFieldValue('accountId'),
-    }, result => {
+    }
+    
+    updateTransaction(props.axios, transaction.id, transactionData, result => {
       const { error, data } = result;
       if (error) {
-        openNotificationWithIcon('error', "Failed to update transaction", "There was an error while updating your transaction.");
+        openNotificationWithIcon('error', "Failed to update transaction(s)", "There was an error while updating your transaction(s).");
       } else if (data) {
         setViewTrasactionBuilder(false);
-        openNotificationWithIcon('success', "Transaction updated", "Your transaction was updated successfuly.");
+        openNotificationWithIcon('success', "Transaction(s) updated", "Your transaction(s) were updated successfuly.");
         refresh();
       }
-      
-    })
+    });
   };
-
-  const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
-  const [transaction, setTransaction] = useState(null);
-
-  const editTransactionItem = (transaction) => {
-    setTransaction(transaction);
-    setViewTrasactionBuilder(true);
-  }
+  
   
   const columns = [
     { title: 'Date', dataIndex: 'date', key: 'date', },
@@ -148,9 +144,22 @@ const TransactionTable = (props) => {
     },
   ];
 
+  const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
+  const [editTransaction, setEditTransaction] = useState(null);
+  const [selectedTransactions, setSelectedTransactions] = useState([]);
+
+  const editTransactionItem = (transaction) => {
+    setEditTransaction(transaction);
+    setViewTrasactionBuilder(true);
+  }
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      if(selectedRowKeys) {
+        setSelectedTransactions(selectedRows);
+      } else {
+        setSelectedTransactions([]);
+      }
     },
   };
 
@@ -162,7 +171,16 @@ const TransactionTable = (props) => {
         </Col>
       </Row>
       <Row>
-        <Col offset={22}>
+        <Col span={4}>
+          {selectedTransactions.length > 0 ?
+            <EditMultipleTransactions
+              accounts={accounts}
+              refresh={refresh}
+              transactions={selectedTransactions}
+            /> 
+          : <></>}
+        </Col>
+        <Col offset={18}>
           <Space>
             <AddTransaction
               accountId={accountId}
@@ -199,7 +217,7 @@ const TransactionTable = (props) => {
         onCancel={()=> setViewTrasactionBuilder(false)}
         accountId={accountId}
         accounts={accounts}
-        transaction={transaction}
+        transaction={editTransaction}
       />
     </>
   );

@@ -11,16 +11,13 @@ const { Option } = Select;
 
 const TransactionBuilder = (props) => {
 
-  const { title, visible, onOk, onCancel, accounts, accountId, transaction } = props;
+  const { title, visible, onOk, onCancel, accounts, accountId, transaction, } = props;
   
   const [tags, setTags] = useState([]);
-  const [transactionId, setTransactionId] = useState(null);
-
   const formRef = React.createRef();
 
   useEffect(() => {
-    if (transaction) {
-      setTransactionId(transaction.id)
+    if (transaction && !(transaction instanceof Array)) {
       formRef.current.setFieldsValue({
         "type": transaction.transaction_type,
         "description": transaction.description,
@@ -32,7 +29,6 @@ const TransactionBuilder = (props) => {
     }
   },[transaction]);
 
-  
   useEffect(() => {
     asyncFetchTags();
   },[]);
@@ -43,7 +39,7 @@ const TransactionBuilder = (props) => {
       if (error) {
         openNotificationWithIcon('error', "Failed to fetch existing tags.", "There was an error while fetching the existing tags. Please reload the page.");
       } else if (data) {
-        const tags = data.tags.map(d => <Option value={d.id}>{d.value}</Option>);
+        const tags = data.tags.map(d => <Option key={d.id} value={d.id}>{d.value}</Option>);
         setTags(tags);
       }
     });
@@ -53,7 +49,7 @@ const TransactionBuilder = (props) => {
     <Modal
       title={title}
       visible={visible}
-      onOk={() => onOk(transactionId, formRef)}
+      onOk={() => onOk(transaction, formRef)}
       onCancel={onCancel}
     >
       <Form {...formItemLayout} ref={formRef} initialValues={{ accountId: accountId }} name="control-ref">
@@ -70,7 +66,10 @@ const TransactionBuilder = (props) => {
           <Input />
         </Form.Item>
         <Form.Item name="tagId" label="Tag" >
-          <Select showArrow>
+          <Select
+            showSearch
+            optionFilterProp="children"
+          >
             {tags}
           </Select>
         </Form.Item>
@@ -82,9 +81,7 @@ const TransactionBuilder = (props) => {
         </Form.Item>
         <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
           <Select>
-            {accounts.map(account => (
-              <Option key={account.id}>{account.alias}</Option>
-            ))}
+            {accounts.map(a => <Option key={a.id} value={a.id}>{a.alias}</Option>)}
           </Select>
         </Form.Item>
       </Form>

@@ -17,11 +17,11 @@ class Account extends Component {
     const { accountId } = this.props.match.params;
     this.state = {
       account: {
-        id: accountId
+        id: parseInt(accountId)
       },
       title: null,
       filters: {
-        accountId: accountId,
+        accountId: parseInt(accountId),
         periodType: "current_month",
         startDate: null,
         endDate: null,
