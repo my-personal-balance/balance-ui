@@ -215,7 +215,6 @@ const TransactionTable = (props) => {
         visible={viewTrasactionBuilder}
         onOk={updateTransactionItem}
         onCancel={()=> setViewTrasactionBuilder(false)}
-        accountId={accountId}
         accounts={accounts}
         transaction={editTransaction}
       />

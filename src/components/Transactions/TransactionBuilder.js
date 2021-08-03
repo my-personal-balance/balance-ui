@@ -24,7 +24,7 @@ const TransactionBuilder = (props) => {
         "tagId": transaction.tag ? transaction.tag.id : null,
         "amount": transaction.amount,
         "date": transaction.date ? moment.utc(transaction.date, "YYYY-MM-DD") : null,
-        "accountId": accountId,
+        "accountId": transaction.account_id,
       });
     }
   },[transaction]);

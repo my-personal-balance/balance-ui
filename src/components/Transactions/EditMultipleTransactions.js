@@ -9,7 +9,7 @@ import TransactionBuilder from './TransactionBuilder';
 
 const EditMultipleTransactions = (props) => {
 
-  const { accountId, accounts, refresh, transactions, } = props;
+  const { accounts, refresh, transactions, } = props;
 
   const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
   const [selectedTransactions, setSelectedTransactions] = useState(false);
