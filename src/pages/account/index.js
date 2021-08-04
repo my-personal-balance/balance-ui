@@ -20,12 +20,6 @@ class Account extends Component {
         id: parseInt(accountId)
       },
       title: null,
-      filters: {
-        accountId: parseInt(accountId),
-        periodType: "current_month",
-        startDate: null,
-        endDate: null,
-      }
     }
   }
 
@@ -76,7 +70,7 @@ class Account extends Component {
         </Row>
         <Row>
           <Col span={24}>
-            <TransactionsComponent filters={this.state.filters} />
+            <TransactionsComponent filters={{accountId: this.state.account.id,}} />
           </Col>
         </Row>
       </>

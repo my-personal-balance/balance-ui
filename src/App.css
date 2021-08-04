@@ -28,32 +28,6 @@
   margin: 0px 0px 10px 10px;
 }
 
-.icon-wrap {
-  border-radius: 50%;
-  width: 3.25rem;
-  height: 3.25rem;
-  display: flex;
-  -moz-box-align: center;
-  align-items: center;
-  -moz-box-pack: center;
-  justify-content: center;
-}
-
 .transactions {
   margin: 20px 0px 0px 0px;
-}
-
-.balance-value {
-  color: #2194f2;
-  font-weight: 500;
-}
-
-.income-value {
-  color: #51b44f;
-  font-weight: 500;
-}
-
-.expense-value {
-  color: #e64b30;
-  font-weight: 500;
 }

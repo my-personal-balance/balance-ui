@@ -61,9 +61,12 @@ class Accounts extends Component {
             </Row>
           </Col>
           <Col span={6} offset={2}>
-            <BalanceCard title="Current balance >" value={this.state.balance} color="rgb(33, 150, 243)">
-              <EuroCircleOutlined />
-            </BalanceCard>
+            <BalanceCard
+              title="Current balance >"
+              value={this.state.balance}
+              color="rgb(33, 150, 243)"
+              icon={<EuroCircleOutlined />}
+            />
           </Col>
         </Row>
       </>

@@ -2,15 +2,15 @@ import { Card, Col, Row, Typography } from 'antd';
 
 import Loader from '../Loader';
 
-const BalanceCard = ({title, value, children, color}) => (
-  <Card className="balance-card">
+const BalanceCard = ({title, value, color, icon}) => (
+  <Card>
+    <Row>
+      <Col>
+        <Typography.Title level={5}>{title}</Typography.Title>  
+      </Col>
+    </Row>
     <Row>
       <Col span={20}>
-        <Row>
-          <Col>
-            <Typography.Title level={5}>{title}</Typography.Title>  
-          </Col>
-        </Row>
         <Row>
           <Col>
             <Typography.Title level={2}><BalanceValue value={value} /></Typography.Title>
@@ -18,8 +18,8 @@ const BalanceCard = ({title, value, children, color}) => (
         </Row>
       </Col>
       <Col span={4}>
-        <div className="icon-wrap" style={{backgroundColor: color }}>
-          {children}  
+        <div className="icon-wrap icon-view" style={{backgroundColor: color}}>
+          {icon}  
         </div>
       </Col>
     </Row>
