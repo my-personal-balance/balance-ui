@@ -107,7 +107,7 @@ const UploadTransactions = (props) => {
           <Form.Item name="accountId" label="Account" rules={[{ required: true }]}>
             <Select>
               {accounts.map(account => (
-                <Option value={account.id}>{account.alias}</Option>
+                <Option key={account.id} value={account.id}>{account.alias}</Option>
               ))}
             </Select>
           </Form.Item>
