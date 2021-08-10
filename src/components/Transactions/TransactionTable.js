@@ -81,9 +81,6 @@ const TransactionTable = (props) => {
     });
   };
 
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
-
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -112,8 +109,6 @@ const TransactionTable = (props) => {
             size="small"
             onClick={() => {
               confirm({ closeDropdown: false });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
             }}
           >
             Filter
@@ -127,13 +122,10 @@ const TransactionTable = (props) => {
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
   };
 
   const handleReset = clearFilters => {
     clearFilters();
-    setSearchText("");
   };
   
   
@@ -229,7 +221,7 @@ const TransactionTable = (props) => {
     <>
       <Row>
         <Col>
-          <Typography.Title level={4}>Transactions</Typography.Title>
+          <Typography.Title level={5}>Transactions</Typography.Title>
         </Col>
       </Row>
       <Row>
@@ -257,7 +249,7 @@ const TransactionTable = (props) => {
           </Space>
         </Col>
       </Row>
-      <Row className="transactions">
+      <Row className="secction">
         <Col span={24}>
           <Table
             rowKey="id"
@@ -268,7 +260,7 @@ const TransactionTable = (props) => {
             dataSource={items}
             columns={columns}
             size="small"
-            pagination={{ defaultPageSize:50 }} 
+            pagination={{ defaultPageSize:50 }}
           />
         </Col>
       </Row>

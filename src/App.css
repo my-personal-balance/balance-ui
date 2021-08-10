@@ -28,6 +28,21 @@
   margin: 0px 0px 10px 10px;
 }
 
-.transactions {
+.secction {
   margin: 20px 0px 0px 0px;
+}
+
+.balance-value {
+  color: #2194f2;
+  font-weight: 500;
+}
+
+.income-value {
+  color: #51b44f;
+  font-weight: 500;
+}
+
+.expense-value {
+  color: #e64b30;
+  font-weight: 500;
 }

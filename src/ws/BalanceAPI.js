@@ -5,9 +5,6 @@ export function signin(axios, uri, params, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve user info
- */
 export function fetchUser(axios, callback) {
   axios
     .get(`/users`)
@@ -15,9 +12,6 @@ export function fetchUser(axios, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve projects data
- */
 export function fetchAccounts(axios, callback) {
   axios
     .get(`/accounts`)
@@ -25,9 +19,6 @@ export function fetchAccounts(axios, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve projects data
- */
 export function createAccount(axios, data, callback) {
   axios
     .post(`/accounts`, data)
@@ -35,9 +26,6 @@ export function createAccount(axios, data, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve projects data
- */
 export function fetchAccount(axios, accountId, callback) {
   axios
     .get(`/accounts/${accountId}`)
@@ -45,9 +33,6 @@ export function fetchAccount(axios, accountId, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Retrieve projects data
- */
  export function deleteAccount(axios, accountId, callback) {
   axios
     .delete(`/accounts/${accountId}`)
@@ -55,9 +40,15 @@ export function fetchAccount(axios, accountId, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Create Transactions
- */
+export function fetchBalance(axios, params, callback) {
+  axios
+    .get(`/balance`, {
+      params: paramsToSnakeCase(params)
+    })
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}
+
 export function createTransaction(axios, params, callback) {
   axios
     .post(`/transactions`, paramsToSnakeCase(params))
@@ -65,9 +56,6 @@ export function createTransaction(axios, params, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Create Transactions
- */
  export function updateTransaction(axios, transactionId, params, callback) {
   axios
     .put(`/transactions/${transactionId}`, paramsToSnakeCase(params))
@@ -75,9 +63,6 @@ export function createTransaction(axios, params, callback) {
     .catch((err) => callback({ error: err }));
 }
 
-/**
- * Create Transactions
- */
  export function updateTransactions(axios, params, callback) {
   axios
     .patch(`/transactions`, paramsToSnakeCase(params))
@@ -87,7 +72,10 @@ export function createTransaction(axios, params, callback) {
 
 export function fetchTransactions(axios, filters, callback) {
   axios
-    .get(`/transactions`, {params: paramsToSnakeCase(filters)})
+    .get(`/transactions`,
+      {
+        params: paramsToSnakeCase(filters)
+      })
     .then((res) => callback({ data: res.data }))
     .catch((err) => callback({ error: err }));
 }
@@ -125,9 +113,7 @@ const paramsToSnakeCase = (params) => {
       });
   
       return Object.assign({}, ...keyValues);
-      
     }
-
     
   } else {
     return null;
@@ -151,7 +137,7 @@ export function fetchTags(axios, callback) {
 }
 
 
-export function fetchBalance(axios, filters, callback) {
+export function fetchReportBalance(axios, filters, callback) {
   axios
     .get(`/reports/balance`, {
       params: paramsToSnakeCase(filters)
@@ -160,3 +146,9 @@ export function fetchBalance(axios, filters, callback) {
     .catch((err) => callback({ error: err }));
 }
 
+export function fetchReportTransactions(axios, filters, callback) {
+  axios
+    .get(`/reports/transactions`, {params: paramsToSnakeCase(filters)})
+    .then((res) => callback({ data: res.data }))
+    .catch((err) => callback({ error: err }));
+}

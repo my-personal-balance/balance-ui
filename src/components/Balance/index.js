@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Col, Row } from 'antd';
 import {
   ArrowUpOutlined,
@@ -6,9 +7,35 @@ import {
 
 import BalanceCard from './BalanceCard';
 
+import { withAxios } from '../../container/Authenticated';
+import { fetchBalance, } from '../../ws/BalanceAPI';
+
 import "./index.css";
 
-const Balance = ({ balance, incomes, expenses }) => {
+const Balance = (props) => {
+
+  const { filters } = props;
+
+  const [balance, setBalance] = useState(0.0);
+  const [incomes, setIncomes] = useState(0.0);
+  const [expenses, setExpenses] = useState(0.0);
+
+  useEffect(() => {
+    asyncFetchBalance();
+  },[filters.periodType, filters.startDate, filters.endDate]);
+
+  const asyncFetchBalance = () => {
+    fetchBalance(props.axios, filters, response => {
+      const { data } = response;
+      if (data) {
+        const { balance, incomes, expenses } = data;
+        setBalance(balance);
+        setIncomes(incomes);
+        setExpenses(expenses);
+      }
+    });
+  }
+  
   return (
     <Row gutter={16} className="balance">
       <Col span={8}>
@@ -39,4 +66,4 @@ const Balance = ({ balance, incomes, expenses }) => {
   );
 }
 
-export default Balance;
+export default withAxios(Balance);

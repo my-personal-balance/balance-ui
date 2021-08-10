@@ -4,6 +4,7 @@ import { Col, DatePicker, Layout, Row, } from 'antd';
 import Balance from '../Balance';
 import Loader from '../Loader';
 import TransactionTable from './TransactionTable';
+import TagInsights from '../TagInsights';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions, } from '../../ws/BalanceAPI';
@@ -13,9 +14,7 @@ const { RangePicker } = DatePicker;
 const TransactionsComponent = (props) => {
 
   const [filters, setFilters] = useState(props.filters);
-  const [balance, setBalance] = useState(0.0);
-  const [incomes, setIncomes] = useState(0.0);
-  const [expenses, setExpenses] = useState(0.0);
+  
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -40,10 +39,8 @@ const TransactionsComponent = (props) => {
     fetchTransactions(props.axios, filters, response => {
       const { data } = response;
       if (data) {
-        const { balance, incomes, expenses, transactions } = data;
-        setBalance(balance);
-        setIncomes(incomes);
-        setExpenses(expenses);
+        const { transactions } = data;
+        
         setTransactions(transactions);
       }
     });
@@ -58,10 +55,20 @@ const TransactionsComponent = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <Balance balance={balance} incomes={incomes} expenses={expenses} />
+          <Balance filters={filters} />
         </Col>
       </Row>
-      <Row className="transactions">
+      <Row className="secction">
+        <Col span={8}>
+          <TagInsights
+            filters={{
+              reportType: "group_by_tag",
+              ...filters
+            }}
+          />
+        </Col>
+      </Row>
+      <Row className="secction">
         <Col span={24}>
           <Layout.Content className="site-layout-background">
             {transactions ?
