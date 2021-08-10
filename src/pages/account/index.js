@@ -62,7 +62,7 @@ const Account = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <TransactionsComponent filters={{accountId: accountId}} />
+          <TransactionsComponent filters={{periodType: "current_month", accountId: accountId}} />
         </Col>
       </Row>
     </>

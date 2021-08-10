@@ -52,6 +52,7 @@ const Balance = (props) => {
           value={incomes}
           color="#51b44f"
           icon={<ArrowUpOutlined />}
+          sign="+"
         />
       </Col>
       <Col span={8}>
@@ -60,6 +61,7 @@ const Balance = (props) => {
           value={expenses}
           color="#e64b30"
           icon={<ArrowUpOutlined />}
+          sign="-"
         />
       </Col>
     </Row>
