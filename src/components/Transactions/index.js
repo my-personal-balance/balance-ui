@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Col, DatePicker, Layout, Row, } from 'antd';
+import { Col, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
 import Balance from '../Balance';
@@ -9,8 +9,6 @@ import TagInsights from '../TagInsights';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions, } from '../../ws/BalanceAPI';
-
-const { RangePicker } = DatePicker;
 
 const TransactionsComponent = (props) => {
 
@@ -27,7 +25,6 @@ const TransactionsComponent = (props) => {
       const { data } = response;
       if (data) {
         const { transactions } = data;
-        
         setTransactions(transactions);
       }
     });
@@ -37,7 +34,7 @@ const TransactionsComponent = (props) => {
     <>
       <Row>
         <Col offset={20}>
-          <Filters filters={filters} action={asyncFetchTransactions} />
+          <Filters filters={filters} setFilters={setFilters} action={asyncFetchTransactions} />
         </Col>
       </Row>
       <Row>
