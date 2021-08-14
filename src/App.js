@@ -11,7 +11,6 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  BarsOutlined,
   BankOutlined,
   HomeOutlined,
   PieChartOutlined,
