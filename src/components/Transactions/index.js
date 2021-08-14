@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Col, Layout, Row, } from 'antd';
+import { Col, DatePicker, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
 import Balance from '../Balance';
@@ -10,19 +10,24 @@ import TagInsights from '../TagInsights';
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions, } from '../../ws/BalanceAPI';
 
+const { RangePicker } = DatePicker;
+
 const TransactionsComponent = (props) => {
+
+  const [filters, setFilters] = useState(props.filters);
   
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     asyncFetchTransactions();
-  }, [props.filters]);
+  },[]);
 
   const asyncFetchTransactions = () => {
-    fetchTransactions(props.axios, props.filters, response => {
+    fetchTransactions(props.axios, filters, response => {
       const { data } = response;
       if (data) {
         const { transactions } = data;
+        
         setTransactions(transactions);
       }
     });
@@ -32,12 +37,12 @@ const TransactionsComponent = (props) => {
     <>
       <Row>
         <Col offset={20}>
-          <Filters filters={props.filters} action={asyncFetchTransactions} />
+          <Filters filters={filters} action={asyncFetchTransactions} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Balance filters={props.filters} />
+          <Balance filters={filters} />
         </Col>
       </Row>
       <Row className="secction">
@@ -45,7 +50,7 @@ const TransactionsComponent = (props) => {
           <TagInsights
             filters={{
               reportType: "group_by_tag",
-              ...props.filters
+              ...filters
             }}
           />
         </Col>
@@ -54,7 +59,7 @@ const TransactionsComponent = (props) => {
         <Col span={24}>
           <Layout.Content className="site-layout-background">
             {transactions ?
-              <TransactionTable items={transactions} accountId={props.filters.accountId} refresh={() => asyncFetchTransactions()} />
+              <TransactionTable items={transactions} accountId={filters.accountId} refresh={() => asyncFetchTransactions()} />
             : <Loader /> }
           </Layout.Content>
         </Col>

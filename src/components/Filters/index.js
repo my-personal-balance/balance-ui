@@ -3,20 +3,32 @@ import { DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
 
+const PeriodType = {
+  CUSTOM: 'custom',
+  CURRENT_MONTH: 'current_month',
+};
+
 const Filters = (props) => {
 
   const [filters, setFilters] = useState(props.filters);
 
-  useEffect(() => {
-    setFilters(props.filters);
-  }, [props.filters]);
-
   const handleRangePickerChange = (_, stringDates) => {
-    const updatedFilters = filters;
-    updatedFilters.periodType = "custom";
-    updatedFilters.startDate = stringDates[0];
-    updatedFilters.endDate = stringDates[1];
-    setFilters(updatedFilters);
+    const startDate = stringDates[0];
+    const endDate = stringDates[1];
+
+    if (startDate && endDate) {
+      const updatedFilters = filters;
+      updatedFilters.periodType = PeriodType.CUSTOM;
+      updatedFilters.startDate = startDate;
+      updatedFilters.endDate = endDate;
+      setFilters(updatedFilters);
+    } else {
+      const updatedFilters = filters;
+      updatedFilters.periodType = PeriodType.CURRENT_MONTH;
+      updatedFilters.startDate = null;
+      updatedFilters.endDate = null;
+      setFilters(updatedFilters);
+    }
   }
 
   const onOpenChange = (isOpen) => {
