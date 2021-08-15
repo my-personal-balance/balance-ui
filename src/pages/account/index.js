@@ -6,6 +6,7 @@ import {
 
 import TransactionsComponent from '../../components/Transactions';
 
+import { PeriodType } from '../../components/Filters';
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccount, deleteAccount } from '../../ws/BalanceAPI';
 import { openNotificationWithIcon } from '../../utils/constants';
@@ -62,7 +63,12 @@ const Account = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <TransactionsComponent filters={{periodType: "current_month", accountId: accountId}} />
+          <TransactionsComponent
+            filters={{
+              periodType: PeriodType.CURRENT_MONTH,
+              accountId: accountId
+            }}
+          />
         </Col>
       </Row>
     </>

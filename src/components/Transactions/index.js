@@ -12,8 +12,7 @@ import { fetchTransactions, } from '../../ws/BalanceAPI';
 
 const TransactionsComponent = (props) => {
 
-  const [filters, setFilters] = useState(props.filters);
-  
+  const [filters, setFilters] = useState(props.filters);  
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -30,11 +29,23 @@ const TransactionsComponent = (props) => {
     });
   }
 
+  const addFilters = (addedFilter) => {
+    Object.keys(addedFilter).map(k => filters[k] = addedFilter[k]);
+    setFilters(filters);
+    asyncFetchTransactions();
+  }
+
+  const removeFilters = (removedFilter) => {
+    delete filters[removedFilter];
+    setFilters(filters);
+    asyncFetchTransactions();
+  }
+
   return (
     <>
       <Row>
         <Col offset={20}>
-          <Filters filters={filters} setFilters={setFilters} action={asyncFetchTransactions} />
+          <Filters filters={filters} addFilters={addFilters} />
         </Col>
       </Row>
       <Row>
@@ -49,6 +60,8 @@ const TransactionsComponent = (props) => {
               reportType: "group_by_tag",
               ...filters
             }}
+            addFilters={addFilters}
+            removeFilters={removeFilters}
           />
         </Col>
       </Row>

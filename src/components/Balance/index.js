@@ -22,7 +22,7 @@ const Balance = (props) => {
 
   useEffect(() => {
     asyncFetchBalance();
-  },[filters.periodType, filters.startDate, filters.endDate]);
+  },[filters.periodType, filters.startDate, filters.endDate, filters.tagId]);
 
   const asyncFetchBalance = () => {
     fetchBalance(props.axios, filters, response => {

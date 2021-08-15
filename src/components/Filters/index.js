@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
 
-const PeriodType = {
+export const PeriodType = {
   CUSTOM: 'custom',
   CURRENT_MONTH: 'current_month',
 };
 
 const Filters = (props) => {
+
+  const [filters, setFilters] = useState(props.filters);
 
   const handleRangePickerChange = (_, stringDates) => {
     const startDate = stringDates[0];
@@ -18,19 +21,19 @@ const Filters = (props) => {
       updatedFilters.periodType = PeriodType.CUSTOM;
       updatedFilters.startDate = startDate;
       updatedFilters.endDate = endDate;
-      props.setFilters(updatedFilters);
+      setFilters(updatedFilters);
     } else {
       const updatedFilters = props.filters;
       updatedFilters.periodType = PeriodType.CURRENT_MONTH;
       updatedFilters.startDate = null;
       updatedFilters.endDate = null;
-      props.setFilters(updatedFilters);
+      setFilters(updatedFilters);
     }
   }
 
   const onOpenChange = (isOpen) => {
     if (!isOpen) {
-      props.action();
+      props.addFilters(filters);
     }
   }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Card, Col, Row, Typography, Table } from 'antd';
+import { Button, Card, Col, Row, Space, Tag, Table, Typography, } from 'antd';
 import { Pie } from '@ant-design/charts';
 
 import { fetchReportTransactions, } from '../../ws/BalanceAPI';
@@ -10,13 +10,14 @@ import './index.css';
 
 const TagInsights = (props) => {
 
-  const { filters } = props;
+  const { filters, addFilters, removeFilters } = props;
 
   const [data, setData] = useState(undefined);
+  const [tag, setTag] = useState(undefined);
 
   useEffect(() => {
     asyncFetchReportTransaction();
-  },[filters.periodType, filters.startDate, filters.endDate]);
+  },[filters.periodType, filters.startDate, filters.endDate, filters.tagId]);
 
   const asyncFetchReportTransaction = () => {
     fetchReportTransactions(props.axios, filters, response => {
@@ -35,15 +36,18 @@ const TagInsights = (props) => {
         });
 
         report = report.sort(function(a, b){return b.value - a.value});
-
         setData(report);
+        if (filters.tagId) {
+          items.forEach(item => {
+            setTag({
+              label: item.tag.value,
+              id: item.tag.id,
+            });
+          });
+        }
       }
     });
   }
-
-  const filterByTag = (tagId) => {
-    console.log(tagId);
-  } 
 
   const transactionType = "EXPENSE";
   const displayClassName = transactionType === "EXPENSE" ? "expense-value" : "income-value";
@@ -71,7 +75,7 @@ const TagInsights = (props) => {
       key: "label",
       render: (label, record) => {
         return (
-          <Button className="tag-report-pie-button" type="link" onClick={() => filterByTag(record.id)}>{label}</Button>
+          <Button className="tag-report-pie-button" type="link" onClick={() => addFilters({ tagId: record.id })}>{label}</Button>
         );
       }
     },
@@ -91,8 +95,11 @@ const TagInsights = (props) => {
   return (
     <Card>
       <Row>
-        <Col>
+        <Col span={4}>
           <Typography.Title level={5}>Expenses</Typography.Title>
+        </Col>
+        <Col>
+        { tag !== undefined ? <Tag closable onClose={() => { removeFilters("tagId"); setTag(undefined); }} >{tag.label}</Tag> : <></> }
         </Col>
       </Row>
       <Row>
