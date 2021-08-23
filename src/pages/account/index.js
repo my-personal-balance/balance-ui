@@ -66,7 +66,7 @@ const Account = (props) => {
           <TransactionsComponent
             filters={{
               periodType: PeriodType.CURRENT_MONTH,
-              accountId: accountId
+              accountId: parseInt(accountId)
             }}
           />
         </Col>

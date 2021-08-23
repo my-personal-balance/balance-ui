@@ -30,18 +30,18 @@ const TagInsights = (props) => {
         let report = items.map(item => {
           return {
             value: item["EXPENSE"],
-            label: item.tag.value,
-            id: item.tag.id,
+            label: item.tag ? item.tag.value : "Untagged",
+            id: item.tag ? item.tag.id : 0,
           }
         });
 
         report = report.sort(function(a, b){return b.value - a.value});
         setData(report);
-        if (filters.tagId) {
+        if (filters.tagId || filters.tagId === 0) {
           items.forEach(item => {
             setTag({
-              label: item.tag.value,
-              id: item.tag.id,
+              label: item.tag ? item.tag.value : "Untagged",
+              id: item.tag ? item.tag.id : 0,
             });
           });
         }
@@ -129,7 +129,7 @@ const TagInsights = (props) => {
                           <strong>TOTAL</strong>
                       </Table.Summary.Cell>
                       <Table.Summary.Cell align="right">
-                        <span className={displayClassName}>{signal} {total}</span>
+                        <span className={displayClassName}>{signal} {total.toFixed(2)}</span>
                       </Table.Summary.Cell>
                     </Table.Summary.Row>
                   </>

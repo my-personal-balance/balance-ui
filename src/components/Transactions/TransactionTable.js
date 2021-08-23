@@ -161,9 +161,9 @@ const TransactionTable = (props) => {
       title: "Category",
       dataIndex: "tag",
       key: "tag", 
-      render: (tag, record) => (
-        <Tag key={record.id}>{tag ? tag.value : '' }</Tag>
-      ),
+      render: (tag, record) => {
+        return tag ? (<Tag key={record.id}>{tag.value}</Tag>) : (<></>);
+      },
     },
     {
       title: "Account",
