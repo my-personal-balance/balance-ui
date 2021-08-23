@@ -12,6 +12,8 @@ import { fetchTransactions, } from '../../ws/BalanceAPI';
 
 const TransactionsComponent = (props) => {
 
+  const { hideTagInsights } = props;
+
   const [filters, setFilters] = useState(props.filters);  
   const [transactions, setTransactions] = useState([]);
 
@@ -53,18 +55,20 @@ const TransactionsComponent = (props) => {
           <Balance filters={filters} />
         </Col>
       </Row>
-      <Row className="secction">
-        <Col span={8}>
-          <TagInsights
-            filters={{
-              reportType: "group_by_tag",
-              ...filters
-            }}
-            addFilters={addFilters}
-            removeFilters={removeFilters}
-          />
-        </Col>
-      </Row>
+      { hideTagInsights ? <></> :
+        <Row className="secction">
+          <Col span={8}>
+            <TagInsights
+              filters={{
+                reportType: "group_by_tag",
+                ...filters
+              }}
+              addFilters={addFilters}
+              removeFilters={removeFilters}
+            />
+          </Col>
+        </Row>
+      }
       <Row className="secction">
         <Col span={24}>
           <Layout.Content className="site-layout-background">

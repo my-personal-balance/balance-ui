@@ -65,9 +65,9 @@ const Account = (props) => {
         <Col span={24}>
           <TransactionsComponent
             filters={{
-              periodType: PeriodType.CURRENT_MONTH,
               accountId: parseInt(accountId)
             }}
+            hideTagInsights={true}
           />
         </Col>
       </Row>
