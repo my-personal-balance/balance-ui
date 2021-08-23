@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Col, Layout, Row, Typography } from 'antd';
+import { Col, Descriptions, Layout, Row, Typography } from 'antd';
 
 import Loader from '../../components/Loader';
 
@@ -38,11 +38,6 @@ class Settings extends Component {
         >
           <Row>
             <Col>
-              <Typography.Title level={4}>User</Typography.Title>  
-            </Col>
-          </Row>
-          <Row>
-            <Col>
               <UserInfo user={this.state.user} />
             </Col>
           </Row>
@@ -57,14 +52,10 @@ export default withAxios(Settings);
 const UserInfo = ({ user }) => {
   if (user) {
     return (
-      <>
-        <Row>
-          <Col>{user.name}</Col>
-        </Row>
-        <Row>
-          <Col>{user.email}</Col>
-        </Row>
-      </>
+      <Descriptions title="User">
+        <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
+        <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
+      </Descriptions>
     )
   } else {
     return (<Loader />)
