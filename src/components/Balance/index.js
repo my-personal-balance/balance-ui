@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Col, Row } from 'antd';
 import {
   ArrowUpOutlined,
+  ArrowDownOutlined,
   BankOutlined,
 } from '@ant-design/icons';
 
@@ -52,7 +53,7 @@ const Balance = (props) => {
           value={incomes}
           color="#51b44f"
           icon={<ArrowUpOutlined />}
-          sign="+"
+          prefix="+"
         />
       </Col>
       <Col span={8}>
@@ -60,8 +61,8 @@ const Balance = (props) => {
           title="Expense"
           value={expenses}
           color="#e64b30"
-          icon={<ArrowUpOutlined />}
-          sign="-"
+          icon={<ArrowDownOutlined />}
+          prefix="-"
         />
       </Col>
     </Row>

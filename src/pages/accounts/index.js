@@ -66,6 +66,7 @@ class Accounts extends Component {
               value={this.state.balance}
               color="rgb(33, 150, 243)"
               icon={<EuroCircleOutlined />}
+              prefix="+"
             />
           </Col>
         </Row>
