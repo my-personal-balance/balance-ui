@@ -1,6 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 
-import { Button, Form, Input, Layout, Checkbox, Row, Col } from 'antd';
+import { Alert, Button, Checkbox, Col, Form, Input, Layout, Row } from 'antd';
 import {
   LockOutlined,
   UserOutlined,
@@ -11,6 +11,8 @@ import { signin } from '../../ws/BalanceAPI';
 const { Content } = Layout;
 
 const Login = (props) => {
+
+  const [ errorMessage, setErrorMessage ] = useState(null);
   
   const onFinish = (values) => {
     const authURI = props.authorizationEndpoint();
@@ -18,6 +20,12 @@ const Login = (props) => {
       const { data, error } = response;
       if (error) {
         console.log('Failed:', error);
+        setErrorMessage((<Alert
+          message="Authentication failed"
+          description="Error while validating the given email and password."
+          type="error"
+          showIcon
+        />));
       } else {
         console.log('Success:', data);
         const { accessToken } = data;
@@ -39,6 +47,7 @@ const Login = (props) => {
       <Content>
         <Row type="flex" justify="center" align="middle" style={{minHeight: '100vh'}}>
           <Col span={4}>
+            {errorMessage}
             <Form
               name="basic"
               onFinish={onFinish}
