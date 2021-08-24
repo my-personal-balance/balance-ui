@@ -66,6 +66,15 @@ const TagInsights = (props) => {
     label: {
       content: null
     },
+    statistic: {
+      content: {
+        formatter: (_, values) => {
+          let sum = 0.0;
+          values.forEach(v => sum += v.value);
+          return sum.toFixed(2);
+        }
+      }
+    }
   };
 
   const columns = [
