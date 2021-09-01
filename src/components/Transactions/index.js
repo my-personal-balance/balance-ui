@@ -14,7 +14,7 @@ const TransactionsComponent = (props) => {
 
   const { hideTagInsights } = props;
 
-  const [filters, setFilters] = useState(props.filters);  
+  const [filters, setFilters] = useState(props.filters); 
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {

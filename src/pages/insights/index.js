@@ -6,16 +6,13 @@ const Insights = () => (
   <>
     <Row>
       <Col>
-        <Typography.Title>Insights</Typography.Title>  
+        <Typography.Title>Insights</Typography.Title>
       </Col>
     </Row>
     <Row>
       <Col span={24}>
         <TransactionsComponent filters={{
-          accountId: null,
           periodType: "current_month",
-          startDate: null,
-          endDate: null,
         }} />
       </Col>
     </Row>

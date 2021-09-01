@@ -55,6 +55,7 @@ const UserInfo = ({ user }) => {
       <Descriptions title="User">
         <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
         <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
+        <Descriptions.Item label="Currency">{user.currency}</Descriptions.Item>
       </Descriptions>
     )
   } else {

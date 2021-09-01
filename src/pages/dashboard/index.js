@@ -1,20 +1,25 @@
-import { Col, Row, Typography } from 'antd';
+import { Col, Row, Typography, } from 'antd';
 
-import Balance from '../../components/Balance';
+import TransactionsComponent from "../../components/Transactions";
 
-const Dashboard = (props) => (
+const Dashboard = () => (
   <>
-      <Row>
-        <Col>
-          <Typography.Title>Dashboard</Typography.Title>
-        </Col>  
-      </Row>
-      <Row>
-        <Col span={24}>
-          <Balance filters={{ periodType: "current_month", }} />
-        </Col>
-      </Row>
-    </>
-)
+    <Row>
+      <Col>
+        <Typography.Title>Dashboard</Typography.Title>
+      </Col>
+    </Row>
+    <Row>
+      <Col span={24}>
+        <TransactionsComponent
+          hideTagInsights={true}
+          filters={{}}
+        />
+      </Col>
+    </Row>
+  </>
+);
 
 export default Dashboard;
+
+

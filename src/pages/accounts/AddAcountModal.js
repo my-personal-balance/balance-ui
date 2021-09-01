@@ -26,6 +26,7 @@ const AddAccountButton = (props) => {
     createAccount(props.axios, {
       alias: formRef.current.getFieldValue('alias'),
       type: formRef.current.getFieldValue('type'),
+      currency: formRef.current.getFieldValue('currency'),
     }, result => {
       const { error, data } = result;
       
@@ -76,11 +77,17 @@ const AddAccountButton = (props) => {
             <Input />
           </Form.Item>
           <Form.Item name="type" label="Account Type" rules={[{ required: true }]}>
-            <Select placeholder="Select a option and change input text above" allowClear>
+            <Select allowClear>
               <Option value="CHECKING">Checking</Option>
               <Option value="SAVINGS">Savings</Option>
               <Option value="INVESTMENTS">Investments</Option>
               <Option value="OTHERS">Others</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="currency" label="Currency">
+            <Select allowClear>
+              <Option value="EUR">EUR</Option>
+              <Option value="BRL">BRL</Option>
             </Select>
           </Form.Item>
         </Form>
