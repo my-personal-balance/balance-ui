@@ -12,7 +12,7 @@ import {
   MenuFoldOutlined,
   UserOutlined,
   BankOutlined,
-  HomeOutlined,
+  AppstoreOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
 
@@ -47,7 +47,7 @@ class App extends React.Component {
           <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
             <div className="logo">Personal Balance</div>
             <Menu theme="dark" mode="inline" >
-              <Menu.Item key="1" icon={<HomeOutlined />}>
+              <Menu.Item key="1" icon={<AppstoreOutlined />}>
                 <a href="/">Dashboard</a>
               </Menu.Item>
               <Menu.Item key="2" icon={<BankOutlined />}>

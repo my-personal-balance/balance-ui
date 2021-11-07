@@ -14,7 +14,11 @@ import {
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
+  SwapOutlined,
+  PlusOutlined,
+  MinusOutlined,
 } from '@ant-design/icons';
+import moment from 'moment';
 
 import AddTransaction from './AddTransaction';
 import TransactionBuilder from './TransactionBuilder';
@@ -130,7 +134,17 @@ const TransactionTable = (props) => {
   
   
   const columns = [
-    { title: 'Date', dataIndex: 'date', key: 'date', },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      render: (d, record) => {
+        let currentYear = new Date().getFullYear();
+        let transactionYear = new Date(d).getFullYear();
+        let format = transactionYear !== currentYear ? "D MMM YYYY": "D MMM";
+        return (<span>{moment(d).format(format)} </span>);
+      }
+    },
     {
       title: "Amount",
       dataIndex: "amount",
@@ -139,15 +153,27 @@ const TransactionTable = (props) => {
       render: (amount, record) => {
         const { transaction_type } = record;
 
-        let className = "expense-value";
-        let signal = "-";
-        if (transaction_type === "INCOME") {
-          className = "income-value";
-          signal = "+";
+        let className = null;
+        let signal = null;
+        switch(transaction_type) {
+          case "INCOME":
+            className = "income-value";
+            signal = <PlusOutlined style={{ color: "#51b44f", fontSize: "10px" }} />;
+            break;
+          case "TRANSFER":
+            className = "expense-value";
+            signal = <SwapOutlined style={{ color: "#e64b30", fontSize: "15px" }} />;
+            break;
+          default:
+            className = "expense-value";
+            signal = <MinusOutlined style={{ color: "#e64b30", fontSize: "10px" }} />;
         }
         
         return (
-          <span className={className}>{signal} {amount.toFixed(2)}</span>
+          <div>
+            <span>{signal} </span>
+            <span className={className}>{amount.toFixed(2)}</span>
+          </div>
         );
       }
     },
