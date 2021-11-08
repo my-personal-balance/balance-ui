@@ -15,8 +15,6 @@ import {
   EditOutlined,
   SearchOutlined,
   SwapOutlined,
-  PlusOutlined,
-  MinusOutlined,
 } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -158,22 +156,44 @@ const TransactionTable = (props) => {
         switch(transaction_type) {
           case "INCOME":
             className = "income-value";
-            signal = <PlusOutlined style={{ color: "#51b44f", fontSize: "10px" }} />;
+            signal = "+";
             break;
           case "TRANSFER":
             className = "expense-value";
-            signal = <SwapOutlined style={{ color: "#e64b30", fontSize: "15px" }} />;
+            signal = <SwapOutlined style={{ color: "#e64b30", fontSize: "12px" }} />;
             break;
           default:
             className = "expense-value";
-            signal = <MinusOutlined style={{ color: "#e64b30", fontSize: "10px" }} />;
+            signal = "-";
         }
         
         return (
           <div>
-            <span>{signal} </span>
+            <span className={className}>{signal} </span>
             <span className={className}>{amount.toFixed(2)}</span>
           </div>
+        );
+      }
+    },
+    {
+      title: "Balance",
+      dataIndex: "balance",
+      key: "balance",
+      align: "right",
+      render: (balance, record) => {
+        let className = null;
+        let signal = null;
+
+        if (balance >= 0.0) {
+          className = "income-value";
+          signal = "+";
+        } else {
+          className = "expense-value";
+          signal = "-";
+        }
+        
+        return (
+          <span className={className}>{signal} {balance.toFixed(2)}</span>
         );
       }
     },

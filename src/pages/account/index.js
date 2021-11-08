@@ -5,8 +5,6 @@ import {
 } from '@ant-design/icons';
 
 import TransactionsComponent from '../../components/Transactions';
-
-import { PeriodType } from '../../components/Filters';
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccount, deleteAccount } from '../../ws/BalanceAPI';
 import { openNotificationWithIcon } from '../../utils/constants';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Col, Card, Row, Typography } from 'antd';
 import {
@@ -11,68 +11,63 @@ import { fetchAccounts } from '../../ws/BalanceAPI';
 import BalanceCard from '../../components/Balance/BalanceCard';
 import AddAccountButton from './AddAcountModal';
 
-class Accounts extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      accounts: []  
-    }
-  }
+const Accounts = (props) => {
 
-  loadAccounts () {
-    fetchAccounts(this.props.axios, (response) => {
-      if (response) {
+  const [accounts, setAccounts] = useState([]);
+  const [balance, setBalance] = useState(0.0);
+
+  useEffect(() => {
+    asyncFetchAccounts();
+  },[]);
+
+  const asyncFetchAccounts = () => {
+    fetchAccounts(props.axios, response => {
+      if (response && response.data) {
         const { data } = response;
         const { accounts } = data;
-        this.setState({ accounts });
+        setAccounts(accounts);
 
-        let balance = 0.0;
+        let accountsBalance = 0.0;
         accounts.forEach(account => {
-          balance += account.balance;
+          accountsBalance += account.balance;
         });
-
-        this.setState({ balance });
+        setBalance(accountsBalance);
       }
     });
   }
 
-  componentDidMount() {
-    this.loadAccounts();
-  }
+  
+  return (
+    <>
+      <Row>
+        <Col>
+          <Typography.Title>Accounts</Typography.Title>
+        </Col>  
+      </Row>
+      <Row>
+        <Col>
+          <AddAccountButton refresh={() => this.loadAccounts()}/>
+        </Col>
+      </Row>
+      <Row className="secction">
+        <Col span={16}>
+          <Row>
+            <AccountsView accounts={accounts} />
+          </Row>
+        </Col>
+        <Col span={6} offset={2}>
+          <BalanceCard
+            title="Current balance >"
+            value={balance}
+            color="rgb(33, 150, 243)"
+            icon={<EuroCircleOutlined />}
+            prefix="+"
+          />
+        </Col>
+      </Row>
+    </>
+  );
 
-  render() {
-    return (
-      <>
-        <Row>
-          <Col>
-            <Typography.Title>Accounts</Typography.Title>
-          </Col>  
-        </Row>
-        <Row>
-          <Col>
-            <AddAccountButton refresh={() => this.loadAccounts()}/>
-          </Col>
-        </Row>
-        <Row className="secction">
-          <Col span={16}>
-            <Row>
-              <AccountsView accounts={this.state.accounts} />
-            </Row>
-          </Col>
-          <Col span={6} offset={2}>
-            <BalanceCard
-              title="Current balance >"
-              value={this.state.balance}
-              color="rgb(33, 150, 243)"
-              icon={<EuroCircleOutlined />}
-              prefix="+"
-            />
-          </Col>
-        </Row>
-      </>
-    );
-  }
 }
 
 export default withAxios(Accounts);
