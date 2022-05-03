@@ -101,7 +101,7 @@ const TransactionsComponent = (props) => {
         <Col span={24}>
           <Layout.Content className="site-layout-background">
             {transactions ?
-              <TransactionTable items={transactions} accountId={filters.accountId} refresh={() => asyncFetchTransactions()} />
+              <TransactionTable items={transactions} accountId={filters.accountId} tagId={filters.tagId} refresh={() => asyncFetchTransactions()} />
             : <Loader /> }
           </Layout.Content>
         </Col>

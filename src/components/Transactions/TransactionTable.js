@@ -29,7 +29,7 @@ import { openNotificationWithIcon } from '../../utils/constants';
 
 const TransactionTable = (props) => {
 
-  const { items, accountId, refresh } = props;
+  const { items, accountId, tagId, refresh } = props;
 
   const [accounts, setAccounts] = useState([]);
 
@@ -243,6 +243,11 @@ const TransactionTable = (props) => {
       ),
     },
   ];
+
+  /** If we have a tag selected we hide the balance column */
+  if (tagId !== undefined) {
+    delete columns[2];
+  }
 
   const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
   const [editTransaction, setEditTransaction] = useState(null);
