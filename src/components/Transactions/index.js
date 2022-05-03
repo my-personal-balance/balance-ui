@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react';
+import {
+  useLocation,
+  useHistory,
+} from "react-router-dom";
+
 import { Col, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
@@ -6,20 +11,24 @@ import Balance from '../Balance';
 import Loader from '../Loader';
 import TransactionTable from './TransactionTable';
 import TagInsights from '../TagInsights';
+import TagTrendChart from '../TagTrendChart';
 
 import { withAxios } from '../../container/Authenticated';
 import { fetchTransactions, } from '../../ws/BalanceAPI';
 
 const TransactionsComponent = (props) => {
 
-  const { hideTagInsights } = props;
+  const { hideTagInsights, } = props;
 
   const [filters, setFilters] = useState(props.filters); 
   const [transactions, setTransactions] = useState([]);
 
+  const location = useLocation();
+  const history = useHistory();
+
   useEffect(() => {
     asyncFetchTransactions();
-  },[]);
+  },[location.search]);
 
   const asyncFetchTransactions = () => {
     fetchTransactions(props.axios, filters, response => {
@@ -32,15 +41,25 @@ const TransactionsComponent = (props) => {
   }
 
   const addFilters = (addedFilter) => {
-    Object.keys(addedFilter).map(k => filters[k] = addedFilter[k]);
+    console.log(addedFilter);
+    let searchParams = new URLSearchParams(location.search);
+    Object.keys(addedFilter).forEach(k => {
+      filters[k] = addedFilter[k];
+      searchParams.set(k, addedFilter[k]);
+      history.push({ search: searchParams.toString() });
+    });
+    
     setFilters(filters);
-    asyncFetchTransactions();
   }
 
   const removeFilters = (removedFilter) => {
     delete filters[removedFilter];
+
+    let searchParams = new URLSearchParams(location.search);
+    searchParams.delete(removedFilter);
+    history.push({ search: searchParams.toString() });
+    
     setFilters(filters);
-    asyncFetchTransactions();
   }
 
   return (
@@ -56,7 +75,8 @@ const TransactionsComponent = (props) => {
         </Col>
       </Row>
       { hideTagInsights ? <></> :
-        <Row className="secction">
+        
+        <Row gutter={16} className="balance">
           <Col span={8}>
             <TagInsights
               filters={{
@@ -65,6 +85,14 @@ const TransactionsComponent = (props) => {
               }}
               addFilters={addFilters}
               removeFilters={removeFilters}
+            />
+          </Col>
+          <Col span={16}>
+            <TagTrendChart
+              filters={{
+                reportType: "group_by_tag",
+                ...filters
+              }}
             />
           </Col>
         </Row>
@@ -84,5 +112,3 @@ const TransactionsComponent = (props) => {
 }
 
 export default withAxios(TransactionsComponent);
-
-
