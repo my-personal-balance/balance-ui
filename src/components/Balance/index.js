@@ -18,8 +18,8 @@ const Balance = (props) => {
   const { filters } = props;
 
   const [balance, setBalance] = useState(0.0);
-  const [incomes, setIncomes] = useState(0.0);
-  const [expenses, setExpenses] = useState(0.0);
+  const [inflow, setInflow] = useState(0.0);
+  const [outflow, setOutflow] = useState(0.0);
 
   useEffect(() => {
     asyncFetchBalance();
@@ -31,8 +31,8 @@ const Balance = (props) => {
       if (data) {
         const { balance, incomes, expenses } = data;
         setBalance(balance);
-        setIncomes(incomes);
-        setExpenses(expenses);
+        setInflow(incomes);
+        setOutflow(expenses);
       }
     });
   }
@@ -49,8 +49,8 @@ const Balance = (props) => {
       </Col>
       <Col span={8}>
         <BalanceCard
-          title="Income"
-          value={incomes}
+          title="Inflow"
+          value={inflow}
           color="#51b44f"
           icon={<ArrowUpOutlined />}
           prefix="+"
@@ -58,8 +58,8 @@ const Balance = (props) => {
       </Col>
       <Col span={8}>
         <BalanceCard
-          title="Expense"
-          value={expenses}
+          title="Outflow"
+          value={outflow}
           color="#e64b30"
           icon={<ArrowDownOutlined />}
           prefix="-"

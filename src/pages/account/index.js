@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import {
+  useLocation,
+} from "react-router-dom";
 import { Button, Col, Row, Typography, Popconfirm } from 'antd';
 import {
   DeleteOutlined,
@@ -8,16 +11,27 @@ import TransactionsComponent from '../../components/Transactions';
 import { withAxios } from '../../container/Authenticated';
 import { fetchAccount, deleteAccount } from '../../ws/BalanceAPI';
 import { openNotificationWithIcon } from '../../utils/constants';
+import { searchParser } from '../../utils/searchParser';
 
 const Account = (props) => {
 
   const { accountId } = props.match.params;
 
+  const location = useLocation();
+
   const [title, setTitle] = useState(null);
+  const [filters, setFilters] = useState(null);
 
   useEffect(() => {
+    loadInitialFilters();
     asyncFetchAccount();
-  },[]);
+  },[location.search]);
+
+  const loadInitialFilters = () => {
+    let querySearch = searchParser(location.search);
+    querySearch = Object.assign({}, { accountId: parseInt(accountId), }, querySearch);
+    setFilters(querySearch);
+  }
 
   const asyncFetchAccount = () => {
     fetchAccount(props.axios, accountId, resp => {
@@ -61,12 +75,10 @@ const Account = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <TransactionsComponent
-            filters={{
-              accountId: parseInt(accountId)
-            }}
+          { filters ? <TransactionsComponent
+            filters={filters}
             hideTagInsights={true}
-          />
+          /> : <></> }
         </Col>
       </Row>
     </>

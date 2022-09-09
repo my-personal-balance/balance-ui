@@ -20,17 +20,20 @@ const TransactionsComponent = (props) => {
 
   const { hideTagInsights, } = props;
 
-  const [filters, setFilters] = useState(props.filters); 
-  const [transactions, setTransactions] = useState([]);
+  let initFilters = props.filters;
 
   const location = useLocation();
   const history = useHistory();
+
+  const [filters, setFilters] = useState(initFilters); 
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     asyncFetchTransactions();
   },[location.search]);
 
   const asyncFetchTransactions = () => {
+debugger;
     fetchTransactions(props.axios, filters, response => {
       const { data } = response;
       if (data) {
@@ -41,25 +44,22 @@ const TransactionsComponent = (props) => {
   }
 
   const addFilters = (addedFilter) => {
-    console.log(addedFilter);
-    let searchParams = new URLSearchParams(location.search);
-    Object.keys(addedFilter).forEach(k => {
-      filters[k] = addedFilter[k];
-      searchParams.set(k, addedFilter[k]);
-      history.push({ search: searchParams.toString() });
-    });
-    
-    setFilters(filters);
+    let newFilters = Object.assign({}, filters, addedFilter);
+    updateFilters(newFilters);
   }
 
   const removeFilters = (removedFilter) => {
     delete filters[removedFilter];
+    updateFilters(filters);
+  }
 
-    let searchParams = new URLSearchParams(location.search);
-    searchParams.delete(removedFilter);
+  const updateFilters = (newFilters) => {
+    let searchParams = new URLSearchParams();
+    Object.keys(newFilters).forEach(k => {
+      searchParams.set(k, newFilters[k]);
+    });
     history.push({ search: searchParams.toString() });
-    
-    setFilters(filters);
+    setFilters(newFilters);
   }
 
   return (
