@@ -133,7 +133,7 @@ const TransactionTable = (props) => {
   
   const columns = [
     {
-      title: 'Date',
+      title: 'DATE',
       dataIndex: 'date',
       key: 'date',
       render: (d, record) => {
@@ -144,7 +144,7 @@ const TransactionTable = (props) => {
       }
     },
     {
-      title: "Amount",
+      title: "AMOUNT",
       dataIndex: "amount",
       key: "amount",
       align: "right",
@@ -176,7 +176,7 @@ const TransactionTable = (props) => {
       }
     },
     {
-      title: "Balance",
+      title: "NET WORTH",
       dataIndex: "balance",
       key: "balance",
       align: "right",
@@ -198,13 +198,13 @@ const TransactionTable = (props) => {
       }
     },
     {
-      title: 'Description',
+      title: 'DESCRIPTION',
       dataIndex: 'description',
       key: 'description',
       ...getColumnSearchProps('description'),
     },
     { 
-      title: "Category",
+      title: "CATEGORY",
       dataIndex: "tag",
       key: "tag", 
       render: (tag, record) => {
@@ -212,7 +212,7 @@ const TransactionTable = (props) => {
       },
     },
     {
-      title: "Account",
+      title: "ACCOUNT",
       dataIndex: "account",
       key: "account",
       render: account => (
@@ -220,7 +220,7 @@ const TransactionTable = (props) => {
       ),
     },
     {
-      title: 'Action',
+      title: 'ACTIONS',
       dataIndex: '',
       key: 'x',
       render: (x, record) => (

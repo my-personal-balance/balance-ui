@@ -104,7 +104,7 @@ const TagInsights = (props) => {
   return (
     <Card>
       <Row>
-        <Col span={4}>
+        <Col span={7}>
           <Typography.Title level={5}>Expenses</Typography.Title>
         </Col>
         <Col>

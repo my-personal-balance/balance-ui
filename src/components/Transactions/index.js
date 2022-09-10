@@ -33,7 +33,6 @@ const TransactionsComponent = (props) => {
   },[location.search]);
 
   const asyncFetchTransactions = () => {
-debugger;
     fetchTransactions(props.axios, filters, response => {
       const { data } = response;
       if (data) {
