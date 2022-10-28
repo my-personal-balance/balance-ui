@@ -6,7 +6,7 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 
-import { uploadTransactions } from '../../ws/BalanceAPI';
+import { uploadTransactions } from '../../ws/transactions';
 import { withAxios } from '../../container/Authenticated';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
@@ -97,7 +97,7 @@ const UploadTransactions = (props) => {
       </Row>
       <Modal
         title="Upload transactions"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={confirmLoading}

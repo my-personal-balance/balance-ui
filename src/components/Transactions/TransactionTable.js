@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   Col,
@@ -15,15 +15,18 @@ import {
   EditOutlined,
   SearchOutlined,
   SwapOutlined,
+  UnorderedListOutlined,
 } from '@ant-design/icons';
 import moment from 'moment';
 
 import AddTransaction from './AddTransaction';
 import TransactionBuilder from './TransactionBuilder';
+import SplitTransactionBuilder from './SplitTransactionBuilder';
 import UploadTransactions from './UploadTransactions';
 import EditMultipleTransactions from './EditMultipleTransactions';
 
-import { fetchAccounts, deleteTransaction, updateTransaction } from '../../ws/BalanceAPI';
+import { fetchAccounts } from '../../ws/accounts';
+import { deleteTransaction, updateTransaction } from '../../ws/transactions';
 import { withAxios } from '../../container/Authenticated';
 import { openNotificationWithIcon } from '../../utils/constants';
 
@@ -231,6 +234,12 @@ const TransactionTable = (props) => {
           >
             <EditOutlined />
           </Button>
+          <Button
+            type="link"
+            onClick={() => splitTransactionItem(record)}
+          >
+            <UnorderedListOutlined />
+          </Button>
           <Popconfirm
             title="Delete this transaction?"
             okText="Yes"
@@ -250,12 +259,18 @@ const TransactionTable = (props) => {
   }
 
   const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
+  const [viewSplitTrasactionBuilder, setViewSplitTrasactionBuilder] = useState(false);
   const [editTransaction, setEditTransaction] = useState(null);
   const [selectedTransactions, setSelectedTransactions] = useState([]);
 
   const editTransactionItem = (transaction) => {
     setEditTransaction(transaction);
     setViewTrasactionBuilder(true);
+  }
+
+  const splitTransactionItem = (transaction) => {
+    setEditTransaction(transaction);
+    setViewSplitTrasactionBuilder(true);
   }
 
   const rowSelection = {
@@ -320,6 +335,14 @@ const TransactionTable = (props) => {
         visible={viewTrasactionBuilder}
         onOk={updateTransactionItem}
         onCancel={()=> setViewTrasactionBuilder(false)}
+        accounts={accounts}
+        transaction={editTransaction}
+      />
+      <SplitTransactionBuilder
+        title="Split Transaction"
+        visible={viewSplitTrasactionBuilder}
+        onOk={updateTransactionItem}
+        onCancel={()=> setViewSplitTrasactionBuilder(false)}
         accounts={accounts}
         transaction={editTransaction}
       />

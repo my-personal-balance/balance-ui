@@ -9,7 +9,7 @@ import {
 import BalanceCard from './BalanceCard';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchBalance, } from '../../ws/BalanceAPI';
+import { fetchBalance, } from '../../ws/balance';
 
 import "./index.css";
 

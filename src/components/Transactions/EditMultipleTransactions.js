@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Col, Row, Tooltip } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-
 import { withAxios } from '../../container/Authenticated';
-import { updateTransactions } from '../../ws/BalanceAPI';
+import { updateTransactions } from '../../ws/transactions';
 import { openNotificationWithIcon } from '../../utils/constants';
 import TransactionBuilder from './TransactionBuilder';
 

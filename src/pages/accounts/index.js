@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchAccounts } from '../../ws/BalanceAPI';
+import { fetchAccounts } from '../../ws/accounts';
 
 import BalanceCard from '../../components/Balance/BalanceCard';
 import AddAccountButton from './AddAcountModal';
@@ -35,7 +35,6 @@ const Accounts = (props) => {
       }
     });
   }
-
   
   return (
     <>
@@ -85,7 +84,7 @@ const AccountsView = ({ accounts }) => (
 );
 
 const Account = ({ account }) => (
-  <Link to={`/accounts/${account.id}/transactions`}>
+  <Link to={`/accounts/${account.id}`}>
     <Card className="balance-card">
       <Row>
         <Col span={12}>

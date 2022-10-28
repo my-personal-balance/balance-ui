@@ -6,7 +6,7 @@ import {
 import moment from 'moment';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchBalance } from '../../ws/BalanceAPI';
+import { fetchBalance } from '../../ws/balance';
 
 import './index.css';
 

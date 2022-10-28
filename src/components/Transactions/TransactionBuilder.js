@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
-
-import moment from 'moment';
-
 import { withAxios } from '../../container/Authenticated';
-import { fetchTags } from '../../ws/BalanceAPI';
+import { fetchTags } from '../../ws/tags';
 
 const { Option } = Select;
 
@@ -48,7 +46,7 @@ const TransactionBuilder = (props) => {
   return (
     <Modal
       title={title}
-      visible={visible}
+      open={visible}
       onOk={() => onOk(transaction, formRef)}
       onCancel={onCancel}
     >

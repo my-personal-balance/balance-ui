@@ -41,5 +41,3 @@ const Insights = (props) => {
 }
 
 export default Insights;
-
-

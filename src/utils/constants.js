@@ -11,7 +11,6 @@ export const formItemLayout = {
   },
 };
 
-
 export const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
       message: message,

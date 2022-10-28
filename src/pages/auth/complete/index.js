@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import {
+  redirect,
+  useSearchParams,
+} from "react-router-dom";
 
-export class LoginRedirect extends Component {
-  render() {
-    this.props.setAccessToken();
-    return <Redirect to={{
-      pathname: "/",
-      state: { from: this.props.locations }
-    }} />
-  }
+export const LoginRedirect = (props) => {
+  let [searchParams,] = useSearchParams();
+  let accessToken = searchParams.get("accessToken");
+  props.setAccessToken(accessToken);
+  redirect("/");
 };

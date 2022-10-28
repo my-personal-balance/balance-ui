@@ -1,50 +1,48 @@
-import React, { Component } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Col, Descriptions, Layout, Row, Typography } from 'antd';
 
 import Loader from '../../components/Loader';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchUser } from '../../ws/BalanceAPI';
+import { fetchUser } from '../../ws/users';
 
-class Settings extends Component {
+const Settings = (props) => {
   
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null  
-    }
-  }
+  const [user, setUser] = useState(null);
 
-  componentDidMount () {
-    fetchUser(this.props.axios, response => {
+  useEffect(() => {
+    asyncFetchUser();
+  }, []);
+
+  const asyncFetchUser = () => {
+    fetchUser(props.axios, response => {
       if (response) {
         const { data } = response;
-        this.setState({user: data});
+        setUser(data);
       }
     });
   }
 
-  render() {
-    return (
-      <>
-        <Typography.Title>Settings</Typography.Title>
-        <Layout.Content
-          className="site-layout-background"
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-          }}
-        >
-          <Row>
-            <Col>
-              <UserInfo user={this.state.user} />
-            </Col>
-          </Row>
-        </Layout.Content>
-      </>
-    );
-  }
+  
+  return (
+    <>
+      <Typography.Title>Settings</Typography.Title>
+      <Layout.Content
+        className="site-layout-background"
+        style={{
+          margin: '24px 16px',
+          padding: 24,
+        }}
+      >
+        <Row>
+          <Col>
+            <UserInfo user={user} />
+          </Col>
+        </Row>
+      </Layout.Content>
+    </>
+  );
 }
 
 export default withAxios(Settings);
@@ -62,4 +60,3 @@ const UserInfo = ({ user }) => {
     return (<Loader />)
   }
 }
-

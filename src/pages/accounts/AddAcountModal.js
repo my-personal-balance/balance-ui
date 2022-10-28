@@ -5,7 +5,7 @@ import {
   PlusOutlined,
 } from '@ant-design/icons';
 
-import { createAccount } from '../../ws/BalanceAPI';
+import { createAccount } from '../../ws/accounts';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 import { withAxios } from '../../container/Authenticated';
 
@@ -68,7 +68,7 @@ const AddAccountButton = (props) => {
       >Add account</Button>
       <Modal
         title="New account"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >

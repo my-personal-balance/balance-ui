@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
-  useLocation,
-  useHistory,
+  useSearchParams,
 } from "react-router-dom";
 
 import { Col, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
 import Balance from '../Balance';
-import Loader from '../Loader';
 import TransactionTable from './TransactionTable';
 import TagInsights from '../TagInsights';
 import TagTrendChart from '../TagTrendChart';
 
 import { withAxios } from '../../container/Authenticated';
-import { fetchTransactions, } from '../../ws/BalanceAPI';
+import { fetchTransactions, } from '../../ws/transactions';
 
 const TransactionsComponent = (props) => {
 
@@ -22,15 +20,13 @@ const TransactionsComponent = (props) => {
 
   let initFilters = props.filters;
 
-  const location = useLocation();
-  const history = useHistory();
-
+  let [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(initFilters); 
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     asyncFetchTransactions();
-  },[location.search]);
+  },[searchParams]);
 
   const asyncFetchTransactions = () => {
     fetchTransactions(props.axios, filters, response => {
@@ -53,26 +49,18 @@ const TransactionsComponent = (props) => {
   }
 
   const updateFilters = (newFilters) => {
-    let searchParams = new URLSearchParams();
-    Object.keys(newFilters).forEach(k => {
-      searchParams.set(k, newFilters[k]);
-    });
-    history.push({ search: searchParams.toString() });
+    setSearchParams(newFilters);
     setFilters(newFilters);
   }
 
   return (
     <>
-      <Row>
-        <Col offset={20}>
+      <Row justify="end">
+        <Col>
           <Filters filters={filters} addFilters={addFilters} />
         </Col>
       </Row>
-      <Row>
-        <Col span={24}>
-          <Balance filters={filters} />
-        </Col>
-      </Row>
+      <Balance filters={filters} />
       { hideTagInsights ? <></> :
         
         <Row gutter={16} className="balance">
@@ -99,9 +87,12 @@ const TransactionsComponent = (props) => {
       <Row className="secction">
         <Col span={24}>
           <Layout.Content className="site-layout-background">
-            {transactions ?
-              <TransactionTable items={transactions} accountId={filters.accountId} tagId={filters.tagId} refresh={() => asyncFetchTransactions()} />
-            : <Loader /> }
+            <TransactionTable
+              items={transactions}
+              accountId={filters.accountId}
+              tagId={filters.tagId}
+              refresh={() => asyncFetchTransactions()}
+            />
           </Layout.Content>
         </Col>
       </Row>

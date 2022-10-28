@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Card, Col, Row, Tag, Table, Typography, } from 'antd';
 import { Pie } from '@ant-design/charts';
 
-import { fetchReportTransactions, } from '../../ws/BalanceAPI';
+import { fetchReportTransactions, } from '../../ws/reports';
 import { withAxios } from '../../container/Authenticated';
 import { openNotificationWithIcon } from '../../utils/constants';
 
@@ -17,7 +17,7 @@ const TagInsights = (props) => {
 
   useEffect(() => {
     asyncFetchReportTransaction();
-  },[filters.periodType, filters.startDate, filters.endDate, filters.tagId]);
+  },[filters]);
 
   const asyncFetchReportTransaction = () => {
     fetchReportTransactions(props.axios, filters, response => {

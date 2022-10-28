@@ -6,7 +6,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-import { signin } from '../../ws/BalanceAPI';
+import { signin } from '../../ws/signin';
 
 const { Content } = Layout;
 
@@ -19,7 +19,6 @@ const Login = (props) => {
     signin(props.axios, authURI, values, response => {
       const { data, error } = response;
       if (error) {
-        console.log('Failed:', error);
         setErrorMessage((<Alert
           message="Authentication failed"
           description="Error while validating the given email and password."
@@ -27,7 +26,6 @@ const Login = (props) => {
           showIcon
         />));
       } else {
-        console.log('Success:', data);
         const { accessToken } = data;
         if (accessToken) {
           const redirectUri = `${props.redirectUrl}?accessToken=${accessToken}`;
@@ -41,7 +39,6 @@ const Login = (props) => {
     console.log('Failed:', errorInfo);
   }
 
-  
   return (
     <Layout>
       <Content>

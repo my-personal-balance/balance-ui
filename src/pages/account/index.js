@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   useLocation,
+  useParams,
 } from "react-router-dom";
 import { Button, Col, Row, Typography, Popconfirm } from 'antd';
 import {
@@ -9,13 +10,13 @@ import {
 
 import TransactionsComponent from '../../components/Transactions';
 import { withAxios } from '../../container/Authenticated';
-import { fetchAccount, deleteAccount } from '../../ws/BalanceAPI';
+import { fetchAccount, deleteAccount } from '../../ws/accounts';
 import { openNotificationWithIcon } from '../../utils/constants';
 import { searchParser } from '../../utils/searchParser';
 
 const Account = (props) => {
 
-  const { accountId } = props.match.params;
+  const { accountId } = useParams();
 
   const location = useLocation();
 
