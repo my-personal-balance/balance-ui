@@ -2,28 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { Col, Descriptions, Layout, Row, Typography } from 'antd';
 
-import Loader from '../../components/Loader';
-
 import { withAxios } from '../../container/Authenticated';
 import { fetchUser } from '../../ws/users';
 
 const Settings = (props) => {
-  
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    asyncFetchUser();
-  }, []);
-
-  const asyncFetchUser = () => {
-    fetchUser(props.axios, response => {
-      if (response) {
-        const { data } = response;
-        setUser(data);
-      }
-    });
-  }
-
   
   return (
     <>
@@ -37,7 +19,7 @@ const Settings = (props) => {
       >
         <Row>
           <Col>
-            <UserInfo user={user} />
+            <UserInfo axios={props.axios} />
           </Col>
         </Row>
       </Layout.Content>
@@ -47,16 +29,36 @@ const Settings = (props) => {
 
 export default withAxios(Settings);
 
-const UserInfo = ({ user }) => {
-  if (user) {
-    return (
-      <Descriptions title="User">
-        <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
-        <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
-        <Descriptions.Item label="Currency">{user.currency}</Descriptions.Item>
-      </Descriptions>
-    )
-  } else {
-    return (<Loader />)
+const UserInfo = ({ axios }) => {
+
+  const user = useUser(axios);
+  
+  return (
+    <Descriptions title="User">
+      <Descriptions.Item label="Name">{user.name}</Descriptions.Item>
+      <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
+      <Descriptions.Item label="Currency">{user.currency}</Descriptions.Item>
+    </Descriptions>
+  );
+}
+
+const useUser = (axios) => {
+  
+  const [user, setUser] = useState({});
+  
+  useEffect(() => {
+// debugger;
+    asyncFetchUser();
+  }, []);
+
+  function asyncFetchUser() {
+    fetchUser(axios, response => {
+      if (response) {
+        const { data } = response;
+        setUser(data);
+      }
+    });
   }
+
+  return user;
 }
