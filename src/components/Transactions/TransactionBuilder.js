@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchTags } from '../../ws/tags';
 
 const { Option } = Select;

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Alert, Button, Checkbox, Col, Form, Input, Layout, Row } from 'antd';
 import {
   LockOutlined,
@@ -7,16 +6,24 @@ import {
 } from '@ant-design/icons';
 
 import { signin } from '../../ws/signin';
+import { useAuth, withAxios } from '../../container/AuthProvider';
 
 const { Content } = Layout;
 
-const Login = (props) => {
+const AUTHORIZATION_QUERY_PARAMETERS = {
+  redirect_uri: window.env.REACT_APP_REDIRECT_URI,
+};
+const AUTHORIZATION_ENDPOINT = `${window.env.REACT_APP_API_BASE_URL}/oauth2/token`;
+const STATE_KEY = 'oauth2-state';
 
-  const [ errorMessage, setErrorMessage ] = useState(null);
+const Login = ({ axios }) => {
+
+  const { login } = useAuth();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const authURI = getAuthorizationEndpoint();
   
   const onFinish = (values) => {
-    const authURI = props.authorizationEndpoint();
-    signin(props.axios, authURI, values, response => {
+    signin(axios, authURI, values, response => {
       const { data, error } = response;
       if (error) {
         setErrorMessage((<Alert
@@ -28,7 +35,8 @@ const Login = (props) => {
       } else {
         const { accessToken } = data;
         if (accessToken) {
-          const redirectUri = `${props.redirectUrl}?accessToken=${accessToken}`;
+          login(accessToken);
+          const redirectUri = `${AUTHORIZATION_QUERY_PARAMETERS.redirect_uri}?accessToken=${accessToken}`;
           window.location.replace(redirectUri);
         }
       }
@@ -81,4 +89,37 @@ const Login = (props) => {
   );
 }
 
-export default Login;
+export default withAxios(Login);
+
+const getAuthorizationEndpoint = () => {
+  const state = getRandomString();
+  sessionStorage.setItem(STATE_KEY, state);
+  return getAuthorizationUrl(state);
+}
+
+const getAuthorizationUrl = (state) => {
+  const params = {
+    ...AUTHORIZATION_QUERY_PARAMETERS,
+    state: state
+  };
+  const query = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join('&');
+  return `${AUTHORIZATION_ENDPOINT}?${query}`;
+}
+
+const getRandomString = (length = 20) => {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const chars = [];
+  if (window.crypto) {
+    const random_bytes = new Uint8Array(length);
+    window.crypto.getRandomValues(random_bytes);
+    for (const random_byte of random_bytes) {
+      chars.push(alphabet.charAt(random_byte % alphabet.length));
+    }
+  } else {
+    // insecure fallback used when window.crypto is not available e.g. during tests.
+    for (let i = 0; i < length; i++) {
+      chars.push(alphabet.charAt(Math.floor(Math.random() * Math.floor(alphabet.length))));
+    }
+  }
+  return chars.join('');
+}

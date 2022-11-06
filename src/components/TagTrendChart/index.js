@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Col, Row, Typography, } from 'antd';
 import { BidirectionalBar, Column } from '@ant-design/plots';
 import { fetchReportTrends, } from '../../ws/reports';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { openNotificationWithIcon } from '../../utils/constants';
 
 import './index.css';

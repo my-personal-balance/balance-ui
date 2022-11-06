@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Col, Row, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { createTransaction } from '../../ws/transactions';
 import { openNotificationWithIcon } from '../../utils/constants';
 import TransactionBuilder from './TransactionBuilder';

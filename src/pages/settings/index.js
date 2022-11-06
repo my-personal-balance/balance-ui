@@ -2,30 +2,27 @@ import { useEffect, useState } from 'react';
 
 import { Col, Descriptions, Layout, Row, Typography } from 'antd';
 
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchUser } from '../../ws/users';
 
-const Settings = (props) => {
-  
-  return (
-    <>
-      <Typography.Title>Settings</Typography.Title>
-      <Layout.Content
-        className="site-layout-background"
-        style={{
-          margin: '24px 16px',
-          padding: 24,
-        }}
-      >
-        <Row>
-          <Col>
-            <UserInfo axios={props.axios} />
-          </Col>
-        </Row>
-      </Layout.Content>
-    </>
-  );
-}
+const Settings = ({ axios }) => (
+  <>
+    <Typography.Title>Settings</Typography.Title>
+    <Layout.Content
+      className="site-layout-background"
+      style={{
+        margin: '24px 16px',
+        padding: 24,
+      }}
+    >
+      <Row>
+        <Col>
+          <UserInfo axios={axios} />
+        </Col>
+      </Row>
+    </Layout.Content>
+  </>
+)
 
 export default withAxios(Settings);
 
@@ -43,22 +40,25 @@ const UserInfo = ({ axios }) => {
 }
 
 const useUser = (axios) => {
-  
-  const [user, setUser] = useState({});
+
+  const [user, setUser] = useState({
+    name: null,
+    email: null,
+    currency: null,
+  });
   
   useEffect(() => {
-// debugger;
-    asyncFetchUser();
-  }, []);
+    const asyncFetchUser = () => {
+      fetchUser(axios, response => {
+        if (response) {
+          const { data } = response;
+          setUser(data);
+        }
+      });
+    }
 
-  function asyncFetchUser() {
-    fetchUser(axios, response => {
-      if (response) {
-        const { data } = response;
-        setUser(data);
-      }
-    });
-  }
+    asyncFetchUser();
+  }, [axios]);
 
   return user;
 }

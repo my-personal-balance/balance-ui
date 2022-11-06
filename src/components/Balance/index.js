@@ -8,7 +8,7 @@ import {
 
 import BalanceCard from './BalanceCard';
 
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchBalance, } from '../../ws/balance';
 
 import "./index.css";

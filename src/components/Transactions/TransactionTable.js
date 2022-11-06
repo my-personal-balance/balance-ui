@@ -27,7 +27,7 @@ import EditMultipleTransactions from './EditMultipleTransactions';
 
 import { fetchAccounts } from '../../ws/accounts';
 import { deleteTransaction, updateTransaction } from '../../ws/transactions';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { openNotificationWithIcon } from '../../utils/constants';
 
 const TransactionTable = (props) => {

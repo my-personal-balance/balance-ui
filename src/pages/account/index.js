@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 
 import TransactionsComponent from '../../components/Transactions';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchAccount, deleteAccount } from '../../ws/accounts';
 import { openNotificationWithIcon } from '../../utils/constants';
 import { searchParser } from '../../utils/searchParser';

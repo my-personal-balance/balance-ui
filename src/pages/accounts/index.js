@@ -5,7 +5,7 @@ import {
   EuroCircleOutlined,
 } from '@ant-design/icons';
 
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchAccounts } from '../../ws/accounts';
 
 import BalanceCard from '../../components/Balance/BalanceCard';

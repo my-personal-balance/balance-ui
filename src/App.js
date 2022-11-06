@@ -21,7 +21,9 @@ import Accounts from "./pages/accounts";
 import Account from "./pages/account";
 import Insights from "./pages/insights";
 import Settings from "./pages/settings";
-import { Authenticated } from "./container/Authenticated";
+import AuthProvider from "./container/AuthProvider";
+import Login from "./pages/login";
+import { LoginRedirect, LogoutRedirect } from "./pages/auth/complete";
 const { Header, Sider, Content } = Layout;
 
 const App = () => {
@@ -54,20 +56,31 @@ const App = () => {
       ],
     },
     {
+      path: "login",
+      element: <Login />,
+    },
+    {
+      path: "logout",
+      element: <LogoutRedirect />,
+    },
+    {
+      path: "auth/complete/",
+      element: <LoginRedirect />,
+    },
+    {
       path: "*",
       element: <Navigate replace to="/" />
     },
   ]);
 
   return (
-    <Authenticated>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </Authenticated>
+    </AuthProvider>
   );
 }
 
 function Root() {
-
   let [collapsed, setCollapsed] = useState(false);
 
   const toggle = () => {

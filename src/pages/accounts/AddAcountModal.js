@@ -7,7 +7,7 @@ import {
 
 import { createAccount } from '../../ws/accounts';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 
 const { Option } = Select;
 

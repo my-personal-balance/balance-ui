@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import { uploadTransactions } from '../../ws/transactions';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
 
 const { Option } = Select;

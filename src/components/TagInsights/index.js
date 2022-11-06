@@ -3,7 +3,7 @@ import { Button, Card, Col, Row, Tag, Table, Typography, } from 'antd';
 import { Pie } from '@ant-design/charts';
 
 import { fetchReportTransactions, } from '../../ws/reports';
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { openNotificationWithIcon } from '../../utils/constants';
 
 import './index.css';

@@ -11,7 +11,7 @@ import TransactionTable from './TransactionTable';
 import TagInsights from '../TagInsights';
 import TagTrendChart from '../TagTrendChart';
 
-import { withAxios } from '../../container/Authenticated';
+import { withAxios } from '../../container/AuthProvider';
 import { fetchTransactions, } from '../../ws/transactions';
 
 const TransactionsComponent = (props) => {
