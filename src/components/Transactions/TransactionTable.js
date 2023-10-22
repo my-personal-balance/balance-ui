@@ -86,6 +86,12 @@ const TransactionTable = (props) => {
     });
   };
 
+  const updateSplitTransactionItem = () => {
+    setViewSplitTrasactionBuilder(false);
+    openNotificationWithIcon('success', "Transaction(s) updated", "Your transaction(s) were updated successfuly.");
+    refresh();
+  };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -259,8 +265,11 @@ const TransactionTable = (props) => {
   }
 
   const [viewTrasactionBuilder, setViewTrasactionBuilder] = useState(false);
-  const [viewSplitTrasactionBuilder, setViewSplitTrasactionBuilder] = useState(false);
   const [editTransaction, setEditTransaction] = useState(null);
+
+  const [viewSplitTrasactionBuilder, setViewSplitTrasactionBuilder] = useState(false);
+  const [splitTransaction, setSplitTransaction] = useState(null);
+
   const [selectedTransactions, setSelectedTransactions] = useState([]);
 
   const editTransactionItem = (transaction) => {
@@ -269,7 +278,7 @@ const TransactionTable = (props) => {
   }
 
   const splitTransactionItem = (transaction) => {
-    setEditTransaction(transaction);
+    setSplitTransaction(transaction);
     setViewSplitTrasactionBuilder(true);
   }
 
@@ -341,10 +350,9 @@ const TransactionTable = (props) => {
       <SplitTransactionBuilder
         title="Split Transaction"
         visible={viewSplitTrasactionBuilder}
-        onOk={updateTransactionItem}
         onCancel={()=> setViewSplitTrasactionBuilder(false)}
-        accounts={accounts}
-        transaction={editTransaction}
+        onOk={updateSplitTransactionItem}
+        transaction={splitTransaction}
       />
     </>
   );

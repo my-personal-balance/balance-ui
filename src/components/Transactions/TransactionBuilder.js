@@ -15,7 +15,7 @@ const TransactionBuilder = (props) => {
   const formRef = React.createRef();
 
   useEffect(() => {
-    if (transaction && !(transaction instanceof Array)) {
+    if (transaction && !(transaction instanceof Array) && formRef.current) {
       formRef.current.setFieldsValue({
         "type": transaction.transaction_type,
         "description": transaction.description,
@@ -25,7 +25,7 @@ const TransactionBuilder = (props) => {
         "accountId": transaction.account_id,
       });
     }
-  },[transaction]);
+  },[transaction, formRef]);
 
   useEffect(() => {
     asyncFetchTags();
