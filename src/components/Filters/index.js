@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { DatePicker } from 'antd';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
@@ -38,7 +39,39 @@ const Filters = (props) => {
   }
 
   return (
-    <RangePicker bordered={false} onChange={(v, s) => handleRangePickerChange(v, s)} onOpenChange={isOpen => onOpenChange(isOpen)} />
+    <RangePicker
+      bordered={false}
+      onChange={(v, s) => handleRangePickerChange(v, s)}
+      onOpenChange={isOpen => onOpenChange(isOpen)}
+      ranges={{
+        Today: [moment(), moment()],
+        'This Month': [moment().startOf('month'), moment().endOf('month')],
+        'Last Month': [
+          moment().add(-1, 'month').startOf('month'),
+          moment().add(-1, 'month').endOf('month')
+        ],
+        'This Year': [
+          moment().startOf('year'),
+          moment().endOf('year')
+        ],
+        'Last Year': [
+          moment().add(-1, 'year').startOf('year'),
+          moment().add(-1, 'year').endOf('year')
+        ],
+        'Last 3 Months': [
+          moment().add(-3, 'month').startOf('month'),
+          moment().endOf('month')
+        ],
+        'Last 6 Months': [
+          moment().add(-6, 'month').startOf('month'),
+          moment().endOf('month')
+        ],
+        'Last 12 Months': [
+          moment().add(-12, 'month').startOf('month'),
+          moment().endOf('month')
+        ],
+      }}
+    />
   )
 }
 
