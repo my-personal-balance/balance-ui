@@ -1,8 +1,4 @@
 import { useState, useEffect } from 'react';
-import {
-  useSearchParams,
-} from "react-router-dom";
-
 import { Col, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
@@ -13,20 +9,18 @@ import TagTrendChart from '../TagTrendChart';
 
 import { withAxios } from '../../container/AuthProvider';
 import { fetchTransactions, } from '../../ws/transactions';
+import { useFilters } from '../../hooks/useFilters';
 
 const TransactionsComponent = (props) => {
 
   const { hideTagInsights, } = props;
 
-  let initFilters = props.filters;
-
-  let [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState(initFilters); 
+  const { filters, addFilters, removeFilters, updateFilters } = useFilters(props.filters);
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     asyncFetchTransactions();
-  },[searchParams]);
+  },[filters]);
 
   const asyncFetchTransactions = () => {
     fetchTransactions(props.axios, filters, response => {
@@ -36,21 +30,6 @@ const TransactionsComponent = (props) => {
         setTransactions(transactions);
       }
     });
-  }
-
-  const addFilters = (addedFilter) => {
-    let newFilters = Object.assign({}, filters, addedFilter);
-    updateFilters(newFilters);
-  }
-
-  const removeFilters = (removedFilter) => {
-    delete filters[removedFilter];
-    updateFilters(filters);
-  }
-
-  const updateFilters = (newFilters) => {
-    setSearchParams(newFilters);
-    setFilters(newFilters);
   }
 
   return (
