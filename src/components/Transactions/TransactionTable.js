@@ -25,31 +25,20 @@ import SplitTransactionBuilder from './SplitTransactionBuilder';
 import UploadTransactions from './UploadTransactions';
 import EditMultipleTransactions from './EditMultipleTransactions';
 
-import { fetchAccounts } from '../../ws/accounts';
 import { deleteTransaction, updateTransaction } from '../../ws/transactions';
 import { withAxios } from '../../container/AuthProvider';
+import { useAccounts } from '../../hooks/useAccounts';
+import { useTransactions } from '../../hooks/useTransactions';
 import { openNotificationWithIcon } from '../../utils/constants';
 
 const TransactionTable = (props) => {
 
-  const { items, accountId, tagId, refresh } = props;
+  const { filters } = props;
 
-  const [accounts, setAccounts] = useState([]);
+  const { accountId, tagId } = filters;
 
-  useEffect(() => {
-    asyncFetchAccounts();
-  },[]);
-
-  const asyncFetchAccounts = () => {
-    fetchAccounts(props.axios, response => {
-      const { error, data } = response;
-      if (error) {
-        openNotificationWithIcon('error', "Failed to fetch accounts", "There was an error while fetching accounts. Please reload the page.");
-      } else if (data) {
-        setAccounts(data.accounts);
-      }
-    });
-  }
+  const { accounts } = useAccounts(props.axios);
+  const { transactions, refreshTransactions } = useTransactions(props.axios, filters);
 
   const deleteTransactionItem = (transactionId) => {
     deleteTransaction(props.axios, transactionId, result => {
@@ -58,7 +47,7 @@ const TransactionTable = (props) => {
         openNotificationWithIcon('error', "Failed to delete transaction", "There was an error while removing this transaction.");
       } else if (data) {
         openNotificationWithIcon('success', "Transaction deleted", "Your transaction wwas deleted successfuly");
-        refresh();
+        refreshTransactions();
       }
     });
   };
@@ -81,7 +70,7 @@ const TransactionTable = (props) => {
       } else if (data) {
         setViewTrasactionBuilder(false);
         openNotificationWithIcon('success', "Transaction(s) updated", "Your transaction(s) were updated successfuly.");
-        refresh();
+        refreshTransactions();
       }
     });
   };
@@ -89,7 +78,7 @@ const TransactionTable = (props) => {
   const updateSplitTransactionItem = () => {
     setViewSplitTrasactionBuilder(false);
     openNotificationWithIcon('success', "Transaction(s) updated", "Your transaction(s) were updated successfuly.");
-    refresh();
+    refreshTransactions();
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -304,7 +293,7 @@ const TransactionTable = (props) => {
           {selectedTransactions.length > 0 ?
             <EditMultipleTransactions
               accounts={accounts}
-              refresh={refresh}
+              refresh={refreshTransactions}
               transactions={selectedTransactions}
             /> 
           : <></>}
@@ -314,12 +303,12 @@ const TransactionTable = (props) => {
             <AddTransaction
               accountId={accountId}
               accounts={accounts}
-              refresh={refresh}
+              refresh={refreshTransactions}
             />
             <UploadTransactions
               accountId={accountId}
               accounts={accounts}
-              refresh={refresh}
+              refresh={refreshTransactions}
             />
           </Space>
         </Col>
@@ -332,7 +321,7 @@ const TransactionTable = (props) => {
               type: "checkbox",
               ...rowSelection,
             }}
-            dataSource={items}
+            dataSource={transactions}
             columns={columns}
             size="small"
             pagination={{ defaultPageSize:50 }}

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Col, Layout, Row, } from 'antd';
 
 import Filters from '../Filters';
@@ -8,29 +7,13 @@ import TagInsights from '../TagInsights';
 import TagTrendChart from '../TagTrendChart';
 
 import { withAxios } from '../../container/AuthProvider';
-import { fetchTransactions, } from '../../ws/transactions';
 import { useFilters } from '../../hooks/useFilters';
 
 const TransactionsComponent = (props) => {
 
   const { hideTagInsights, } = props;
 
-  const { filters, addFilters, removeFilters, updateFilters } = useFilters(props.filters);
-  const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    asyncFetchTransactions();
-  },[filters]);
-
-  const asyncFetchTransactions = () => {
-    fetchTransactions(props.axios, filters, response => {
-      const { data } = response;
-      if (data) {
-        const { transactions } = data;
-        setTransactions(transactions);
-      }
-    });
-  }
+  const { filters, addFilters, removeFilters } = useFilters(props.filters);
 
   return (
     <>
@@ -66,12 +49,7 @@ const TransactionsComponent = (props) => {
       <Row className="secction">
         <Col span={24}>
           <Layout.Content className="site-layout-background">
-            <TransactionTable
-              items={transactions}
-              accountId={filters.accountId}
-              tagId={filters.tagId}
-              refresh={() => asyncFetchTransactions()}
-            />
+            <TransactionTable filters={filters} />
           </Layout.Content>
         </Col>
       </Row>
