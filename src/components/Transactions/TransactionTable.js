@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Col,
@@ -127,8 +127,7 @@ const TransactionTable = (props) => {
   const handleReset = clearFilters => {
     clearFilters();
   };
-  
-  
+
   const columns = [
     {
       title: 'DATE',
