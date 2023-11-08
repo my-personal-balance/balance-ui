@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Col, Row } from 'antd';
 import {
   ArrowUpOutlined,
@@ -7,35 +6,16 @@ import {
 } from '@ant-design/icons';
 
 import BalanceCard from './BalanceCard';
+import "./index.css";
 
 import { withAxios } from '../../container/AuthProvider';
-import { fetchBalance, } from '../../ws/balance';
-
-import "./index.css";
+import { useBalance } from '../../hooks/useBalance';
 
 const Balance = (props) => {
 
   const { filters } = props;
 
-  const [balance, setBalance] = useState(0.0);
-  const [inflow, setInflow] = useState(0.0);
-  const [outflow, setOutflow] = useState(0.0);
-
-  useEffect(() => {
-    asyncFetchBalance();
-  },[filters.periodType, filters.startDate, filters.endDate, filters.tagId]);
-
-  const asyncFetchBalance = () => {
-    fetchBalance(props.axios, filters, response => {
-      const { data } = response;
-      if (data) {
-        const { balance, incomes, expenses } = data;
-        setBalance(balance);
-        setInflow(incomes);
-        setOutflow(expenses);
-      }
-    });
-  }
+  const { balance, inflow, outflow } = useBalance(props.axios, filters);
   
   return (
     <Row gutter={16} className="balance">
