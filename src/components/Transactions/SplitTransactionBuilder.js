@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { Divider, Form, Input, Modal, Select, Typography, Button, Space } from 'antd';
+import { Col, DatePicker, Divider, Form, Input, Modal, Row, Select, Typography, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/AuthProvider';
@@ -17,6 +17,8 @@ const SplitTransactionBuilder = (props) => {
 
   const [form] = Form.useForm();
   const [splitTransactionForm] = Form.useForm();
+
+  const { remainingAmount, updateRemainingAmount } = useRemainingAmount(transaction, splitTransactionForm);
 
   useEffect(() => {
     if (transaction && !(transaction instanceof Array)) {
@@ -38,6 +40,8 @@ const SplitTransactionBuilder = (props) => {
           splitTransactionForm.setFieldValue("splitTransactions", transaction.split_transactions);
         }
       }
+
+      updateRemainingAmount();
     }
   }, [transaction, form, splitTransactionForm])
 
@@ -61,69 +65,115 @@ const SplitTransactionBuilder = (props) => {
       onOk={onFinish}
       width={1000}
     >
-      <Typography>
-        <Title level={5}>Transaction</Title>
-        <Form
-          form={form}
-          name="transaction"
-          layout='inline'
-          autoComplete="off"
-        >
-          <Form.Item name="amount">
-            <Input />
-          </Form.Item>
-          <Form.Item name="description">
-            <Input />
-          </Form.Item>
-          <Form.Item name="date">
-            <Input />
-          </Form.Item>
-        </Form>
-        
-        <Divider />
+      <Title level={5}>Transaction</Title>
+      <Row style={{padding: "0 0 4px 0"}}>
+          <Col span={3} className="split-transaction-header">Ammount</Col>
+          <Col span={16} className="split-transaction-header">Description</Col>
+          <Col span={5} className="split-transaction-header">Date</Col>
+      </Row>
 
-        <Title level={5}>Splits</Title>
+      <Form
+        form={form}
+        name="transaction"
+        layout='inline'
+        autoComplete="off"
+      >
+        <Form.Item name="amount">
+          <Input style={{ width: 80, textAlign: "right" }} disabled />
+        </Form.Item>
+        <Form.Item name="description">
+          <Input style={{ width: 640 }} disabled />
+        </Form.Item>
+        <Form.Item name="date">
+          <DatePicker style={{ width: 160 }} disabled />
+        </Form.Item>
+      </Form>
+      
+      <Divider />
+
+      <Title level={5}>Splits</Title>
+      <Row style={{padding: "0 0 4px 0"}}>
+          <Col span={3} className="split-transaction-header">Ammount</Col>
+          <Col span={13} className="split-transaction-header">Description</Col>
+          <Col span={8} className="split-transaction-header">Tags</Col>
+      </Row>
+
+      <Form form={splitTransactionForm} name="splitTransactionItems" autoComplete="off" onFinish={onFinish}>
         
-        <Form form={splitTransactionForm} name="splitTransactionItems" autoComplete="off" onFinish={onFinish}>
+        <Form.List name="splitTransactions">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Space key={key} style={{ display: "flex" }} align="baseline">
+                  <Form.Item {...restField} name={[name, "amount"]}>
+                  <Input style={{ width: 80, textAlign: "right" }} onChange={updateRemainingAmount}/>
+                  </Form.Item>
+                  <Form.Item {...restField} name={[name, "description"]}>
+                    <Input style={{ width: 540 }} />
+                  </Form.Item>
+                  <Form.Item {...restField} name={[name, "tagId"]}>
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      style={{ width: 240 }}
+                    >
+                      {tags}
+                    </Select>
+                  </Form.Item>
+                  <MinusCircleOutlined 
+                    className="dynamic-delete-button"
+                    onClick={() => remove(name)} 
+                  />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Add transaction
+                </Button>
+              </Form.Item>
+            </>
           
-          <Form.List name="splitTransactions">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space key={key} style={{ display: "flex" }} align="baseline">
-                    <Form.Item {...restField} name={[name, "amount"]}>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item {...restField} name={[name, "description"]}>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item {...restField} name={[name, "tagId"]}>
-                      <Select
-                        showSearch
-                        optionFilterProp="children"
-                      >
-                        {tags}
-                      </Select>
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </Space>
-                ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                    Add transaction
-                  </Button>
-                </Form.Item>
-              </>
-            
-            )}
+          )}
+        </Form.List>
 
-          </Form.List>
-        </Form>
+      </Form>
 
-      </Typography>
+      <Row style={{padding: "0 0 4px 0"}}>
+        <Col span={24} className="split-transaction-header">Remaining Amount</Col>
+      </Row>
+      <Row style={{padding: "0 0 4px 0"}}>
+        <Col span={24}>{remainingAmount}</Col>
+      </Row>
 
     </Modal>
   )
 }
 
 export default withAxios(SplitTransactionBuilder);
+
+const useRemainingAmount = (transaction, splitTransactionForm) => {
+
+  const [remainingAmount, setRemainingAmount] = useState(0.0);
+
+  useEffect(() => {
+    updateRemainingAmount();
+  }, [transaction, splitTransactionForm]);
+
+  const updateRemainingAmount = () => {
+debugger;
+    let transactionAmount = transaction ? transaction.amount : 0.0;
+    const splitTransactionValues = splitTransactionForm.getFieldValue("splitTransactions");
+    if (splitTransactionValues) {
+      splitTransactionValues.forEach(tv => {
+        transactionAmount -= tv.amount;
+      })
+    }
+
+    setRemainingAmount(transactionAmount.toFixed(2));
+  }
+
+  return {
+    remainingAmount,
+    updateRemainingAmount
+  }
+}
