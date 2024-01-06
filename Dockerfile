@@ -1,19 +1,31 @@
-FROM node:18-alpine
+FROM node:18-alpine as base-image
 
-ARG work_dir=/usr/src/app
+# declaring the build stage
+FROM base-image as builder-stage
 
-RUN mkdir -p ${work_dir}
-WORKDIR ${work_dir}
+ARG WORK_DIR=/usr/src/app
+RUN mkdir -p ${WORK_DIR}
+WORKDIR ${WORK_DIR}
 
-COPY src             ${work_dir}/src
-COPY public          ${work_dir}/public
-COPY yarn.lock       ${work_dir}
-COPY package.json    ${work_dir}
+COPY src             src
+COPY public          public
+COPY yarn.lock       yarn.lock
+COPY package.json    package.json
 
-RUN yarn && yarn build
+RUN yarn install
+RUN yarn build
+
+# declaring the run stage
+FROM base-image AS runner-stage
+
+ARG WORK_DIR=/usr/src/app
+RUN mkdir -p ${WORK_DIR}
+WORKDIR ${WORK_DIR}
+
+COPY --from=builder-stage ${WORK_DIR}/build build
 
 RUN yarn global add serve
 
 EXPOSE 3000
 
-CMD ["serve", "-l", "3000", "-s", "build"]
+CMD serve -l 3000 -s build
