@@ -1,32 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { Divider, Form, Input, Modal, Select, Typography, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { withAxios } from '../../container/AuthProvider';
 import { openNotificationWithIcon } from '../../utils/constants';
-import { fetchTags } from '../../ws/tags';
+import { useTags } from '../../hooks/useTags';
 import { splitTransaction } from '../../ws/splitTransactions';
 
-const { Option } = Select;
 const { Title } = Typography;
 
 const SplitTransactionBuilder = (props) => {
   const { title, visible, onOk, onCancel, transaction, } = props;
 
-  const [tags, setTags] = useState([]);
-
-  useEffect(() => {
-    fetchTags(props.axios, result => {
-      const { error, data } = result;
-      if (error) {
-        openNotificationWithIcon('error', "Failed to fetch existing tags.", "There was an error while fetching the existing tags. Please reload the page.");
-      } else if (data) {
-        const tags = data.tags.map(d => <Option key={d.id} value={d.id}>{d.value}</Option>);
-        setTags(tags);
-      }
-    });
-  },[props.axios]);
+  const { tags } = useTags(props.axios);
 
   const [form] = Form.useForm();
   const [splitTransactionForm] = Form.useForm();
