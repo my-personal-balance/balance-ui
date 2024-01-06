@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
-import { formItemLayout, openNotificationWithIcon } from '../../utils/constants';
+
+import { formItemLayout } from '../../utils/constants';
+import { useTags } from '../../hooks/useTags';
 import { withAxios } from '../../container/AuthProvider';
-import { fetchTags } from '../../ws/tags';
 
 const { Option } = Select;
 
@@ -11,7 +12,7 @@ const TransactionBuilder = (props) => {
 
   const { title, visible, onOk, onCancel, accounts, accountId, transaction, } = props;
   
-  const [tags, setTags] = useState([]);
+  const { tags } = useTags(props.axios);
   const formRef = React.createRef();
 
   useEffect(() => {
@@ -26,22 +27,6 @@ const TransactionBuilder = (props) => {
       });
     }
   },[transaction, formRef]);
-
-  useEffect(() => {
-    asyncFetchTags();
-  },[]);
-
-  const asyncFetchTags = () => {
-    fetchTags(props.axios, result => {
-      const { error, data } = result;
-      if (error) {
-        openNotificationWithIcon('error', "Failed to fetch existing tags.", "There was an error while fetching the existing tags. Please reload the page.");
-      } else if (data) {
-        const tags = data.tags.map(d => <Option key={d.id} value={d.id}>{d.value}</Option>);
-        setTags(tags);
-      }
-    });
-  }
 
   return (
     <Modal
