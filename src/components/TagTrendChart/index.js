@@ -5,8 +5,6 @@ import { fetchReportTrends, } from '../../ws/reports';
 import { withAxios } from '../../container/AuthProvider';
 import { openNotificationWithIcon } from '../../utils/constants';
 
-import './index.css';
-
 const TagTrendChart = (props) => {
   
   const { filters } = props;

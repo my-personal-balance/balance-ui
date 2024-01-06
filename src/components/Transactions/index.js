@@ -9,6 +9,8 @@ import TagTrendChart from '../TagTrendChart';
 import { withAxios } from '../../container/AuthProvider';
 import { useFilters } from '../../hooks/useFilters';
 
+import './index.css';
+
 const TransactionsComponent = (props) => {
 
   const { hideTagInsights, } = props;
