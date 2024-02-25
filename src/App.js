@@ -113,24 +113,24 @@ function Root() {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="logo">Personal Balance</div>
-          <Menu theme="dark" mode="inline" items={items} />
-        </Sider>
-        <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              className: 'trigger', onClick: toggle,
-            })}
-          </Header>
-          <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: '100vh',
-            }}
-          >
-            <Outlet />
-          </Content>
+        <div className="logo">Personal Balance</div>
+        <Menu theme="dark" mode="inline" items={items} />
+      </Sider>
+      <Layout className="site-layout">
+        <Header className="site-layout-background" style={{ padding: 0 }}>
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger', onClick: toggle,
+          })}
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: '100vh',
+          }}
+        >
+          <Outlet />
+        </Content>
         </Layout>
     </Layout>
   );

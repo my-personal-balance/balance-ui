@@ -1,4 +1,4 @@
-FROM node:18-alpine as base-image
+FROM node:20-alpine as base-image
 
 # declaring the build stage
 FROM base-image as builder-stage
@@ -7,13 +7,13 @@ ARG WORK_DIR=/usr/src/app
 RUN mkdir -p ${WORK_DIR}
 WORKDIR ${WORK_DIR}
 
-COPY src             src
-COPY public          public
-COPY yarn.lock       yarn.lock
-COPY package.json    package.json
+COPY src               src
+COPY public            public
+COPY package.json      package.json
+COPY package-lock.json package-lock.json
 
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
 
 # declaring the run stage
 FROM base-image AS runner-stage
@@ -24,7 +24,7 @@ WORKDIR ${WORK_DIR}
 
 COPY --from=builder-stage ${WORK_DIR}/build build
 
-RUN yarn global add serve
+RUN npm install -g serve
 
 EXPOSE 3000
 
