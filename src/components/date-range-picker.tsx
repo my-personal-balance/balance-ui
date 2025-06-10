@@ -75,17 +75,24 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={handleDateChange}
             numberOfMonths={2}
+            footer={
+              <div className={cn("pt-3", className)}>
+                <div className="flex flex-wrap justify-between pb-2">
+                  <Link onClick={() => handleDateChange({ from: new Date(), to: new Date() })} to="." className={badgeVariants({ variant: "outline" })}>Today</Link>
+                  <Link onClick={() => handleDateChange(getMonthDateRange())} to="." className={badgeVariants({ variant: "outline" })}>This Month</Link>
+                  <Link onClick={() => handleDateChange(getMonthDateRange(1))} to="." className={badgeVariants({ variant: "outline" })}>Last Month</Link>
+                  <Link onClick={() => handleDateChange(getYearDateRange())} to="." className={badgeVariants({ variant: "outline" })}>This Year</Link>
+                  <Link onClick={() => handleDateChange(getYearDateRange(1))} to="." className={badgeVariants({ variant: "outline" })}>Last Year</Link>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link onClick={() => handleDateChange(getLastMonthsDateRange(3))} to="." className={badgeVariants({ variant: "outline" })}>Last 3 Months</Link>
+                  <Link onClick={() => handleDateChange(getLastMonthsDateRange(6))} to="." className={badgeVariants({ variant: "outline" })}>Last 6 Months</Link>
+                  <Link onClick={() => handleDateChange(getLastMonthsDateRange(12))} to="." className={badgeVariants({ variant: "outline" })}>Last 12 Months</Link>
+                </div>
+              </div>
+            }
           />
-          <div className={cn("flex flex-wrap gap-2 px-2 py-2", className)}>
-            <Link onClick={() => handleDateChange({ from: new Date(), to: new Date() })} to="." className={badgeVariants({ variant: "outline" })}>Today</Link>
-            <Link onClick={() => handleDateChange(getMonthDateRange())} to="." className={badgeVariants({ variant: "outline" })}>This Month</Link>
-            <Link onClick={() => handleDateChange(getMonthDateRange(1))} to="." className={badgeVariants({ variant: "outline" })}>Last Month</Link>
-            <Link onClick={() => handleDateChange(getYearDateRange())} to="." className={badgeVariants({ variant: "outline" })}>This Year</Link>
-            <Link onClick={() => handleDateChange(getYearDateRange(1))} to="." className={badgeVariants({ variant: "outline" })}>Last Year</Link>
-            <Link onClick={() => handleDateChange(getLastMonthsDateRange(3))} to="." className={badgeVariants({ variant: "outline" })}>Last 3 Months</Link>
-            <Link onClick={() => handleDateChange(getLastMonthsDateRange(6))} to="." className={badgeVariants({ variant: "outline" })}>Last 6 Months</Link>
-            <Link onClick={() => handleDateChange(getLastMonthsDateRange(12))} to="." className={badgeVariants({ variant: "outline" })}>Last 12 Months</Link>
-          </div>
+          
         </PopoverContent>
       </Popover>
     </div>
