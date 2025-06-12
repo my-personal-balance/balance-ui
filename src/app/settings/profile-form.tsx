@@ -1,13 +1,12 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormItem, FormLabel, FormDescription, FormMessage, FormField } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import type { User } from "@/types/users";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormItem, FormLabel, FormDescription, FormMessage, FormField } from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import type { User } from "@/types/users"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const profileFormSchema = z.object({
   name: z.string()
