@@ -1,7 +1,7 @@
-import { Separator } from "@/components/ui/separator";
-import { ProfileForm } from "@/app/settings/profile-form";
-import { getRouteApi } from "@tanstack/react-router";
-import { CommonApp } from "@/app/common";
+import { Separator } from "@/components/ui/separator"
+import { ProfileForm } from "@/app/settings/profile-form"
+import { getRouteApi } from "@tanstack/react-router"
+import { CommonApp } from "@/app/common"
 
 export default function Page() {
   

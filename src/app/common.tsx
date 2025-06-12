@@ -1,6 +1,6 @@
-import { AppBreadcrumbs } from "@/components/app-breadcrumbs";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
+import { AppBreadcrumbs } from "@/components/app-breadcrumbs"
+import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator"
 
 export function CommonApp({ children, title }: { children: React.ReactNode, title: string | React.ReactNode[] }) {
 
