@@ -7,6 +7,7 @@ import { Form, FormControl, FormItem, FormLabel, FormDescription, FormMessage, F
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/users";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Label } from "@/components/ui/label";
 
 const profileFormSchema = z.object({
   name: z.string()
@@ -60,25 +61,32 @@ export function ProfileForm({ user }: {user: User}) {
             )}
           />
           <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                  <Input placeholder="Your email" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is the email that will be used to login to your account.
-                </FormDescription>
-                <FormMessage />
-            </FormItem>
-          )}
-        />
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                    <Input placeholder="Your email" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This is the email that will be used to login to your account.
+                  </FormDescription>
+                  <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormItem>
+            <FormLabel>Theme</FormLabel>
+            <FormControl>
+              <ModeToggle />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+          
           <Button type="submit">Update account</Button>
         </form>
       </Form>
-      <ModeToggle />
     </>
   )
 }
