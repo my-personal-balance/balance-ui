@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
 
 export function AppBreadcrumbs({ title }: { title: string | any[] }) {
 
@@ -17,7 +17,7 @@ export function AppBreadcrumbs({ title }: { title: string | any[] }) {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
-            {title}
+            <BreadcrumbPage>{title}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -30,7 +30,7 @@ function getBreadcrumbItem(item: string | any, isFirst: boolean, isLast: boolean
     <>
       {!isFirst && <BreadcrumbSeparator />}
       <BreadcrumbItem>
-      {isLast ? item :
+      {isLast ? <BreadcrumbPage>{item}</BreadcrumbPage> :
         <BreadcrumbLink asChild>
           {item}
         </BreadcrumbLink>
