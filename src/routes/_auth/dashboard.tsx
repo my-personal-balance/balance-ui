@@ -3,7 +3,7 @@ import Page from '@/app/dashboard/page'
 import { LogoutComponent } from '@/routes/logout'
 
 export const Route = createFileRoute('/_auth/dashboard')({
-  component: Page,
+  component: () => <Page title="Dashboard" />,
   errorComponent: LogoutComponent,
 })
 

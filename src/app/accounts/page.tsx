@@ -1,6 +1,7 @@
 import { AddAccount } from "@/components/accounts/add-accounts"
 import { getRouteApi, Link } from "@tanstack/react-router"
 import type { Account } from "@/types/accounts"
+import { CommonApp } from "@/app/common"
 
 export default function Page() {
 
@@ -8,15 +9,17 @@ export default function Page() {
   const { accounts } = routeApi.useLoaderData()
 
   return (
-    <div className="px-4 lg:px-6">
-      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 w-[340px]">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Accounts</h2>
+    <CommonApp title="Accounts">
+      <div className="px-4 lg:px-6">
+        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 w-[340px]">
+          <div className="flex items-center justify-between space-y-2">
+            <h2 className="text-3xl font-bold tracking-tight">Accounts</h2>
+          </div>
+          <Accounts accounts={accounts} />
+          <AddAccount />
         </div>
-        <Accounts accounts={accounts} />
-        <AddAccount />
       </div>
-    </div>
+    </CommonApp>
   )
 }
 

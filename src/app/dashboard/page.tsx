@@ -1,7 +1,10 @@
 import { Transactions } from "@/components/transactions/transations"
+import { CommonApp } from "../common"
 
-export default function Page() {
+export default function Page({ title }: { title: string }) {
   return (
-    <Transactions title="Dashboard" />
+    <CommonApp title={title}>
+      <Transactions title={title} />
+    </CommonApp>
   )
 }
