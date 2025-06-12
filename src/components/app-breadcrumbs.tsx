@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 export function AppBreadcrumbs({ title }: { title: string | any[] }) {
