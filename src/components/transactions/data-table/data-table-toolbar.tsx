@@ -1,23 +1,21 @@
 import { XIcon } from "lucide-react"
 import type { Table } from "@tanstack/react-table"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "@/components/transactions/data-table/data-table-view-options"
-
-import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import { useTags } from "@/hooks/use-tags"
-import { tagsFilterSchema } from "./data/schema"
-
+import { DataTableFacetedFilter } from "@/components/transactions/data-table/data-table-faceted-filter"
+import { tagsFilterSchema } from "@/components/transactions/data-table/data/schema"
+import type { Tag } from "@/types/tags"
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>
+  table: Table<TData>,
+  tags: Tag[]
 }
 
 export function DataTableToolbar<TData>({
   table,
+  tags,
 }: DataTableToolbarProps<TData>) {
-  const { tags } = useTags()
   const tagsInfo = tagsFilterSchema.parse(tags)
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -39,13 +37,6 @@ export function DataTableToolbar<TData>({
             options={tagsInfo}
           />
         )}
-        {/* {table.getColumn("priority") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("priority")}
-            title="Priority"
-            options={priorities}
-          />
-        )} */}
         {isFiltered && (
           <Button
             variant="ghost"

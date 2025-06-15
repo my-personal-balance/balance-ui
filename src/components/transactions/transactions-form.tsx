@@ -32,7 +32,17 @@ interface TransactionFormProps extends React.ComponentPropsWithoutRef<typeof Dia
   dialogTrigger?: React.ReactNode
 }
 
-export const TransactionForm = ({ form, handleSubmit, tags, accounts, isUpdatePending, title, description, dialogTrigger, ...props }: TransactionFormProps) => {
+export const TransactionForm = ({
+  form,
+  handleSubmit,
+  tags,
+  accounts,
+  isUpdatePending,
+  title,
+  description,
+  dialogTrigger,
+  ...props
+}: TransactionFormProps) => {
   return (
     <Dialog {...props}>
       {dialogTrigger}

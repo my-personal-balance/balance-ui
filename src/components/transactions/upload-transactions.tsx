@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useAccounts } from "@/hooks/use-accounts"
 import { Dialog, DialogDescription, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Upload } from "lucide-react"
@@ -10,6 +9,7 @@ import { Form, FormField, FormLabel, FormControl, FormItem } from "@/components/
 import { Select, SelectValue, SelectTrigger, SelectItem, SelectContent } from "@/components/ui/select"
 import { Input } from "../ui/input"
 import { useEditTransactions } from "@/hooks/use-transactions"
+import type { Account } from "@/types/accounts"
 
 const uploadTransactionsFormSchema = z.object({
   account_id: z.string(),
@@ -21,8 +21,7 @@ type UploadTransactionsFormValues = z.infer<typeof uploadTransactionsFormSchema>
 const defaultValues: Partial<UploadTransactionsFormValues> = {
 }
 
-export function UploadTransactions({ accountId, onChange }: { accountId?: number, onChange: () => void }) {
-  const { accounts } = useAccounts()
+export function UploadTransactions({ accountId, accounts, onChange }: { accountId?: number, accounts: Account[], onChange: () => void }) {
   const { asyncUploadTransaction } = useEditTransactions()
   const [open, setOpen] = useState(false)
 

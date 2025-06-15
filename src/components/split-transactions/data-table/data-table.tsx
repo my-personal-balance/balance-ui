@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table"
 import type { SplitTransaction } from "@/types/split-transaction"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useTags } from "@/hooks/use-tags"
 import { useForm, useFieldArray} from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
@@ -21,6 +20,7 @@ import { Separator } from "@/components/ui/separator"
 import { splitTransactionSchema } from "@/types/schemas/split-transaction-schema"
 import { useSplitTransactions } from "@/hooks/use-split-transactions"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import type { Tag } from "@/types/tags"
 
 export const splitTransactionFormSchema = splitTransactionSchema.extend({
   amount: z.preprocess(
@@ -38,6 +38,7 @@ interface SplitTransactionsTableProps {
   transactions: SplitTransaction[]
   transactionId: number
   totalAmount: number
+  tags: Tag[]
   onSuccess?: () => void
   onOpenChange?: (open: boolean) => void
 }
@@ -46,8 +47,7 @@ interface SplitTransactionsTableFormProps {
   transactions: SplitTransactionFormValues[]
 }
 
-export function SplitTransactionsTable({ transactions, transactionId, totalAmount, onSuccess, onOpenChange }: SplitTransactionsTableProps) {
-  const { tags } = useTags()
+export function SplitTransactionsTable({ transactions, transactionId, totalAmount, tags, onSuccess, onOpenChange }: SplitTransactionsTableProps) {
   const [isPending, startTransition] = useTransition()
   const { asyncSetSplitTransactions } = useSplitTransactions()
 

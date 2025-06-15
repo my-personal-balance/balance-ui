@@ -11,9 +11,12 @@ import { DataTableRowActions, DataTableRowActionsMulti } from "@/components/tran
 import type { Account } from "@/types/accounts"
 import type { Transaction } from "@/types/transactions"
 import type { DataTableRowAction } from "@/types/data-table"
+import type { Tag } from "@/types/tags"
 
 export function getTransactionsTableColumns(
-  setRowAction: (rowAction: DataTableRowAction<Transaction>) => void
+  setRowAction: (rowAction: DataTableRowAction<Transaction>) => void,
+  tags: Tag[],
+  onChange?: () => void
 ): ColumnDef<Transaction, any>[] {
   return [
     {
@@ -148,7 +151,7 @@ export function getTransactionsTableColumns(
         }
         return <div />
       },
-      cell: ({ row }) => <DataTableRowActions row={row} setRowAction={setRowAction} />,
+      cell: ({ row }) => <DataTableRowActions row={row} setRowAction={setRowAction} tags={tags} onChange={onChange} />,
     },
   ]
 }
