@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button"
 import {
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useTags } from "@/hooks/use-tags"
-import { useAccounts } from "@/hooks/use-accounts"
 import { transactionSchema } from "@/components/transactions/data-table/data/schema"
 import { useEditTransactions } from "@/hooks/use-transactions"
 import { TransactionForm } from "@/components/transactions/transactions-form"
+import type { Tag } from "@/types/tags"
+import type { Account } from "@/types/accounts"
 
 export const addTransactionSchema = transactionSchema.extend({
   account_id: z.string({
@@ -30,9 +30,7 @@ const defaultValues: Partial<TransactionFormValues> = {
   amount: Number(0.0),
 }
 
-export function AddTransaction({ accountId, onChange }: { accountId?: number, onChange: () => void }) {
-  const { tags } = useTags()
-  const { accounts } = useAccounts()
+export function AddTransaction({ accountId, tags, accounts, onChange }: { accountId?: number, tags: Tag[], accounts: Account[], onChange: () => void }) {
   const { asyncAddTransaction } = useEditTransactions()
   const [open, setOpen] = useState(false)
 

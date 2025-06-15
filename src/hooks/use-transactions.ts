@@ -48,12 +48,13 @@ export const useEditTransactions = () => {
     }
   }
 
-  const asyncUpdateTransaction = async (transactionId: number, transaction: Transaction) => {
+  const asyncUpdateTransaction = async (transactionId: number, transaction: Transaction): Promise<Transaction | null> => {
     try {
-      await updateTransaction(auth.accessToken, transactionId, transaction)
+      return await updateTransaction(auth.accessToken, transactionId, transaction)
     } catch (error) {
       setError(error instanceof Error ? error.message : 'An unknown error occurred')
     }
+    return null
   }
 
   const asyncUpdateTransactions = async (transactions: Transaction[]) => {

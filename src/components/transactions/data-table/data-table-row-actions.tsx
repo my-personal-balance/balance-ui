@@ -5,15 +5,42 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { DataTableRowActionsMultiProps, DataTableRowActionsProps } from "@/types/data-table"
+import { useEditTransactions } from "@/hooks/use-transactions"
+import { transactionSchema } from "@/components/transactions/data-table/data/schema"
+import type { Transaction } from "@/types/transactions"
 
 export function DataTableRowActions<TData>({
   row,
-  setRowAction
+  setRowAction,
+  tags,
+  onChange,
 }: DataTableRowActionsProps<TData>) {
+  const { asyncUpdateTransaction } = useEditTransactions()
+  
+  const handleSubmit = async (tagId: string) => {
+    const transaction = row.original as Transaction
+    const newTransaction = transactionSchema.parse({
+      account_id: transaction.account_id,
+      amount: transaction.amount,
+      date: transaction.date,
+      description: transaction.description,
+      id: transaction.id,
+      transaction_type: transaction.transaction_type,
+      tag_id: Number(tagId)
+    })
+    await asyncUpdateTransaction(transaction.id!, newTransaction)
+    onChange?.()
+  }
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,6 +60,19 @@ export function DataTableRowActions<TData>({
             Split
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent className="h-2/4 overflow-y-auto">
+            <DropdownMenuRadioGroup value={row.original.tag?.id.toString()} onValueChange={(value) => handleSubmit(value)}>
+              {tags.map((tag) => (
+                <DropdownMenuRadioItem key={tag.id} value={tag.id.toString()}>
+                  {tag.value}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onSelect={() => setRowAction({ row, variant: "delete" })}>
           <TrashIcon className="h-4 w-4 mr-2" />

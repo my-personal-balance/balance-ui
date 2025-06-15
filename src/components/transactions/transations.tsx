@@ -12,13 +12,16 @@ import { UploadTransactions } from "@/components/transactions/upload-transaction
 import { DataTable } from "@/components/transactions/data-table/data-table"
 import { ExpensesInsights } from "@/components/transactions/insights/expenses-insight"
 import { AccountsActions } from "@/components/accounts/accounts-actions"
-
+import { useTags } from "@/hooks/use-tags"
+import { useAccounts } from "@/hooks/use-accounts"
 
 export function Transactions({ title, accountId, showInsights = false }: { title: string, accountId?: number, showInsights?: boolean }) {
 
   const [filters, setFilters] = useState<TransactionFilterProps>({accountId: accountId} as TransactionFilterProps)
   const { transactions, refreshTransactions } = useTransactions()
   const { balance, refreshBalance } = useBalance()
+  const { accounts } = useAccounts()
+  const { tags } = useTags()
 
   useEffect(() => {
     asyncRefreshTransactions()
@@ -52,14 +55,28 @@ export function Transactions({ title, accountId, showInsights = false }: { title
         </div>
         <div className="flex justify-end gap-2 sm:px-4 md:px-4 lg:px-6">
           <DatePickerWithRange onChange={(date) => date && handleDateChange(date as DateRange)}/>
-          <AddTransaction accountId={accountId} onChange={asyncRefreshTransactions} />
-          <UploadTransactions accountId={accountId}  onChange={asyncRefreshTransactions} />
+          <AddTransaction
+            accountId={accountId}
+            accounts={accounts}
+            tags={tags}
+            onChange={asyncRefreshTransactions}
+          />
+          <UploadTransactions
+            accountId={accountId}
+            accounts={accounts}
+            onChange={asyncRefreshTransactions}
+          />
         </div>
       </div>
       <BalanceInfo balance={balance} />
       {showInsights && <ExpensesInsights filters={filters} setFilters={setFilters} />}
       <div className="px-4 lg:px-6">
-        <DataTable data={transactions} onChange={asyncRefreshTransactions} />
+        <DataTable
+          data={transactions}
+          onChange={asyncRefreshTransactions}
+          tags={tags}
+          accounts={accounts}
+        />
       </div>
     </>
   )

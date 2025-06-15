@@ -1,16 +1,16 @@
+import { useTransition } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {
   Dialog,
 } from "@/components/ui/dialog"
-import { useTags } from "@/hooks/use-tags"
-import { useAccounts } from "@/hooks/use-accounts"
 import { transactionSchema } from "@/components/transactions/data-table/data/schema"
 import { useEditTransactions } from "@/hooks/use-transactions"
 import type { Transaction } from "@/types/transactions"
-import { useTransition } from "react"
-import { TransactionForm } from "./transactions-form"
+import type { Tag } from "@/types/tags"
+import type { Account } from "@/types/accounts"
+import { TransactionForm } from "@/components/transactions/transactions-form"
 
 export const addTransactionSchema = transactionSchema.extend({
   account_id: z.coerce.string({
@@ -26,13 +26,13 @@ type TransactionFormValues = z.infer<typeof addTransactionSchema>
 
 interface EditTransactionProps extends React.ComponentPropsWithoutRef<typeof Dialog> {
   transaction: Transaction
+  tags: Tag[]
+  accounts: Account[]
   onSuccess?: () => void
 }
 
-export function EditTransaction({ transaction, onSuccess, ...props }: EditTransactionProps) {
+export function EditTransaction({ transaction, tags, accounts, onSuccess, ...props }: EditTransactionProps) {
   const [isUpdatePending, startUpdateTransition] = useTransition()
-  const { tags } = useTags()
-  const { accounts } = useAccounts()
   const { asyncUpdateTransaction } = useEditTransactions()
 
   const form = useForm<TransactionFormValues>({
@@ -77,13 +77,13 @@ type EditTransactionFormValues = z.infer<typeof editTransactionSchema>
 
 interface EditMultipleTransactionsProps extends React.ComponentPropsWithoutRef<typeof Dialog> {
   transactions: Transaction[]
+  tags: Tag[]
+  accounts: Account[]
   onSuccess?: () => void
 }
 
-export function EditMultipleTransactions({ transactions, onSuccess, ...props }: EditMultipleTransactionsProps) {
+export function EditMultipleTransactions({ transactions, tags, accounts, onSuccess, ...props }: EditMultipleTransactionsProps) {
   const [isUpdatePending, startUpdateTransition] = useTransition()
-  const { tags } = useTags()
-  const { accounts } = useAccounts()
   const { asyncUpdateTransactions } = useEditTransactions()
 
   const form = useForm<EditTransactionFormValues>({

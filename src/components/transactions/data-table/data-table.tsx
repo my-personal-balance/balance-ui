@@ -2,7 +2,6 @@ import { useMemo, useState } from "react"
 import {
   type ColumnDef,
   type ColumnFiltersState,
-  type SortingState,
   type VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -25,46 +24,46 @@ import {
 import { getTransactionsTableColumns } from "@/components/transactions/data-table/columns"
 import { DataTablePagination } from "@/components/transactions/data-table/data-table-pagination"
 import { DataTableToolbar } from "@/components/transactions/data-table/data-table-toolbar"
-import { DeleteTransactions } from "../delete-transactions"
+import { DeleteTransactions } from "@/components/transactions/delete-transactions"
 import type { Transaction } from "@/types/transactions"
 import type { DataTableRowAction } from "@/types/data-table"
 import { EditMultipleTransactions, EditTransaction } from "@/components/transactions/edit-transactions"
 import { SplitTransaction } from "@/components/split-transactions/split-transactions"
+import type { Tag } from "@/types/tags"
+import type { Account } from "@/types/accounts"
 
 interface DataTableProps<TData> {
   data: TData[]
+  tags: Tag[]
+  accounts: Account[]
   onChange?: () => void
+  skipPageResetRef?: React.RefObject<boolean>
 }
 
 export function DataTable<TData>({
   data,
+  tags,
+  accounts,
   onChange,
 }: DataTableProps<TData>) {
-  const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
-
   const [rowAction, setRowAction] = useState<DataTableRowAction<Transaction> | null>(null);
 
   const columns = useMemo(
     () =>
-      getTransactionsTableColumns(setRowAction),
-    [],
+      getTransactionsTableColumns(setRowAction, tags, onChange),
+    [tags],
   );
 
   const table = useReactTable({
     data,
     columns: columns as ColumnDef<TData, any>[],
     state: {
-      sorting,
       columnVisibility,
-      rowSelection,
       columnFilters,
     },
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
@@ -77,7 +76,7 @@ export function DataTable<TData>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} tags={tags} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -128,6 +127,8 @@ export function DataTable<TData>({
           </TableBody>
         </Table>
         <EditTransaction
+          tags={tags}
+          accounts={accounts}
           open={rowAction?.variant === "update"}
           onOpenChange={() => setRowAction(null)}
           transaction={rowAction?.row?.original as Transaction}
@@ -137,6 +138,8 @@ export function DataTable<TData>({
           }}
         />
         <EditMultipleTransactions
+          tags={tags}
+          accounts={accounts}
           open={rowAction?.variant === "update-multiple"}
           onOpenChange={() => setRowAction(null)}
           transactions={rowAction?.rows?.map(row => row.original) as Transaction[]}
@@ -154,6 +157,7 @@ export function DataTable<TData>({
           }}
         />
         <SplitTransaction
+          tags={tags}
           open={rowAction?.variant === "split"}
           onOpenChange={() => setRowAction(null)}
           transaction={rowAction?.row?.original as Transaction}
