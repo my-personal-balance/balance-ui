@@ -24,10 +24,10 @@ export function DataTableRowActions<TData>({
   tags,
   onChange,
 }: DataTableRowActionsProps<TData>) {
+  const transaction = row.original as Transaction
   const { asyncUpdateTransaction } = useEditTransactions()
   
   const handleSubmit = async (tagId: string) => {
-    const transaction = row.original as Transaction
     const newTransaction = transactionSchema.parse({
       account_id: transaction.account_id,
       amount: transaction.amount,
@@ -64,7 +64,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
           <DropdownMenuSubContent className="h-2/4 overflow-y-auto">
-            <DropdownMenuRadioGroup value={row.original.tag?.id.toString()} onValueChange={(value) => handleSubmit(value)}>
+            <DropdownMenuRadioGroup value={transaction.tag?.id.toString()} onValueChange={(value) => handleSubmit(value)}>
               {tags.map((tag) => (
                 <DropdownMenuRadioItem key={tag.id} value={tag.id.toString()}>
                   {tag.value}
