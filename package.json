@@ -1,9 +1,8 @@
 {
-  "name": "balance-ui-5",
+  "name": "balance-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.12.1",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
