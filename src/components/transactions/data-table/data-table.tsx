@@ -53,7 +53,7 @@ export function DataTable<TData>({
   const columns = useMemo(
     () =>
       getTransactionsTableColumns(setRowAction, tags, onChange),
-    [tags],
+    [tags, onChange],
   );
 
   const table = useReactTable({

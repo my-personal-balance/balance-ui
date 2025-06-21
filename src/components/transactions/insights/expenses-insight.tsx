@@ -87,7 +87,7 @@ export function ExpensesCategoryInsight({
 }: { data: ExpenseTagReport[], addTagFilter: (tag: Tag) => void, removeTagFilter: () => void, currentFilteredTag: Tag | undefined }) {
   
   const [totalExpenses, setTotalExpenses] = useState(0.0)
-  const [chartData, _] = useState(data.map((item) => ({
+  const [chartData] = useState(data.map((item) => ({
     ...item,
     fill: getRandomColor()
   })))

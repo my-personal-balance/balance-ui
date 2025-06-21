@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (accessToken) {
       getUser(accessToken).then(setUser)
     }
-  }, [])
+  }, [accessToken])
 
   return (
     <AuthenticationContext value={{ isAuthenticated, accessToken, user, login, logout }}>
