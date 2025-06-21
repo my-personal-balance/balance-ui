@@ -1,10 +1,8 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: published
 
 jobs:
 
@@ -35,4 +33,5 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:latest
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ github.event.release.tag_name }}
         platforms: linux/amd64,linux/arm64
