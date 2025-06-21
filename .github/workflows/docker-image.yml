@@ -34,6 +34,5 @@ jobs:
         push: true # Specifies that the image should be pushed to the registry
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:latest
-          ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ github.event.number }}
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ github.sha }}
         platforms: linux/amd64,linux/arm64
