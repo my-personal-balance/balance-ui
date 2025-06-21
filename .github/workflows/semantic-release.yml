@@ -2,8 +2,9 @@ name: Semantic Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main", "chore/actions" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   release:
@@ -29,6 +30,7 @@ jobs:
         run: npm install semantic-release @semantic-release/git @semantic-release/github
 
       - name: Run semantic-release
+        id: semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
