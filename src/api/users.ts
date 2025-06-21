@@ -1,5 +1,5 @@
 import axios from 'redaxios'
-import type{ User } from '@/types/users'
+import type { User } from '@/types/users'
 
 export const getUser = async (accessToken?: string | null): Promise<User> => {
   return await axios.get<User>(
