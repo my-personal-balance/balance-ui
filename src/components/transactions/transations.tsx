@@ -20,10 +20,11 @@ export function Transactions({ title, accountId, showInsights = false }: { title
   const [filters, setFilters] = useState<TransactionFilterProps>({accountId: accountId} as TransactionFilterProps)
   const { transactions, refreshTransactions } = useTransactions()
   const { balance, refreshBalance } = useBalance()
-  const { accounts } = useAccounts()
+  const { accounts, refreshAccounts } = useAccounts()
   const { tags } = useTags()
 
   useEffect(() => {
+    refreshAccounts()
     asyncRefreshTransactions()
   }, [filters])
 
