@@ -45,5 +45,5 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:latest
           ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ github.sha }}
-          ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ steps.get_latest_tag.outputs.latest_tag }}}
+          ${{ secrets.DOCKER_USERNAME }}/balance-ui:${{ steps.get_latest_tag.outputs.latest_tag }}
         platforms: linux/amd64,linux/arm64
