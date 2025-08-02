@@ -1,13 +1,13 @@
-import * as React from "react"
+import * as React from 'react'
 import {
   ArrowUpCircleIcon,
   FrameIcon,
   LayoutDashboardIcon,
   PieChartIcon,
-} from "lucide-react"
+} from 'lucide-react'
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from '@/components/nav-main'
+import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -17,29 +17,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
   },
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: LayoutDashboardIcon,
     },
     {
-      title: "Accounts",
-      url: "/accounts",
+      title: 'Accounts',
+      url: '/accounts',
       icon: FrameIcon,
     },
     {
-      title: "Insights",
-      url: "/insights",
+      title: 'Insights',
+      url: '/insights',
       icon: PieChartIcon,
     },
   ],
@@ -57,7 +57,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">My Personal Balance</span>
+                <span className="text-base font-semibold">
+                  My Personal Balance
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

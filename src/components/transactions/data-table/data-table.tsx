@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState } from 'react'
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,7 +11,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table'
 
 import {
   Table,
@@ -20,17 +20,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { getTransactionsTableColumns } from "@/components/transactions/data-table/columns"
-import { DataTablePagination } from "@/components/transactions/data-table/data-table-pagination"
-import { DataTableToolbar } from "@/components/transactions/data-table/data-table-toolbar"
-import { DeleteTransactions } from "@/components/transactions/delete-transactions"
-import type { Transaction } from "@/types/transactions"
-import type { DataTableRowAction } from "@/types/data-table"
-import { EditMultipleTransactions, EditTransaction } from "@/components/transactions/edit-transactions"
-import { SplitTransaction } from "@/components/split-transactions/split-transactions"
-import type { Tag } from "@/types/tags"
-import type { Account } from "@/types/accounts"
+} from '@/components/ui/table'
+import { getTransactionsTableColumns } from '@/components/transactions/data-table/columns'
+import { DataTablePagination } from '@/components/transactions/data-table/data-table-pagination'
+import { DataTableToolbar } from '@/components/transactions/data-table/data-table-toolbar'
+import { DeleteTransactions } from '@/components/transactions/delete-transactions'
+import type { Transaction } from '@/types/transactions'
+import type { DataTableRowAction } from '@/types/data-table'
+import {
+  EditMultipleTransactions,
+  EditTransaction,
+} from '@/components/transactions/edit-transactions'
+import { SplitTransaction } from '@/components/split-transactions/split-transactions'
+import type { Tag } from '@/types/tags'
+import type { Account } from '@/types/accounts'
 
 interface DataTableProps<TData> {
   data: TData[]
@@ -48,13 +51,13 @@ export function DataTable<TData>({
 }: DataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [rowAction, setRowAction] = useState<DataTableRowAction<Transaction> | null>(null);
+  const [rowAction, setRowAction] =
+    useState<DataTableRowAction<Transaction> | null>(null)
 
   const columns = useMemo(
-    () =>
-      getTransactionsTableColumns(setRowAction, tags, onChange),
-    [tags, onChange],
-  );
+    () => getTransactionsTableColumns(setRowAction, tags, onChange),
+    [tags, onChange]
+  )
 
   const table = useReactTable({
     data,
@@ -80,9 +83,9 @@ export function DataTable<TData>({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map(header => {
                   return (
                     <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
@@ -99,12 +102,12 @@ export function DataTable<TData>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -129,7 +132,7 @@ export function DataTable<TData>({
         <EditTransaction
           tags={tags}
           accounts={accounts}
-          open={rowAction?.variant === "update"}
+          open={rowAction?.variant === 'update'}
           onOpenChange={() => setRowAction(null)}
           transaction={rowAction?.row?.original as Transaction}
           onSuccess={() => {
@@ -140,25 +143,34 @@ export function DataTable<TData>({
         <EditMultipleTransactions
           tags={tags}
           accounts={accounts}
-          open={rowAction?.variant === "update-multiple"}
+          open={rowAction?.variant === 'update-multiple'}
           onOpenChange={() => setRowAction(null)}
-          transactions={rowAction?.rows?.map(row => row.original) as Transaction[]}
+          transactions={
+            rowAction?.rows?.map(row => row.original) as Transaction[]
+          }
           onSuccess={() => {
             rowAction?.rows?.forEach(row => row.toggleSelected(false))
             onChange?.()
           }}
         />
         <DeleteTransactions
-          open={rowAction?.variant === "delete" || rowAction?.variant === "delete-multiple"}
+          open={
+            rowAction?.variant === 'delete' ||
+            rowAction?.variant === 'delete-multiple'
+          }
           onOpenChange={() => setRowAction(null)}
-          transactions={rowAction?.row?.original ? [rowAction?.row.original] : rowAction?.rows?.map(row => row.original) as Transaction[]}
+          transactions={
+            rowAction?.row?.original
+              ? [rowAction?.row.original]
+              : (rowAction?.rows?.map(row => row.original) as Transaction[])
+          }
           onSuccess={() => {
             onChange?.()
           }}
         />
         <SplitTransaction
           tags={tags}
-          open={rowAction?.variant === "split"}
+          open={rowAction?.variant === 'split'}
           onOpenChange={() => setRowAction(null)}
           transaction={rowAction?.row?.original as Transaction}
           onSuccess={() => {

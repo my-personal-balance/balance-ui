@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { EllipsisIcon, PencilIcon, TrashIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from 'react'
+import { EllipsisIcon, PencilIcon, TrashIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { DeleteTransactions } from "@/components/accounts/delete-accounts"
-import { useRouter } from "@tanstack/react-router"
-
+} from '@/components/ui/dropdown-menu'
+import { DeleteTransactions } from '@/components/accounts/delete-accounts'
+import { useRouter } from '@tanstack/react-router'
 
 export function AccountsActions({ accountId }: { accountId: number }) {
   const router = useRouter()
@@ -19,8 +18,11 @@ export function AccountsActions({ accountId }: { accountId: number }) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild> 
-          <Button variant="ghost" className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
             <EllipsisIcon className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
           </Button>
@@ -44,7 +46,7 @@ export function AccountsActions({ accountId }: { accountId: number }) {
         onOpenChange={setOpen}
         accountId={accountId}
         onSuccess={() => {
-          router.navigate({ to: "/accounts" })
+          router.navigate({ to: '/accounts' })
         }}
       />
     </>

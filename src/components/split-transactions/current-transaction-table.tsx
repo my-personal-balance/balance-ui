@@ -1,4 +1,4 @@
-import { format } from "date-fns"
+import { format } from 'date-fns'
 import {
   Table,
   TableBody,
@@ -6,11 +6,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import type { Transaction } from "@/types/transactions"
-import { formatNumber } from "@/lib/utils"
+} from '@/components/ui/table'
+import type { Transaction } from '@/types/transactions'
+import { formatNumber } from '@/lib/utils'
 
-export function CurrentTransactionInfoTable({ transaction }: { transaction: Transaction }) {
+export function CurrentTransactionInfoTable({
+  transaction,
+}: {
+  transaction: Transaction
+}) {
   return (
     <Table>
       <TableHeader>
@@ -22,18 +26,17 @@ export function CurrentTransactionInfoTable({ transaction }: { transaction: Tran
       </TableHeader>
       <TableBody>
         <TableRow key={transaction.id}>
-          <TableCell className="font-medium">{format(transaction.date ?? new Date(), "dd/MM/yyyy")}</TableCell>
+          <TableCell className="font-medium">
+            {format(transaction.date ?? new Date(), 'dd/MM/yyyy')}
+          </TableCell>
           <TableCell>{transaction.description}</TableCell>
-          <TableCell className="text-right">{
-            formatNumber(
-              transaction.amount ?? 0, 
-              {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-                style: "currency",
-                currency: "EUR" 
-              }
-            )}
+          <TableCell className="text-right">
+            {formatNumber(transaction.amount ?? 0, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              style: 'currency',
+              currency: 'EUR',
+            })}
           </TableCell>
         </TableRow>
       </TableBody>

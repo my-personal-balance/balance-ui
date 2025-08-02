@@ -1,10 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { useEditTransactions } from "@/hooks/use-transactions";
-import type { Transaction } from "@/types/transactions";
-import { useTransition } from "react";
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { useEditTransactions } from '@/hooks/use-transactions'
+import type { Transaction } from '@/types/transactions'
+import { useTransition } from 'react'
 
-interface DeleteTransactionsProps 
+interface DeleteTransactionsProps
   extends React.ComponentPropsWithoutRef<typeof AlertDialog> {
   transactions?: Transaction[]
   onSuccess?: () => void
@@ -15,7 +23,7 @@ export function DeleteTransactions({
   onSuccess,
   ...props
 }: DeleteTransactionsProps) {
-  const [isDeletePending, startDeleteTransition] = useTransition();
+  const [isDeletePending, startDeleteTransition] = useTransition()
   const { asyncDeleteTransaction } = useEditTransactions()
 
   const handleDeleteTransaction = () => {
@@ -27,7 +35,7 @@ export function DeleteTransactions({
       onSuccess?.()
     })
   }
-  
+
   return (
     <AlertDialog {...props}>
       <AlertDialogContent>
@@ -51,4 +59,4 @@ export function DeleteTransactions({
       </AlertDialogContent>
     </AlertDialog>
   )
-}     
+}

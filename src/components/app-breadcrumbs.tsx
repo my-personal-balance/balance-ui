@@ -1,14 +1,20 @@
-import { Breadcrumb, BreadcrumbLink, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbLink,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb'
 
 export function AppBreadcrumbs({ title }: { title: string | any[] }) {
-
   if (Array.isArray(title)) {
     return (
       <Breadcrumb>
         <BreadcrumbList>
-          {title.map((t, index) => (
-             getBreadcrumbItem(t, index === 0, index === title.length - 1)
-          ))}
+          {title.map((t, index) =>
+            getBreadcrumbItem(t, index === 0, index === title.length - 1)
+          )}
         </BreadcrumbList>
       </Breadcrumb>
     )
@@ -25,16 +31,20 @@ export function AppBreadcrumbs({ title }: { title: string | any[] }) {
   }
 }
 
-function getBreadcrumbItem(item: string | any, isFirst: boolean, isLast: boolean) {
+function getBreadcrumbItem(
+  item: string | any,
+  isFirst: boolean,
+  isLast: boolean
+) {
   return (
     <>
       {!isFirst && <BreadcrumbSeparator />}
       <BreadcrumbItem>
-      {isLast ? <BreadcrumbPage>{item}</BreadcrumbPage> :
-        <BreadcrumbLink asChild>
-          {item}
-        </BreadcrumbLink>
-      }
+        {isLast ? (
+          <BreadcrumbPage>{item}</BreadcrumbPage>
+        ) : (
+          <BreadcrumbLink asChild>{item}</BreadcrumbLink>
+        )}
       </BreadcrumbItem>
     </>
   )

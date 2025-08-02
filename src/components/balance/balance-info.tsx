@@ -3,10 +3,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import type { Balance } from "@/types/balance"
-import { formatNumber } from "@/lib/utils"
-import { LandmarkIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react"
+} from '@/components/ui/card'
+import type { Balance } from '@/types/balance'
+import { formatNumber } from '@/lib/utils'
+import { LandmarkIcon, TrendingDownIcon, TrendingUpIcon } from 'lucide-react'
 
 export function BalanceInfo({ balance }: { balance: Balance }) {
   return (
@@ -15,7 +15,10 @@ export function BalanceInfo({ balance }: { balance: Balance }) {
         <CardHeader className="relative">
           <CardDescription>Balance</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums text-blue-500">
-            {formatNumber(balance.balance, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatNumber(balance.balance, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </CardTitle>
           <div className="absolute right-4 top-4">
             <LandmarkIcon className="size-7 text-blue-500" />
@@ -34,7 +37,10 @@ export function BalanceInfo({ balance }: { balance: Balance }) {
         <CardHeader className="relative">
           <CardDescription>Inflow</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums text-green-500">
-            {formatNumber(balance.incomes, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatNumber(balance.incomes, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </CardTitle>
           <div className="absolute right-4 top-4">
             <TrendingUpIcon className="size-7 text-green-500" />
@@ -53,7 +59,10 @@ export function BalanceInfo({ balance }: { balance: Balance }) {
         <CardHeader className="relative">
           <CardDescription>Outflow</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums text-red-500">
-            {formatNumber(balance.expenses*-1, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatNumber(balance.expenses * -1, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </CardTitle>
           <div className="absolute right-4 top-4">
             <TrendingDownIcon className="size-7 text-red-500" />

@@ -1,27 +1,52 @@
-import { useState } from "react"
-import { useForm, type UseFormReturn } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Plus } from "lucide-react"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { DialogTitle, DialogDescription, DialogTrigger, DialogContent, DialogClose, DialogHeader, DialogFooter, Dialog } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useAccounts } from "@/hooks/use-accounts"
-import { accountSchema, AccountTypeEnum, CurrencyCodeEnum } from "@/types/schemas/accounts-schema"
+import { useState } from 'react'
+import { useForm, type UseFormReturn } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Plus } from 'lucide-react'
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select'
+import {
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+  DialogHeader,
+  DialogFooter,
+  Dialog,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Form } from '@/components/ui/form'
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useAccounts } from '@/hooks/use-accounts'
+import {
+  accountSchema,
+  AccountTypeEnum,
+  CurrencyCodeEnum,
+} from '@/types/schemas/accounts-schema'
 
 const accountFormSchema = accountSchema.extend({
   alias: z.string({
-    required_error: "An alias is required.",
+    required_error: 'An alias is required.',
   }),
   account_type: z.string({
-    required_error: "An account type is required.",
+    required_error: 'An account type is required.',
   }),
   type: z.string().nullable().optional(),
   currency: z.string({
-    required_error: "A currency is required.",
+    required_error: 'A currency is required.',
   }),
 })
 
@@ -29,7 +54,7 @@ type AccountFormValues = z.infer<typeof accountFormSchema>
 
 const defaultValues: Partial<AccountFormValues> = {
   account_type: AccountTypeEnum.Values.CHECKING,
-  currency: "EUR",
+  currency: 'EUR',
 }
 
 export function AddAccount({ onSuccess }: { onSuccess?: () => void }) {
@@ -42,19 +67,18 @@ export function AddAccount({ onSuccess }: { onSuccess?: () => void }) {
   })
 
   const handleSubmit = form.handleSubmit(async (data: AccountFormValues) => {
-
     const account = accountSchema.parse({
       alias: data.alias,
       type: data.account_type,
       currency: data.currency,
     })
     await asyncAddAccount(account)
-    .then(() => {
-      setOpen(false)
-      form.reset()
-      onSuccess?.()
-    })
-    .catch((error) => console.error(error))
+      .then(() => {
+        setOpen(false)
+        form.reset()
+        onSuccess?.()
+      })
+      .catch(error => console.error(error))
   })
 
   return (
@@ -98,9 +122,7 @@ const AccountForm = ({
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>
-          {description}
-        </DialogDescription>
+        <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,17 +146,28 @@ const AccountForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value || undefined}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Account type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={AccountTypeEnum.Values.CHECKING}>Checking</SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.SAVINGS}>Savings</SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.INVESTMENTS}>Investments</SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.OTHERS}>Others</SelectItem>
+                      <SelectItem value={AccountTypeEnum.Values.CHECKING}>
+                        Checking
+                      </SelectItem>
+                      <SelectItem value={AccountTypeEnum.Values.SAVINGS}>
+                        Savings
+                      </SelectItem>
+                      <SelectItem value={AccountTypeEnum.Values.INVESTMENTS}>
+                        Investments
+                      </SelectItem>
+                      <SelectItem value={AccountTypeEnum.Values.OTHERS}>
+                        Others
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -146,16 +179,25 @@ const AccountForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Currency</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value || undefined}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Currency" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={CurrencyCodeEnum.enum.EUR}>EUR</SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.enum.BRL}>BRL</SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.enum.USD}>USD</SelectItem>
+                      <SelectItem value={CurrencyCodeEnum.enum.EUR}>
+                        EUR
+                      </SelectItem>
+                      <SelectItem value={CurrencyCodeEnum.enum.BRL}>
+                        BRL
+                      </SelectItem>
+                      <SelectItem value={CurrencyCodeEnum.enum.USD}>
+                        USD
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>

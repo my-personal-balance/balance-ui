@@ -1,4 +1,4 @@
-import { ThemeProvider } from './components/theme-provider'
+import { ThemeProvider } from '@/components/theme-provider'
 import { RouterProvider } from '@tanstack/react-router'
 import { createRouter } from '@/router'
 import { AuthProvider, useAuth } from '@/auth'
@@ -16,7 +16,7 @@ function App() {
       <AuthProvider>
         <InnerApp />
       </AuthProvider>
-    </ThemeProvider> 
+    </ThemeProvider>
   )
 }
 

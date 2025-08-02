@@ -1,5 +1,5 @@
-import { useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { useTransition } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,10 +8,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useAccounts } from "@/hooks/use-accounts";
+} from '@/components/ui/alert-dialog'
+import { useAccounts } from '@/hooks/use-accounts'
 
-interface DeleteTransactionsProps 
+interface DeleteTransactionsProps
   extends React.ComponentPropsWithoutRef<typeof AlertDialog> {
   accountId: number
   onSuccess?: () => void
@@ -32,7 +32,7 @@ export function DeleteTransactions({
       onSuccess?.()
     })
   }
-  
+
   return (
     <>
       <AlertDialog {...props}>
@@ -58,4 +58,4 @@ export function DeleteTransactions({
       </AlertDialog>
     </>
   )
-}     
+}
