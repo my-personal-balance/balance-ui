@@ -1,8 +1,7 @@
 import { useState } from 'react'
-
+import { useAuth } from '@/auth'
 import { listAccounts, deleteAccount, addAccount } from '@/api/accounts'
 import type { Account } from '@/types/accounts'
-import { useAuth } from '@/auth'
 
 export const useAccounts = () => {
   const auth = useAuth()
