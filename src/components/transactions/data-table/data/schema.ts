@@ -1,17 +1,23 @@
-import { z } from "zod"
-import { accountSchema } from "@/types/schemas/accounts-schema"
-import { tagSchema, tagsArraySchema } from "@/types/schemas/tag-schema"
-import { splitTransactionSchema } from "@/types/schemas/split-transaction-schema"
+import { z } from 'zod'
+import { accountSchema } from '@/types/schemas/accounts-schema'
+import { tagSchema, tagsArraySchema } from '@/types/schemas/tag-schema'
+import { splitTransactionSchema } from '@/types/schemas/split-transaction-schema'
 
-export const TransactionTypeEnum = z.enum(["EXPENSE", "INCOME", "TRANSFER", "REFUND", "INVESTMENT"]);
+export const TransactionTypeEnum = z.enum([
+  'EXPENSE',
+  'INCOME',
+  'TRANSFER',
+  'REFUND',
+  'INVESTMENT',
+])
 
-export const tagsFilterSchema = tagsArraySchema.transform((dataArray) => {
+export const tagsFilterSchema = tagsArraySchema.transform(dataArray => {
   return dataArray.map(data => ({
     value: data.id.toString(),
     label: data.value,
     icon: undefined,
-  }));
-});
+  }))
+})
 
 export const transactionSchema = z.object({
   id: z.number().optional(),

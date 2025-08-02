@@ -1,11 +1,10 @@
-import { AddAccount } from "@/components/accounts/add-accounts"
-import { getRouteApi, Link } from "@tanstack/react-router"
-import type { Account } from "@/types/accounts"
-import { CommonApp } from "@/app/common"
+import { AddAccount } from '@/components/accounts/add-accounts'
+import { getRouteApi, Link } from '@tanstack/react-router'
+import type { Account } from '@/types/accounts'
+import { CommonApp } from '@/app/common'
 
 export default function Page() {
-
-  const routeApi = getRouteApi("/_auth/accounts/")
+  const routeApi = getRouteApi('/_auth/accounts/')
   const { accounts } = routeApi.useLoaderData()
 
   return (
@@ -23,19 +22,23 @@ export default function Page() {
   )
 }
 
-const Accounts = ({ accounts }: {accounts: Account[]}) => {
+const Accounts = ({ accounts }: { accounts: Account[] }) => {
   return accounts?.map(account => (
-    <Link to={`/accounts/$accountId`} params={{ accountId: account.id?.toString() ?? ''}} key={account.id}>
+    <Link
+      to={`/accounts/$accountId`}
+      params={{ accountId: account.id?.toString() ?? '' }}
+      key={account.id}
+    >
       <div className="items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent bg-muted">
         <div className="w-full flex-col gap-1">
           <div className="flex items-center">
             <div className="flex items-center gap-2">
-              <div className="font-semibold">
-                {account.alias}
-              </div>
+              <div className="font-semibold">{account.alias}</div>
             </div>
             <div className="ml-auto text-xs text-foreground">
-              {Intl.NumberFormat('en-us', {minimumFractionDigits: 2}).format(account.balance || 0)}
+              {Intl.NumberFormat('en-us', { minimumFractionDigits: 2 }).format(
+                account.balance || 0
+              )}
             </div>
           </div>
         </div>

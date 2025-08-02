@@ -1,5 +1,11 @@
-import { useTheme } from "@/components/theme-provider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useTheme } from '@/components/theme-provider'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()

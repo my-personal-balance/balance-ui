@@ -1,30 +1,44 @@
-import { useEffect, useState, useTransition as useTransitionReact } from "react"
-import { format} from "date-fns"
-import type { DateRange } from "react-day-picker"
+import { useEffect, useState, useTransition as useTransitionReact } from 'react'
+import { format } from 'date-fns'
+import type { DateRange } from 'react-day-picker'
 
-import type { TransactionFilterProps } from "@/types/transactions"
-import { useTransactions } from "@/hooks/use-transactions"
-import { useBalance } from "@/hooks/use-balance"
-import { BalanceInfo } from "@/components/balance/balance-info"
-import { DatePickerWithRange } from "@/components/date-range-picker"
-import { AddTransaction } from "@/components/transactions/add-transactions"
-import { UploadTransactions } from "@/components/transactions/upload-transactions"
-import { DataTable } from "@/components/transactions/data-table/data-table"
-import { ExpensesInsights } from "@/components/transactions/insights/expenses-insight"
-import { AccountsActions } from "@/components/accounts/accounts-actions"
-import { useTags } from "@/hooks/use-tags"
-import { useAccounts } from "@/hooks/use-accounts"
-import { useReports } from "@/hooks/use-reports"
-import type { Tag } from "@/types/tags"
+import type { TransactionFilterProps } from '@/types/transactions'
+import { useTransactions } from '@/hooks/use-transactions'
+import { useBalance } from '@/hooks/use-balance'
+import { BalanceInfo } from '@/components/balance/balance-info'
+import { DatePickerWithRange } from '@/components/date-range-picker'
+import { AddTransaction } from '@/components/transactions/add-transactions'
+import { UploadTransactions } from '@/components/transactions/upload-transactions'
+import { DataTable } from '@/components/transactions/data-table/data-table'
+import { ExpensesInsights } from '@/components/transactions/insights/expenses-insight'
+import { AccountsActions } from '@/components/accounts/accounts-actions'
+import { useTags } from '@/hooks/use-tags'
+import { useAccounts } from '@/hooks/use-accounts'
+import { useReports } from '@/hooks/use-reports'
+import type { Tag } from '@/types/tags'
 
-export function Transactions({ title, accountId, showInsights = false }: { title: string, accountId?: number, showInsights?: boolean }) {
-
-  const [filters, setFilters] = useState<TransactionFilterProps>(accountId ? {accountId} : {} as TransactionFilterProps)
+export function Transactions({
+  title,
+  accountId,
+  showInsights = false,
+}: {
+  title: string
+  accountId?: number
+  showInsights?: boolean
+}) {
+  const [filters, setFilters] = useState<TransactionFilterProps>(
+    accountId ? { accountId } : ({} as TransactionFilterProps)
+  )
   const { transactions, refreshTransactions } = useTransactions()
   const { balance, refreshBalance } = useBalance()
   const { accounts, refreshAccounts } = useAccounts()
   const { tags } = useTags()
-  const { asyncFetchReportTransactions, asyncFetchReportTrends, expenseTagReport, expenseTrendReport } = useReports()
+  const {
+    asyncFetchReportTransactions,
+    asyncFetchReportTrends,
+    expenseTagReport,
+    expenseTrendReport,
+  } = useReports()
   const [isLoading, startTransition] = useTransitionReact()
 
   useEffect(() => {
@@ -56,9 +70,11 @@ export function Transactions({ title, accountId, showInsights = false }: { title
     if (dateRange?.from && dateRange?.to) {
       setFilters({
         ...filters,
-        startDate: dateRange?.from ? format(dateRange.from, "yyyy-MM-dd") : undefined,
-        endDate: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
-        periodType: 'custom'
+        startDate: dateRange?.from
+          ? format(dateRange.from, 'yyyy-MM-dd')
+          : undefined,
+        endDate: dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
+        periodType: 'custom',
       })
     }
   }
@@ -72,7 +88,7 @@ export function Transactions({ title, accountId, showInsights = false }: { title
     delete newFilters.tagId
     setFilters(newFilters)
   }
-  
+
   return (
     <>
       <div className="flex justify-between sm:grid sm:grid-cols-2">
@@ -83,7 +99,9 @@ export function Transactions({ title, accountId, showInsights = false }: { title
           </div>
         </div>
         <div className="flex justify-end gap-2 sm:px-4 md:px-4 lg:px-6">
-          <DatePickerWithRange onChange={(date) => date && handleDateChange(date as DateRange)}/>
+          <DatePickerWithRange
+            onChange={date => date && handleDateChange(date as DateRange)}
+          />
           <AddTransaction
             accountId={accountId}
             accounts={accounts}
@@ -98,7 +116,7 @@ export function Transactions({ title, accountId, showInsights = false }: { title
         </div>
       </div>
       <BalanceInfo balance={balance} />
-      {showInsights && 
+      {showInsights && (
         <ExpensesInsights
           isLoading={isLoading}
           expenseTagReport={expenseTagReport}
@@ -106,7 +124,7 @@ export function Transactions({ title, accountId, showInsights = false }: { title
           addTagFilter={addTagFilter}
           removeTagFilter={removeTagFilter}
         />
-      }
+      )}
       <div className="px-4 lg:px-6">
         <DataTable
           data={transactions}

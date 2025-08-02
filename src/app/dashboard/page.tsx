@@ -1,5 +1,5 @@
-import { Transactions } from "@/components/transactions/transations"
-import { CommonApp } from "@/app/common"
+import { Transactions } from '@/components/transactions/transations'
+import { CommonApp } from '@/app/common'
 
 export default function Page({ title }: { title: string }) {
   return (

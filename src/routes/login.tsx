@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-router'
 import { z } from 'zod'
 import { useAuth } from '@/auth'
-import { LoginForm } from "@/components/login-form"
+import { LoginForm } from '@/components/login-form'
 
 const fallback = '/dashboard' as const
 
@@ -15,7 +15,7 @@ export const Route = createFileRoute('/login')({
   validateSearch: z.object({
     redirect: z.string().optional().catch(''),
   }),
-  beforeLoad: ({ context, search }: { context: any, search: any }) => {
+  beforeLoad: ({ context, search }: { context: any; search: any }) => {
     if (context.auth.isAuthenticated) {
       throw redirect({ to: search.redirect || fallback })
     }
@@ -26,7 +26,7 @@ export const Route = createFileRoute('/login')({
 function LoginComponent() {
   const auth = useAuth()
   const router = useRouter()
-  const isLoading = useRouterState({ select: (s) => s.isLoading })
+  const isLoading = useRouterState({ select: s => s.isLoading })
   const search = Route.useSearch()
 
   const authenticate = async (_: any, data: FormData) => {
@@ -35,9 +35,9 @@ function LoginComponent() {
     try {
       await auth.login(email, password)
     } catch (error) {
-      return { 
+      return {
         error,
-        message: 'Invalid email or password'
+        message: 'Invalid email or password',
       }
     }
 

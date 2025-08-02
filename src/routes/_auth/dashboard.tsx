@@ -6,4 +6,3 @@ export const Route = createFileRoute('/_auth/dashboard')({
   component: () => <Page title="Dashboard" />,
   errorComponent: LogoutComponent,
 })
-

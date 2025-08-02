@@ -1,14 +1,14 @@
-import { XIcon } from "lucide-react"
-import type { Table } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/components/transactions/data-table/data-table-view-options"
-import { DataTableFacetedFilter } from "@/components/transactions/data-table/data-table-faceted-filter"
-import { tagsFilterSchema } from "@/components/transactions/data-table/data/schema"
-import type { Tag } from "@/types/tags"
+import { XIcon } from 'lucide-react'
+import type { Table } from '@tanstack/react-table'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { DataTableViewOptions } from '@/components/transactions/data-table/data-table-view-options'
+import { DataTableFacetedFilter } from '@/components/transactions/data-table/data-table-faceted-filter'
+import { tagsFilterSchema } from '@/components/transactions/data-table/data/schema'
+import type { Tag } from '@/types/tags'
 
 interface DataTableToolbarProps<TData> {
-  table: Table<TData>,
+  table: Table<TData>
   tags: Tag[]
 }
 
@@ -24,15 +24,17 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <Input
           placeholder="Filter..."
-          value={(table.getColumn("description")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("description")?.setFilterValue(event.target.value)
+          value={
+            (table.getColumn('description')?.getFilterValue() as string) ?? ''
+          }
+          onChange={event =>
+            table.getColumn('description')?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("category") && (
+        {table.getColumn('category') && (
           <DataTableFacetedFilter
-            column={table.getColumn("category")}
+            column={table.getColumn('category')}
             title="Category"
             options={tagsInfo}
           />

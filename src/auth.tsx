@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import type { AnyContext } from '@tanstack/react-router'
 import { sleep } from '@/lib/utils'
 import { authenticate } from '@/api/oauth'
@@ -36,7 +42,9 @@ function setStoredToken(accessToken: string | null) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [accessToken, setAccessToken] = useState<string | null>(getStoredToken())
+  const [accessToken, setAccessToken] = useState<string | null>(
+    getStoredToken()
+  )
   const isAuthenticated = !!accessToken
   const [user, setUser] = useState<User | null>(null)
 
@@ -48,10 +56,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
-    const { accessToken } = await authenticate(email, password);
+    const { accessToken } = await authenticate(email, password)
     const user = await getUser(accessToken)
     setStoredToken(accessToken)
-    setAccessToken(accessToken)    
+    setAccessToken(accessToken)
     setUser(user)
   }, [])
 
@@ -63,7 +71,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [accessToken])
 
   return (
-    <AuthenticationContext value={{ isAuthenticated, accessToken, user, login, logout }}>
+    <AuthenticationContext
+      value={{ isAuthenticated, accessToken, user, login, logout }}
+    >
       {children}
     </AuthenticationContext>
   )

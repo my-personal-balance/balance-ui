@@ -1,15 +1,36 @@
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Dialog, DialogDescription, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Upload } from "lucide-react"
-import { Form, FormField, FormLabel, FormControl, FormItem } from "@/components/ui/form"
-import { Select, SelectValue, SelectTrigger, SelectItem, SelectContent } from "@/components/ui/select"
-import { Input } from "../ui/input"
-import { useEditTransactions } from "@/hooks/use-transactions"
-import type { Account } from "@/types/accounts"
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Dialog,
+  DialogDescription,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Upload } from 'lucide-react'
+import {
+  Form,
+  FormField,
+  FormLabel,
+  FormControl,
+  FormItem,
+} from '@/components/ui/form'
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+} from '@/components/ui/select'
+import { Input } from '../ui/input'
+import { useEditTransactions } from '@/hooks/use-transactions'
+import type { Account } from '@/types/accounts'
 
 const uploadTransactionsFormSchema = z.object({
   account_id: z.string(),
@@ -18,10 +39,17 @@ const uploadTransactionsFormSchema = z.object({
 
 type UploadTransactionsFormValues = z.infer<typeof uploadTransactionsFormSchema>
 
-const defaultValues: Partial<UploadTransactionsFormValues> = {
-}
+const defaultValues: Partial<UploadTransactionsFormValues> = {}
 
-export function UploadTransactions({ accountId, accounts, onChange }: { accountId?: number, accounts: Account[], onChange: () => void }) {
+export function UploadTransactions({
+  accountId,
+  accounts,
+  onChange,
+}: {
+  accountId?: number
+  accounts: Account[]
+  onChange: () => void
+}) {
   const { asyncUploadTransaction } = useEditTransactions()
   const [open, setOpen] = useState(false)
 
@@ -29,19 +57,21 @@ export function UploadTransactions({ accountId, accounts, onChange }: { accountI
     resolver: zodResolver(uploadTransactionsFormSchema),
     defaultValues,
   })
-  
+
   useEffect(() => {
     if (accountId) {
-      form.setValue("account_id", accountId.toString())
+      form.setValue('account_id', accountId.toString())
     }
   }, [accountId])
 
-  const handleSubmit = form.handleSubmit(async (data: UploadTransactionsFormValues) => {
-    await asyncUploadTransaction(Number(data.account_id), data.file)
-    setOpen(false)
-    form.reset()
-    onChange()
-  })
+  const handleSubmit = form.handleSubmit(
+    async (data: UploadTransactionsFormValues) => {
+      await asyncUploadTransaction(Number(data.account_id), data.file)
+      setOpen(false)
+      form.reset()
+      onChange()
+    }
+  )
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -66,14 +96,24 @@ export function UploadTransactions({ accountId, accounts, onChange }: { accountI
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Account</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value?.toString()}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value?.toString()}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select an account" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {accounts.map(account => <SelectItem key={account.id} value={account.id?.toString() || ""}>{account.alias}</SelectItem>)}
+                        {accounts.map(account => (
+                          <SelectItem
+                            key={account.id}
+                            value={account.id?.toString() || ''}
+                          >
+                            {account.alias}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -86,9 +126,9 @@ export function UploadTransactions({ accountId, accounts, onChange }: { accountI
                   <FormItem>
                     <FormLabel>File</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="file" 
-                        onChange={(e) => {
+                      <Input
+                        type="file"
+                        onChange={e => {
                           const file = e.target.files?.[0]
                           field.onChange(file)
                         }}
@@ -111,5 +151,4 @@ export function UploadTransactions({ accountId, accounts, onChange }: { accountI
       </DialogContent>
     </Dialog>
   )
-
 }

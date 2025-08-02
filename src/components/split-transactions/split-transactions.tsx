@@ -1,22 +1,29 @@
-import { Sheet,
+import {
+  Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle
-} from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
-import type { Transaction } from "@/types/transactions"
-import { CurrentTransactionInfoTable } from "@/components/split-transactions/current-transaction-table"
-import { SplitTransactionsTable } from "@/components/split-transactions/data-table/data-table"
-import type { Tag } from "@/types/tags"
+  SheetTitle,
+} from '@/components/ui/sheet'
+import { Separator } from '@/components/ui/separator'
+import type { Transaction } from '@/types/transactions'
+import { CurrentTransactionInfoTable } from '@/components/split-transactions/current-transaction-table'
+import { SplitTransactionsTable } from '@/components/split-transactions/data-table/data-table'
+import type { Tag } from '@/types/tags'
 
-interface SplitTransactionProps extends React.ComponentPropsWithoutRef<typeof Sheet> {
+interface SplitTransactionProps
+  extends React.ComponentPropsWithoutRef<typeof Sheet> {
   transaction?: Transaction
   tags: Tag[]
   onSuccess?: () => void
 }
 
-export function SplitTransaction({ transaction, tags, onSuccess, ...props }: SplitTransactionProps) {
+export function SplitTransaction({
+  transaction,
+  tags,
+  onSuccess,
+  ...props
+}: SplitTransactionProps) {
   return (
     <Sheet {...props}>
       <SheetContent side="bottom">
@@ -46,5 +53,3 @@ export function SplitTransaction({ transaction, tags, onSuccess, ...props }: Spl
     </Sheet>
   )
 }
-
-

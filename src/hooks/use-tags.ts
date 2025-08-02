@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
-import { listTags } from '@/api/tags';
-import type { Tag } from '@/types/tags';
-import { useAuth } from '@/auth';
+import { listTags } from '@/api/tags'
+import type { Tag } from '@/types/tags'
+import { useAuth } from '@/auth'
 
 export const useTags = () => {
   const auth = useAuth()
@@ -14,7 +14,7 @@ export const useTags = () => {
       setTags(response.tags)
     }
     fetchTags()
-  },[auth.accessToken])
+  }, [auth.accessToken])
 
   return {
     tags,

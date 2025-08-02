@@ -1,5 +1,5 @@
-import { z } from "zod"
-import { tagSchema } from "@/types/schemas/tag-schema"
+import { z } from 'zod'
+import { tagSchema } from '@/types/schemas/tag-schema'
 
 export const splitTransactionSchema = z.object({
   id: z.number().nullable().optional(),

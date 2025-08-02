@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_auth/accounts/')({
     const { accessToken } = context.auth
     const { accounts } = await listAccounts(accessToken)
     return {
-      accounts
+      accounts,
     }
   },
   component: Page,
