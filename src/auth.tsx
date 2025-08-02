@@ -8,8 +8,8 @@ import React, {
 import type { AnyContext } from '@tanstack/react-router'
 import { sleep } from '@/lib/utils'
 import { authenticate } from '@/api/oauth'
-import type { User } from './types/users'
-import { getUser } from './api/users'
+import { getUser } from '@/api/users'
+import type { User } from '@/types/users'
 
 interface AuthContext extends AnyContext {
   isAuthenticated: boolean

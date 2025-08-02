@@ -1,7 +1,7 @@
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { SidebarInset } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/app-sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: ({ context, location }: { context: any; location: any }) => {

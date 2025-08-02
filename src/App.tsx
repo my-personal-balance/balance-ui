@@ -1,7 +1,7 @@
-import { ThemeProvider } from '@/components/theme-provider'
 import { RouterProvider } from '@tanstack/react-router'
-import { createRouter } from '@/router'
 import { AuthProvider, useAuth } from '@/auth'
+import { ThemeProvider } from '@/components/theme-provider'
+import { createRouter } from '@/router'
 
 const router = createRouter()
 

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-
+import { useEffect, useState } from 'react'
+import { useAuth } from '@/auth'
 import { listTags } from '@/api/tags'
 import type { Tag } from '@/types/tags'
-import { useAuth } from '@/auth'
 
 export const useTags = () => {
   const auth = useAuth()
