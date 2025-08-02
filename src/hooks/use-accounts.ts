@@ -22,6 +22,7 @@ export const useAccounts = () => {
 
   return {
     accounts,
+    setAccounts,
     refreshAccounts,
     asyncAddAccount,
     asyncDeleteAccount,
