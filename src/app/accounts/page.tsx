@@ -1,11 +1,18 @@
+import { useEffect } from 'react'
 import { AddAccount } from '@/components/accounts/add-accounts'
 import { getRouteApi, Link } from '@tanstack/react-router'
 import type { Account } from '@/types/accounts'
 import { CommonApp } from '@/app/common'
+import { useAccounts } from '@/hooks/use-accounts'
 
 export default function Page() {
   const routeApi = getRouteApi('/_auth/accounts/')
-  const { accounts } = routeApi.useLoaderData()
+  const { accounts: initialAccounts } = routeApi.useLoaderData()
+  const { refreshAccounts, accounts, setAccounts } = useAccounts()
+
+  useEffect(() => {
+    setAccounts(initialAccounts)
+  }, [initialAccounts])
 
   return (
     <CommonApp title="Accounts">
@@ -15,7 +22,7 @@ export default function Page() {
             <h2 className="text-3xl font-bold tracking-tight">Accounts</h2>
           </div>
           <Accounts accounts={accounts} />
-          <AddAccount />
+          <AddAccount onSuccess={refreshAccounts} />
         </div>
       </div>
     </CommonApp>

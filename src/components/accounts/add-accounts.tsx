@@ -37,23 +37,18 @@ import {
   CurrencyCodeEnum,
 } from '@/types/schemas/accounts-schema'
 
-const accountFormSchema = accountSchema.extend({
-  alias: z.string({
-    required_error: 'An alias is required.',
-  }),
-  account_type: z.string({
-    required_error: 'An account type is required.',
-  }),
-  type: z.string().nullable().optional(),
-  currency: z.string({
-    required_error: 'A currency is required.',
-  }),
-})
+const accountFormSchema = accountSchema
+  .extend({
+    alias: z.string({
+      required_error: 'An alias is required.',
+    }),
+  })
+  .omit({ id: true })
 
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
 const defaultValues: Partial<AccountFormValues> = {
-  account_type: AccountTypeEnum.Values.CHECKING,
+  type: AccountTypeEnum.Values.CHECKING,
   currency: 'EUR',
 }
 
@@ -67,18 +62,11 @@ export function AddAccount({ onSuccess }: { onSuccess?: () => void }) {
   })
 
   const handleSubmit = form.handleSubmit(async (data: AccountFormValues) => {
-    const account = accountSchema.parse({
-      alias: data.alias,
-      type: data.account_type,
-      currency: data.currency,
-    })
-    await asyncAddAccount(account)
-      .then(() => {
-        setOpen(false)
-        form.reset()
-        onSuccess?.()
-      })
-      .catch(error => console.error(error))
+    const newAccount = accountFormSchema.parse(data)
+    await asyncAddAccount(newAccount)
+    setOpen(false)
+    form.reset()
+    onSuccess?.()
   })
 
   return (
@@ -142,7 +130,7 @@ const AccountForm = ({
             />
             <FormField
               control={form.control}
-              name="account_type"
+              name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type</FormLabel>
@@ -157,16 +145,32 @@ const AccountForm = ({
                     </FormControl>
                     <SelectContent>
                       <SelectItem value={AccountTypeEnum.Values.CHECKING}>
-                        Checking
+                        {AccountTypeEnum.Values.CHECKING.replace(/^\w/, c =>
+                          c.toUpperCase()
+                        )
+                          .toLowerCase()
+                          .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
                       <SelectItem value={AccountTypeEnum.Values.SAVINGS}>
-                        Savings
+                        {AccountTypeEnum.Values.SAVINGS.replace(/^\w/, c =>
+                          c.toUpperCase()
+                        )
+                          .toLowerCase()
+                          .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
                       <SelectItem value={AccountTypeEnum.Values.INVESTMENTS}>
-                        Investments
+                        {AccountTypeEnum.Values.INVESTMENTS.replace(/^\w/, c =>
+                          c.toUpperCase()
+                        )
+                          .toLowerCase()
+                          .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
                       <SelectItem value={AccountTypeEnum.Values.OTHERS}>
-                        Others
+                        {AccountTypeEnum.Values.OTHERS.replace(/^\w/, c =>
+                          c.toUpperCase()
+                        )
+                          .toLowerCase()
+                          .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -181,7 +185,7 @@ const AccountForm = ({
                   <FormLabel>Currency</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value || undefined}
+                    defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -189,14 +193,14 @@ const AccountForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={CurrencyCodeEnum.enum.EUR}>
-                        EUR
+                      <SelectItem value={CurrencyCodeEnum.Values.EUR}>
+                        {CurrencyCodeEnum.Values.EUR}
                       </SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.enum.BRL}>
-                        BRL
+                      <SelectItem value={CurrencyCodeEnum.Values.BRL}>
+                        {CurrencyCodeEnum.Values.BRL}
                       </SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.enum.USD}>
-                        USD
+                      <SelectItem value={CurrencyCodeEnum.Values.USD}>
+                        {CurrencyCodeEnum.Values.USD}
                       </SelectItem>
                     </SelectContent>
                   </Select>
