@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { transactionSchema } from '@/components/transactions/data-table/data/schema'
+import type { transactionSchema } from '@/types/schemas/transactions'
 import type { ReportType } from '@/types/reports'
 
 export type Transaction = z.infer<typeof transactionSchema>

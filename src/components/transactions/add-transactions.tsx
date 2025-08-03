@@ -6,7 +6,10 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { DialogTrigger } from '@/components/ui/dialog'
-import { transactionSchema } from '@/components/transactions/data-table/data/schema'
+import {
+  transactionSchema,
+  TransactionTypeEnum,
+} from '@/types/schemas/transactions'
 import { useEditTransactions } from '@/hooks/use-transactions'
 import { TransactionForm } from '@/components/transactions/transactions-form'
 import type { Tag } from '@/types/tags'
@@ -14,7 +17,10 @@ import type { Account } from '@/types/accounts'
 
 export const addTransactionSchema = transactionSchema
   .extend({
-    account_id: z.string({
+    transaction_type: z.nativeEnum(TransactionTypeEnum.enum, {
+      required_error: 'A transaction type is required.',
+    }),
+    account_id: z.coerce.number({
       required_error: 'An account is required.',
     }),
     amount: z.number({
@@ -28,6 +34,7 @@ type TransactionFormValues = z.infer<typeof addTransactionSchema>
 
 const defaultValues: Partial<TransactionFormValues> = {
   amount: Number(0.0),
+  date: new Date(),
 }
 
 export function AddTransaction({
@@ -48,13 +55,14 @@ export function AddTransaction({
     resolver: zodResolver(addTransactionSchema),
     defaultValues: {
       ...defaultValues,
-      account_id: accountId?.toString() || '',
+      account_id: accountId,
     },
   })
 
   const handleSubmit = form.handleSubmit(
     async (data: TransactionFormValues) => {
-      const newTransaction = transactionSchema.parse(data)
+      const newTransaction = addTransactionSchema.parse(data)
+      debugger
       await asyncAddTransaction(newTransaction)
       setOpen(false)
       form.reset()

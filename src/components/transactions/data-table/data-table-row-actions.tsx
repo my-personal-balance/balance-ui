@@ -18,7 +18,7 @@ import type {
   DataTableRowActionsProps,
 } from '@/types/data-table'
 import { useEditTransactions } from '@/hooks/use-transactions'
-import { transactionSchema } from '@/components/transactions/data-table/data/schema'
+import { transactionSchema } from '@/types/schemas/transactions'
 import type { Transaction } from '@/types/transactions'
 
 export function DataTableRowActions<TData>({

@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/popover'
 import type { Account } from '@/types/accounts'
 import type { Tag } from '@/types/tags'
+import { TransactionTypeEnum } from '@/types/schemas/transactions'
 
 interface TransactionFormProps
   extends React.ComponentPropsWithoutRef<typeof Dialog> {
@@ -87,13 +88,45 @@ export const TransactionForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="EXPENSE">Expense</SelectItem>
-                        <SelectItem value="INCOME">Income</SelectItem>
-                        <SelectItem value="TRANSFER">Transfer</SelectItem>
-                        <SelectItem value="REFUND">Refund</SelectItem>
-                        <SelectItem value="INVESTMENT">Investment</SelectItem>
+                        <SelectItem value={TransactionTypeEnum.enum.EXPENSE}>
+                          {TransactionTypeEnum.enum.EXPENSE.replace(/^\w/, c =>
+                            c.toUpperCase()
+                          )
+                            .toLowerCase()
+                            .replace(/^\w/, c => c.toUpperCase())}
+                        </SelectItem>
+                        <SelectItem value={TransactionTypeEnum.enum.INCOME}>
+                          {TransactionTypeEnum.enum.INCOME.replace(/^\w/, c =>
+                            c.toUpperCase()
+                          )
+                            .toLowerCase()
+                            .replace(/^\w/, c => c.toUpperCase())}
+                        </SelectItem>
+                        <SelectItem value={TransactionTypeEnum.enum.TRANSFER}>
+                          {TransactionTypeEnum.enum.TRANSFER.replace(/^\w/, c =>
+                            c.toUpperCase()
+                          )
+                            .toLowerCase()
+                            .replace(/^\w/, c => c.toUpperCase())}
+                        </SelectItem>
+                        <SelectItem value={TransactionTypeEnum.enum.REFUND}>
+                          {TransactionTypeEnum.enum.REFUND.replace(/^\w/, c =>
+                            c.toUpperCase()
+                          )
+                            .toLowerCase()
+                            .replace(/^\w/, c => c.toUpperCase())}
+                        </SelectItem>
+                        <SelectItem value={TransactionTypeEnum.enum.INVESTMENT}>
+                          {TransactionTypeEnum.enum.INVESTMENT.replace(
+                            /^\w/,
+                            c => c.toUpperCase()
+                          )
+                            .toLowerCase()
+                            .replace(/^\w/, c => c.toUpperCase())}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -209,7 +242,7 @@ export const TransactionForm = ({
                     <FormLabel>Account</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value?.toString()}
+                      defaultValue={field.value?.toString() || undefined}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -227,6 +260,7 @@ export const TransactionForm = ({
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
