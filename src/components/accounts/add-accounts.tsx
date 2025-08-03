@@ -48,7 +48,7 @@ const accountFormSchema = accountSchema
 type AccountFormValues = z.infer<typeof accountFormSchema>
 
 const defaultValues: Partial<AccountFormValues> = {
-  type: AccountTypeEnum.Values.CHECKING,
+  type: AccountTypeEnum.enum.CHECKING,
   currency: 'EUR',
 }
 
@@ -144,29 +144,29 @@ const AccountForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={AccountTypeEnum.Values.CHECKING}>
-                        {AccountTypeEnum.Values.CHECKING.replace(/^\w/, c =>
+                      <SelectItem value={AccountTypeEnum.enum.CHECKING}>
+                        {AccountTypeEnum.enum.CHECKING.replace(/^\w/, c =>
                           c.toUpperCase()
                         )
                           .toLowerCase()
                           .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.SAVINGS}>
-                        {AccountTypeEnum.Values.SAVINGS.replace(/^\w/, c =>
+                      <SelectItem value={AccountTypeEnum.enum.SAVINGS}>
+                        {AccountTypeEnum.enum.SAVINGS.replace(/^\w/, c =>
                           c.toUpperCase()
                         )
                           .toLowerCase()
                           .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.INVESTMENTS}>
-                        {AccountTypeEnum.Values.INVESTMENTS.replace(/^\w/, c =>
+                      <SelectItem value={AccountTypeEnum.enum.INVESTMENTS}>
+                        {AccountTypeEnum.enum.INVESTMENTS.replace(/^\w/, c =>
                           c.toUpperCase()
                         )
                           .toLowerCase()
                           .replace(/^\w/, c => c.toUpperCase())}
                       </SelectItem>
-                      <SelectItem value={AccountTypeEnum.Values.OTHERS}>
-                        {AccountTypeEnum.Values.OTHERS.replace(/^\w/, c =>
+                      <SelectItem value={AccountTypeEnum.enum.OTHERS}>
+                        {AccountTypeEnum.enum.OTHERS.replace(/^\w/, c =>
                           c.toUpperCase()
                         )
                           .toLowerCase()
@@ -185,7 +185,7 @@ const AccountForm = ({
                   <FormLabel>Currency</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -193,14 +193,14 @@ const AccountForm = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={CurrencyCodeEnum.Values.EUR}>
-                        {CurrencyCodeEnum.Values.EUR}
+                      <SelectItem value={CurrencyCodeEnum.enum.EUR}>
+                        {CurrencyCodeEnum.enum.EUR}
                       </SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.Values.BRL}>
-                        {CurrencyCodeEnum.Values.BRL}
+                      <SelectItem value={CurrencyCodeEnum.enum.BRL}>
+                        {CurrencyCodeEnum.enum.BRL}
                       </SelectItem>
-                      <SelectItem value={CurrencyCodeEnum.Values.USD}>
-                        {CurrencyCodeEnum.Values.USD}
+                      <SelectItem value={CurrencyCodeEnum.enum.USD}>
+                        {CurrencyCodeEnum.enum.USD}
                       </SelectItem>
                     </SelectContent>
                   </Select>

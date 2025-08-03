@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from '@/components/transactions/data-table/data-table-view-options'
 import { DataTableFacetedFilter } from '@/components/transactions/data-table/data-table-faceted-filter'
-import { tagsFilterSchema } from '@/components/transactions/data-table/data/schema'
+import { tagsFilterSchema } from '@/types/schemas/transactions'
 import type { Tag } from '@/types/tags'
 
 interface DataTableToolbarProps<TData> {
