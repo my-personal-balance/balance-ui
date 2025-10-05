@@ -10,11 +10,13 @@ import type { Tag } from '@/types/tags'
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
   tags: Tag[]
+  onChange?: (value?: string) => void
 }
 
 export function DataTableToolbar<TData>({
   table,
   tags,
+  onChange
 }: DataTableToolbarProps<TData>) {
   const tagsInfo = tagsFilterSchema.parse(tags)
   const isFiltered = table.getState().columnFilters.length > 0
@@ -37,12 +39,16 @@ export function DataTableToolbar<TData>({
             column={table.getColumn('category')}
             title="Category"
             options={tagsInfo}
+            onChange={onChange}
           />
         )}
         {isFiltered && (
           <Button
             variant="ghost"
-            onClick={() => table.resetColumnFilters()}
+            onClick={() => {
+              table.resetColumnFilters()
+              onChange?.()
+            }}
             className="h-8 px-2 lg:px-3"
           >
             Reset

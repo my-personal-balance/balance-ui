@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Label, Pie, PieChart } from 'recharts'
-import { Link } from '@tanstack/react-router'
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -19,20 +17,14 @@ import {
 
 import type { ExpenseTagReport } from '@/types/reports'
 import { formatNumber } from '@/lib/utils'
-import type { Tag } from '@/types/tags'
-import { badgeVariants } from '@/components/ui/badge'
+
+interface ExpensesCategoryInsightProps {
+  data: ExpenseTagReport[]
+}
 
 export function ExpensesCategoryInsight({
-  data,
-  addTagFilter,
-  removeTagFilter,
-  currentFilteredTag,
-}: {
-  data: ExpenseTagReport[]
-  addTagFilter: (tag: Tag) => void
-  removeTagFilter: () => void
-  currentFilteredTag: Tag | undefined
-}) {
+  data
+}: ExpensesCategoryInsightProps) {
   const [totalExpenses, setTotalExpenses] = useState(0.0)
   const [chartData] = useState(
     data.map(item => ({
@@ -51,17 +43,6 @@ export function ExpensesCategoryInsight({
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Expenses</CardTitle>
-        {currentFilteredTag && (
-          <CardDescription className="flex justify-center">
-            <Link
-              onClick={() => removeTagFilter()}
-              to="."
-              className={badgeVariants({ variant: 'outline' })}
-            >
-              {currentFilteredTag.value}
-            </Link>
-          </CardDescription>
-        )}
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -117,17 +98,14 @@ export function ExpensesCategoryInsight({
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className=" text-xs">
-        <div className="grid grid-cols-2 items-center gap-1 leading-none font-medium w-full">
+      <CardFooter className="text-xs">
+        <div className="grid grid-cols-2 w-full">
           {data.map(item => (
             <>
-              <div
-                className="border-b-2 pt-2 pb-2"
-                onClick={() => addTagFilter(item.tag)}
-              >
+              <div className="font-medium text-sm border-b-2 pt-2 pb-2">
                 {item.tag.value}
               </div>
-              <div className="text-right leading-none border-b-2 pt-2 pb-2 text-red-400">
+              <div className="font-medium text-sm border-b-2 pt-2 pb-2 text-red-400 text-right">
                 {formatNumber(item.EXPENSE, {
                   style: 'currency',
                   currency: 'EUR',

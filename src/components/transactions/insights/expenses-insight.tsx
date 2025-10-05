@@ -1,37 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useTransition } from 'react'
 import { Loader2 } from 'lucide-react'
 import { ExpensesCategoryInsight } from '@/components/transactions/insights/expenses-category-insight'
 import { ExpenseTrendInsights } from '@/components/transactions/insights/expenses-trend-insight'
-import type { ExpenseTagReport, ExpenseTrendReport } from '@/types/reports'
-import type { Tag } from '@/types/tags'
+import { useReports } from '@/hooks/use-reports'
+import type { TransactionFilterProps } from '@/types/transactions'
 
 interface ExpensesInsightsProps {
-  isLoading: boolean
-  expenseTagReport: ExpenseTagReport[]
-  expenseTrendReport: ExpenseTrendReport[]
-  addTagFilter: (tag: Tag) => void
-  removeTagFilter: () => void
+  filters: TransactionFilterProps
 }
 
 export function ExpensesInsights({
-  isLoading,
-  expenseTagReport,
-  expenseTrendReport,
-  addTagFilter,
-  removeTagFilter,
+  filters,
 }: ExpensesInsightsProps) {
-  const [currentFilteredTag, setCurrentFilteredTag] = useState<
-    Tag | undefined
-  >()
 
-  const handleTagFilter = (tag: Tag) => {
-    addTagFilter(tag)
-    setCurrentFilteredTag(tag)
-  }
+  const {
+    asyncFetchReportTransactions,
+    asyncFetchReportTrends,
+    expenseTagReport,
+    expenseTrendReport,
+  } = useReports()
+  const [isLoading, startTransaction] = useTransition()
 
-  const handleRemoveTagFilter = () => {
-    removeTagFilter()
-    setCurrentFilteredTag(undefined)
+  useEffect(() => {
+    asyncRefreshData()
+  }, [filters])
+
+  const asyncRefreshData = async () => {
+    startTransaction(async () => {
+      await asyncFetchReportTransactions({
+        ...filters,
+        periodType: filters.periodType || 'current_month',
+        reportType: 'group_by_tag',
+      })
+      await asyncFetchReportTrends({
+        ...filters,
+        periodType: filters.periodType || 'current_month',
+        reportType: 'group_by_tag',
+      })
+    })
   }
 
   return (
@@ -43,12 +49,7 @@ export function ExpensesInsights({
       ) : (
         <>
           <div>
-            <ExpensesCategoryInsight
-              data={expenseTagReport}
-              addTagFilter={handleTagFilter}
-              removeTagFilter={handleRemoveTagFilter}
-              currentFilteredTag={currentFilteredTag}
-            />
+            <ExpensesCategoryInsight data={expenseTagReport} />
           </div>
           <div className="col-span-2">
             <ExpenseTrendInsights data={expenseTrendReport} />

@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition as useTransitionReact } from 'react'
+import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import type { DateRange } from 'react-day-picker'
 
@@ -14,8 +14,6 @@ import { ExpensesInsights } from '@/components/transactions/insights/expenses-in
 import { AccountsActions } from '@/components/accounts/accounts-actions'
 import { useTags } from '@/hooks/use-tags'
 import { useAccounts } from '@/hooks/use-accounts'
-import { useReports } from '@/hooks/use-reports'
-import type { Tag } from '@/types/tags'
 
 export function Transactions({
   title,
@@ -33,13 +31,6 @@ export function Transactions({
   const { balance, refreshBalance } = useBalance()
   const { accounts, refreshAccounts } = useAccounts()
   const { tags } = useTags()
-  const {
-    asyncFetchReportTransactions,
-    asyncFetchReportTrends,
-    expenseTagReport,
-    expenseTrendReport,
-  } = useReports()
-  const [isLoading, startTransition] = useTransitionReact()
 
   useEffect(() => {
     refreshAccounts()
@@ -47,22 +38,8 @@ export function Transactions({
   }, [filters])
 
   const asyncRefreshTransactions = async () => {
-    startTransition(async () => {
-      await refreshTransactions(filters)
-      await refreshBalance(filters)
-      if (showInsights) {
-        await asyncFetchReportTransactions({
-          ...filters,
-          periodType: filters.periodType || 'current_month',
-          reportType: 'group_by_tag',
-        })
-        await asyncFetchReportTrends({
-          ...filters,
-          periodType: filters.periodType || 'current_month',
-          reportType: 'group_by_tag',
-        })
-      }
-    })
+    await refreshTransactions(filters)
+    await refreshBalance(filters)
   }
 
   const handleDateChange = (date: DateRange) => {
@@ -79,14 +56,14 @@ export function Transactions({
     }
   }
 
-  const addTagFilter = (tag: Tag) => {
-    setFilters({ ...filters, tagId: tag.id })
-  }
-
-  const removeTagFilter = () => {
-    const newFilters = { ...filters }
-    delete newFilters.tagId
-    setFilters(newFilters)
+  const handleCategoryChange = (value?: string) => {
+    if (value) {
+      setFilters({ ...filters, tagId: Number(value) })
+    } else {
+      const newFilters = { ...filters }
+      delete newFilters.tagId
+      setFilters(newFilters)
+    }
   }
 
   return (
@@ -117,13 +94,7 @@ export function Transactions({
       </div>
       <BalanceInfo balance={balance} />
       {showInsights && (
-        <ExpensesInsights
-          isLoading={isLoading}
-          expenseTagReport={expenseTagReport}
-          expenseTrendReport={expenseTrendReport}
-          addTagFilter={addTagFilter}
-          removeTagFilter={removeTagFilter}
-        />
+        <ExpensesInsights filters={filters} />
       )}
       <div className="px-4 lg:px-6">
         <DataTable
@@ -131,6 +102,13 @@ export function Transactions({
           onChange={asyncRefreshTransactions}
           tags={tags}
           accounts={accounts}
+          updateCategoryFilter={(value?: string) => {
+            if (value) {
+              handleCategoryChange(value)
+            } else {
+              handleCategoryChange()
+            }
+          }}
         />
       </div>
     </>

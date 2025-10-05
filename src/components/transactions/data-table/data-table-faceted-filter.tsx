@@ -28,13 +28,15 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     label: string
     value: string
     icon?: React.ComponentType<{ className?: string }>
-  }[]
+  }[],
+  onChange?: (value?: string) => void
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  onChange,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
@@ -94,8 +96,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value)
+                        onChange?.()
                       } else {
                         selectedValues.add(option.value)
+                        onChange?.(option.value)
                       }
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(
