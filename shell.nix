@@ -3,9 +3,8 @@
 pkgs.mkShell {
   # Packages available in the shell environment
   buildInputs = [
-    pkgs.corepack_22
-    pkgs.nodejs_22
-    pkgs.git
+    pkgs.corepack
+    pkgs.nodejs
   ];
 
   # Environment variables for the shell
