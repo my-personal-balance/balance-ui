@@ -40,6 +40,7 @@ interface DataTableProps<TData> {
   tags: Tag[]
   accounts: Account[]
   onChange?: () => void
+  updateCategoryFilter?: (value?: string) => void
   skipPageResetRef?: React.RefObject<boolean>
 }
 
@@ -48,6 +49,7 @@ export function DataTable<TData>({
   tags,
   accounts,
   onChange,
+  updateCategoryFilter,
 }: DataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -82,7 +84,7 @@ export function DataTable<TData>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} tags={tags} />
+      <DataTableToolbar table={table} tags={tags} onChange={updateCategoryFilter} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
