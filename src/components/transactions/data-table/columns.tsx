@@ -114,7 +114,7 @@ export function getTransactionsTableColumns(
       cell: ({ row }) => {
         return (
           <div className="flex space-x-2">
-            <span className="max-w-[31.25rem] truncate font-medium">
+            <span className="font-medium">
               {row.getValue('description')}
             </span>
           </div>

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
   ArrowUpCircleIcon,
+  BotIcon,
   FrameIcon,
   LayoutDashboardIcon,
   PieChartIcon,
@@ -41,6 +42,11 @@ const data = {
       title: 'Insights',
       url: '/insights',
       icon: PieChartIcon,
+    },
+    {
+      title: 'Auto Classify',
+      url: '/auto-classify',
+      icon: BotIcon,
     },
   ],
 }

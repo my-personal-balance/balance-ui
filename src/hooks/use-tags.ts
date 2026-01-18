@@ -5,7 +5,7 @@ import type { Tag } from '@/types/tags'
 
 export const useTags = () => {
   const auth = useAuth()
-  const [tags, setTags] = useState([] as Tag[])
+  const [tags, setTags] = useState<Tag[]>([])
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -15,7 +15,12 @@ export const useTags = () => {
     fetchTags()
   }, [auth.accessToken])
 
+  const getTagById = (id: number) => {
+    return tags.find(tag => tag.id === id)
+  }
+
   return {
     tags,
+    getTagById,
   }
 }

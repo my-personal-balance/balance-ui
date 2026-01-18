@@ -66,9 +66,6 @@ export function DataTable<TData>({
       columnVisibility,
       columnFilters,
     },
-    onStateChange: state => {
-      console.log(state)
-    },
     enableRowSelection: true,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,

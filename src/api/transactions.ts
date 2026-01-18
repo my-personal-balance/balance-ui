@@ -60,6 +60,27 @@ export const updateTransaction = async (
     })
 }
 
+export const patchTransaction = async (
+  accessToken: string | null,
+  transactionId: number,
+  transaction?: Transaction
+): Promise<Transaction> => {
+  return await axios
+    .patch<Transaction>(
+      `http://localhost:5000/transactions/${transactionId}`,
+      transaction,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+    .then(res => res.data)
+    .catch(() => {
+      throw new Error(`Failed to update transaction`)
+    })
+}
+
 export const updateTransactions = async (
   accessToken: string | null,
   transactions?: Transaction[]

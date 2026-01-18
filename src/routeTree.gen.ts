@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthInsightsRouteImport } from './routes/_auth/insights'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
+import { Route as AuthAutoClassifyRouteImport } from './routes/_auth/auto-classify'
 import { Route as AuthAccountsIndexRouteImport } from './routes/_auth/accounts/index'
 import { Route as AuthAccountsAccountIdRouteImport } from './routes/_auth/accounts/$accountId'
 
@@ -53,6 +54,11 @@ const AuthDashboardRoute = AuthDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAutoClassifyRoute = AuthAutoClassifyRouteImport.update({
+  id: '/auto-classify',
+  path: '/auto-classify',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthAccountsIndexRoute = AuthAccountsIndexRouteImport.update({
   id: '/accounts/',
   path: '/accounts/',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/auto-classify': typeof AuthAutoClassifyRoute
   '/dashboard': typeof AuthDashboardRoute
   '/insights': typeof AuthInsightsRoute
   '/settings': typeof AuthSettingsRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/auto-classify': typeof AuthAutoClassifyRoute
   '/dashboard': typeof AuthDashboardRoute
   '/insights': typeof AuthInsightsRoute
   '/settings': typeof AuthSettingsRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/_auth/auto-classify': typeof AuthAutoClassifyRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/insights': typeof AuthInsightsRoute
   '/_auth/settings': typeof AuthSettingsRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/logout'
+    | '/auto-classify'
     | '/dashboard'
     | '/insights'
     | '/settings'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/logout'
+    | '/auto-classify'
     | '/dashboard'
     | '/insights'
     | '/settings'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/login'
     | '/logout'
+    | '/_auth/auto-classify'
     | '/_auth/dashboard'
     | '/_auth/insights'
     | '/_auth/settings'
@@ -188,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/auto-classify': {
+      id: '/_auth/auto-classify'
+      path: '/auto-classify'
+      fullPath: '/auto-classify'
+      preLoaderRoute: typeof AuthAutoClassifyRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/accounts/': {
       id: '/_auth/accounts/'
       path: '/accounts'
@@ -206,6 +225,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
+  AuthAutoClassifyRoute: typeof AuthAutoClassifyRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthInsightsRoute: typeof AuthInsightsRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
@@ -214,6 +234,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAutoClassifyRoute: AuthAutoClassifyRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthInsightsRoute: AuthInsightsRoute,
   AuthSettingsRoute: AuthSettingsRoute,

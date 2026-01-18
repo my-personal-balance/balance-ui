@@ -4,6 +4,7 @@ import {
   addTransaction,
   deleteTransaction,
   listTransactions,
+  patchTransaction,
   updateTransaction,
   updateTransactions,
   uploadTransactions,
@@ -23,6 +24,7 @@ export const useTransactions = () => {
 
   return {
     transactions,
+    setTransactions,
     refreshTransactions,
   }
 }
@@ -89,12 +91,23 @@ export const useEditTransactions = () => {
     }
   }
 
+  const asyncPatchTransaction = async (transactionId: number, transaction: Transaction) => {
+    try {
+      await patchTransaction(auth.accessToken, transactionId, transaction)
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : 'An unknown error occurred'
+      )
+    }
+  }
+
   return {
     asyncAddTransaction,
     asyncUploadTransaction,
     asyncDeleteTransaction,
     asyncUpdateTransaction,
     asyncUpdateTransactions,
+    asyncPatchTransaction,
     error,
   }
 }
