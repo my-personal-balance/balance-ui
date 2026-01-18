@@ -1,8 +1,6 @@
 import { useMemo } from 'react'
 import {
   type ColumnDef,
-  type ColumnFiltersState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,

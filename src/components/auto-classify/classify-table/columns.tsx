@@ -1,6 +1,6 @@
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
-import { ArrowLeftRight, Check } from 'lucide-react'
+import { ArrowLeftRight } from 'lucide-react'
 import { formatNumber } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
